@@ -3,17 +3,26 @@ import './App.css';
 import Person from './Person/Person'
 
 class App extends Component {
+  state = {
+    persons: [
+      { name: 'Corey', age: 26 },
+      { name: 'Kaitlin', age: 26 },
+      { name: 'Dante', age: 5 },
+    ]
+  }
+
   render() {
     return (
       // JSX expression must have one root element.
       <div className="App">
         <h1>Hi, I'm a React App</h1>
         <p>Child element.</p>
-        <Person name="Corey" age="26" />
-        <Person name="Kaitlin" age="26">
+        <button>Switch Name</button>
+        <Person name={this.state.persons[0].name} age={this.state.persons[0].age} />
+        <Person name={this.state.persons[1].name} age={this.state.persons[1].age}>
           <p>My Hobbies: Reading</p>
         </Person>
-        <Person name="Dante" age="5" />
+        <Person name={this.state.persons[2].name} age={this.state.persons[2].age} />
       </div>
       // Cant add another <h1> below.
       // <p>!- Won't work</p>
