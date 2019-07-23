@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
+import UserInput from './Assignment-1-Base-Syntax/UserInput/UserInput';
+import UserOutput from './Assignment-1-Base-Syntax/UserOutput/UserOutput';
 
 class App extends Component {
   state = {
@@ -9,7 +11,14 @@ class App extends Component {
       { name: 'Kaitlin', age: 26 },
       { name: 'Dante', age: 5 }
     ],
-    otherState: 'some other value'
+    otherState: 'some other value',
+    userName: 'CoreyNoble'
+  }
+
+  ChangeUserName = (event) => {
+    this.setState( {
+      userName: event.target.value
+    } )
   }
 
   switchNameHandler = (newName) => {
@@ -45,7 +54,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h1>Hi, I'm a React App</h1>
+        {/* <h1>Hi, I'm a React App</h1>
         <p>This is really working!</p>
         <button 
           style={style}
@@ -60,7 +69,13 @@ class App extends Component {
           changed={this.nameChangedHandler} >My Hobbies: Reading</Person>
         <Person 
           name={this.state.persons[2].name} 
-          age={this.state.persons[2].age} />
+          age={this.state.persons[2].age} /> */}
+        <UserInput
+         userName = {this.state.userName}
+         changed={this.ChangeUserName} />
+        <UserOutput
+         userName = {this.state.userName} />
+        <UserOutput />
       </div>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
