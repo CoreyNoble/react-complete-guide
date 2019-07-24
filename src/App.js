@@ -6,9 +6,9 @@ import { throws } from 'assert';
 class App extends Component {
   state = {
     persons: [
-      { name: 'Corey', age: 26 },
-      { name: 'Kaitlin', age: 26 },
-      { name: 'Dante', age: 5 }
+      { id: '001', name: 'Corey', age: 26 },
+      { id: '002', name: 'Kaitlin', age: 26 },
+      { id: '003', name: 'Dante', age: 5 }
     ],
     otherState: 'some other value',
     showPersons: false,
@@ -54,7 +54,8 @@ class App extends Component {
             return <Person 
               click={() => this.deletePersonHandler(index)}
               name={person.name}
-              age={person.age} />
+              age={person.age} 
+              key={index}/>
           })}
         </div>
       );
