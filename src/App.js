@@ -12,6 +12,7 @@ class App extends Component {
     ],
     otherState: 'some other value',
     showPersons: false,
+    validateLength: null,
   }
 
   nameChangedHandler = (event, id) => {
@@ -23,18 +24,15 @@ class App extends Component {
       ...this.state.persons[personIndex]
     }
 
-    // const person = Object.assign({}, this.state.persons[personIndex]);
-
     person.name = event.target.value;
 
     const persons = [...this.state.persons];
     persons[personIndex] = person;
 
-    this.setState( { persons: persons } )
+    this.setState({persons: persons})
   }
 
   deletePersonHandler = (personIndex) => {
-    // const persons = this.state.persons.slice();
     const persons = [...this.state.persons];
     persons.splice(personIndex, 1);
     this.setState({persons: persons})
@@ -43,6 +41,16 @@ class App extends Component {
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
     this.setState({showPersons: !doesShow});
+  }
+
+  validateLengthHandler = (event) => {
+    const lengthValue = event.target.value.length;
+    this.setState({validateLength: lengthValue})
+    // if (event.target.charLength < 5){
+    //   return;
+    // } else if (event.target.charLength > 60) {
+    //   return;
+    // }
   }
 
   render () {
@@ -71,6 +79,14 @@ class App extends Component {
       );
     }
 
+    let characterLength = null;
+
+    if (this.state.validateLength != null) {
+      characterLength = (
+        <p>Characters: {this.state.validateLength}</p>
+      );
+    }
+
     return (
       <div className="App">
         <h1>Hi, I'm a React App</h1>
@@ -79,6 +95,10 @@ class App extends Component {
           style={style}
           onClick={this.togglePersonsHandler}>Toggle Persons</button>
         {persons}
+        <br /><br />
+        <p>Validate Length</p>
+        <input onChange={this.validateLengthHandler} />
+        {characterLength}
       </div>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
