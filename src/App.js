@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
 import { throws } from 'assert';
+import ValidationComponent from './ValidationComponent/ValidationComponent';
+import CharComponent from './CharComponent/CharComponent';
 
 class App extends Component {
   state = {
@@ -13,6 +15,7 @@ class App extends Component {
     otherState: 'some other value',
     showPersons: false,
     validateLength: null,
+    char: [],
   }
 
   nameChangedHandler = (event, id) => {
@@ -38,6 +41,12 @@ class App extends Component {
     this.setState({persons: persons})
   }
 
+  deleteCharHandler = (charIndex) => {
+    const char = [...this.state.char];
+    char.splice(charIndex, 1);
+    this.setState({char: char});
+  }
+
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
     this.setState({showPersons: !doesShow});
@@ -46,11 +55,6 @@ class App extends Component {
   validateLengthHandler = (event) => {
     const lengthValue = event.target.value.length;
     this.setState({validateLength: lengthValue})
-    // if (event.target.charLength < 5){
-    //   return;
-    // } else if (event.target.charLength > 60) {
-    //   return;
-    // }
   }
 
   render () {
@@ -87,6 +91,19 @@ class App extends Component {
       );
     }
 
+    let charComponent = null;
+
+    if (this.state.charComponent != []){
+      charComponent = (
+        <div>
+          {this.state.charComponent.map((char, index) => {
+            return <CharComponent
+              character={char} />
+          })}
+        </div>
+      );
+    }
+
     return (
       <div className="App">
         <h1>Hi, I'm a React App</h1>
@@ -99,6 +116,8 @@ class App extends Component {
         <p>Validate Length</p>
         <input onChange={this.validateLengthHandler} />
         {characterLength}
+        {ValidationComponent}
+        {CharComponent}
       </div>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
