@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
 import { throws } from 'assert';
-import ValidationComponent from './ValidationComponent/ValidationComponent';
-import CharComponent from './CharComponent/CharComponent';
+import Validation from './Assignment-2-Working-with-Lists-and-Conditionals/Validation/Validation';
+import Char from './Assignment-2-Working-with-Lists-and-Conditionals/Char/Char';
 
 class App extends Component {
   state = {
@@ -14,8 +14,7 @@ class App extends Component {
     ],
     otherState: 'some other value',
     showPersons: false,
-    validateLength: null,
-    char: [],
+    userInput: '',
   }
 
   nameChangedHandler = (event, id) => {
@@ -41,10 +40,11 @@ class App extends Component {
     this.setState({persons: persons})
   }
 
-  deleteCharHandler = (charIndex) => {
-    const char = [...this.state.char];
-    char.splice(charIndex, 1);
-    this.setState({char: char});
+  deleteCharHandler = (index) => {
+    const text = this.state.userInput.split('');
+    text.splice(index, 1);
+    const updatedText = text.join('');
+    this.setState({userInput: updatedText});
   }
 
   togglePersonsHandler = () => {
@@ -52,9 +52,8 @@ class App extends Component {
     this.setState({showPersons: !doesShow});
   }
 
-  validateLengthHandler = (event) => {
-    const lengthValue = event.target.value.length;
-    this.setState({validateLength: lengthValue})
+  inputChangedHandler = (event) => {
+    this.setState({userInput: event.target.value});
   }
 
   render () {
@@ -83,26 +82,12 @@ class App extends Component {
       );
     }
 
-    let characterLength = null;
-
-    if (this.state.validateLength != null) {
-      characterLength = (
-        <p>Characters: {this.state.validateLength}</p>
-      );
-    }
-
-    let charComponent = null;
-
-    if (this.state.charComponent != []){
-      charComponent = (
-        <div>
-          {this.state.charComponent.map((char, index) => {
-            return <CharComponent
-              character={char} />
-          })}
-        </div>
-      );
-    }
+    const charList = this.state.userInput.split('').map((ch, index) => {
+      return <Char 
+        character={ch}
+        key={index}
+        clicked={() => this.deleteCharHandler(index)} />;
+    });
 
     return (
       <div className="App">
@@ -114,10 +99,12 @@ class App extends Component {
         {persons}
         <br /><br />
         <p>Validate Length</p>
-        <input onChange={this.validateLengthHandler} />
-        {characterLength}
-        {ValidationComponent}
-        {CharComponent}
+        <input type="text" 
+          onChange={this.inputChangedHandler} 
+          value={this.state.userInput} />
+        <p>{this.state.userInput}</p>
+        <Validation inputLength={this.state.userInput.length} />
+        {charList}
       </div>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
