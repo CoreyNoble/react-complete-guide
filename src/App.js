@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
 import { throws } from 'assert';
-import Validation from './Assignment-2-Working-with-Lists-and-Conditionals/Validation/Validation';
-import Char from './Assignment-2-Working-with-Lists-and-Conditionals/Char/Char';
 
 class App extends Component {
   state = {
@@ -14,7 +12,6 @@ class App extends Component {
     ],
     otherState: 'some other value',
     showPersons: false,
-    userInput: '',
   }
 
   nameChangedHandler = (event, id) => {
@@ -40,20 +37,9 @@ class App extends Component {
     this.setState({persons: persons})
   }
 
-  deleteCharHandler = (index) => {
-    const text = this.state.userInput.split('');
-    text.splice(index, 1);
-    const updatedText = text.join('');
-    this.setState({userInput: updatedText});
-  }
-
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
     this.setState({showPersons: !doesShow});
-  }
-
-  inputChangedHandler = (event) => {
-    this.setState({userInput: event.target.value});
   }
 
   render () {
@@ -82,13 +68,6 @@ class App extends Component {
       );
     }
 
-    const charList = this.state.userInput.split('').map((ch, index) => {
-      return <Char 
-        character={ch}
-        key={index}
-        clicked={() => this.deleteCharHandler(index)} />;
-    });
-
     return (
       <div className="App">
         <h1>Hi, I'm a React App</h1>
@@ -97,14 +76,6 @@ class App extends Component {
           style={style}
           onClick={this.togglePersonsHandler}>Toggle Persons</button>
         {persons}
-        <br /><br />
-        <p>Validate Length</p>
-        <input type="text" 
-          onChange={this.inputChangedHandler} 
-          value={this.state.userInput} />
-        <p>{this.state.userInput}</p>
-        <Validation inputLength={this.state.userInput.length} />
-        {charList}
       </div>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
