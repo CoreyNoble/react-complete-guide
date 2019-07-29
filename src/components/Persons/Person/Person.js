@@ -17,7 +17,7 @@ class Person extends Component {
                 />
             </Auxillary>
         )
-    }
+    };
 };
 
 export default withClass(Person, classes.Person);

@@ -6,6 +6,6 @@ const withClass = (WrappedComponent, className) => {
             <WrappedComponent {...props} />
         </div>
     );
-}
+};
 
 export default withClass;
