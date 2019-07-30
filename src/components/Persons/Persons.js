@@ -39,7 +39,7 @@ class Persons extends PureComponent{
 
     componentWillUnmount() {
         console.log('[Persons.js] componentWillUnmount');
-    };
+    }
 
     render() {
         console.log('[Persons.js], rendering...');
@@ -51,11 +51,10 @@ class Persons extends PureComponent{
                     name={person.name}
                     age={person.age} 
                     changed={(event) => this.props.changed(event, person.id)}
-                    isAuth={this.props.isAuthenticated}
                 />
             );
         });
-    };
-};
+    }
+}
 
 export default Persons;
