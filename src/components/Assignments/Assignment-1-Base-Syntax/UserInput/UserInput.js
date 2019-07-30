@@ -1,5 +1,4 @@
-import React from 'react';
-
+import React from './node_modules/react';
 import './UserInput.css';
 
 const userInput = ( props ) => {
@@ -7,7 +6,7 @@ const userInput = ( props ) => {
         <div className="userInput">
             <input type="text" onChange={props.changed} value={props.userName} />
         </div>
-    )
+    );
 };
 
 export default userInput;
