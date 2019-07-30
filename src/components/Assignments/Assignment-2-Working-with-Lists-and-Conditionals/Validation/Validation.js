@@ -14,7 +14,7 @@ const validation = (props) => {
     <div>
       <p>{validationMessage}</p>
     </div>
-  )
+  );
 };
 
 export default validation;
