@@ -29,7 +29,8 @@ class App extends Component {
         )}
       </React.Fragment>
 
-      // <BrowserRouter>
+      // 'basename="/"' is the ROOT URL forthe application.
+      // <BrowserRouter basename="/">
       //   <React.Fragment>
       //     <nav>
       //       <NavLink to="/user">User Page</NavLink> |&nbsp;
