@@ -1,52 +1,34 @@
-import React, { Component, Suspense } from 'react';
-import { BrowserRouter, Route, NavLink } from 'react-router-dom';
+import React, { Component } from 'react';
+import { Route, NavLink, Switch, Redirect } from 'react-router-dom';
 
-import User from './containers/User';
-import Welcome from './containers/Welcome';
-
-const Posts = React.lazy(() => import('./containers/Posts'));
+import Courses from './containers/Courses/Courses';
+import Users from './containers/Users/Users';
+import NoMatch from './components/NoMatch/NoMatch';
 
 class App extends Component {
-  state = { showPosts: false };
-  
-  modeHandler = () => {
-    this.setState(prevState => {
-      return { showPosts: !prevState.show };
-    });
-  }
-
-  render() {
+  render () {
     return (
-      <React.Fragment>
-        <button onClick={this.modeHandler}>Toggle Mode</button>
-        
-        {this.state.showPosts ? (
-          <Suspense fallback={<div>Loading...</div>}>
-            <Posts />
-          </Suspense>
-        ) : (
-          <User />
-        )}
-      </React.Fragment>
-
-      // 'basename="/"' is the ROOT URL forthe application.
-      // <BrowserRouter basename="/">
-      //   <React.Fragment>
-      //     <nav>
-      //       <NavLink to="/user">User Page</NavLink> |&nbsp;
-      //       <NavLink to="/posts">Posts Page</NavLink>
-      //     </nav>
-      //     <Route path="/" component={Welcome} exact />
-      //     <Route path="/user" component={User} />
-      //     <Route path="/posts" 
-      //       render={() => (
-      //         <Suspense fallback={<div>Loading...</div>}>
-      //           <Posts />
-      //         </Suspense>
-      //       )} 
-      //     />
-      //   </React.Fragment>
-      // </BrowserRouter>
+      <div className="App">
+        <header>
+            <nav>
+                <ul style={{listStyle: 'none', margin: 'auto', padding: '0'}}>
+                    <li style={{margin: '10px', display: 'inline-block'}}>
+                      <NavLink to="/courses">Courses</NavLink>
+                    </li>
+                    <li style={{margin: '10px', display: 'inline-block'}}>
+                      <NavLink to="/users">Users</NavLink>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <Switch>
+          <Route path="/users" component={Users} />
+          {/* <Route path="/courses/:courseId" component={Course} /> */}
+          <Route path="/courses" component={Courses} />
+          <Redirect from="/all-courses" to="/courses" />
+          <Route component={NoMatch} />
+        </Switch>
+      </div>
     );
   }
 }
