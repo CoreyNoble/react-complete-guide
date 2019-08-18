@@ -48,7 +48,7 @@ class ContactData extends Component {
                 },
                 value: ''
             },
-            email: {
+            deliveryMethod: {
                 elementType: 'select',
                 elementConfig: {
                     options: [
@@ -57,9 +57,7 @@ class ContactData extends Component {
                     ]
                 },
                 value: ''
-            },
-            
-            deliveryMethod: 'fastest'
+            }            
         },
         loading: false
     }
