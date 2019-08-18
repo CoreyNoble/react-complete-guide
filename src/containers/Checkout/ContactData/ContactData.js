@@ -19,7 +19,8 @@ class ContactData extends Component {
                     required: true
                 },
                 valid: false,
-                touched: false
+                touched: false,
+                errorMessage: 'Please enter a valid name'
             },
             street: {
                 elementType: 'input',
@@ -32,7 +33,8 @@ class ContactData extends Component {
                     required: true
                 },
                 valid: false,
-                touched: false
+                touched: false,
+                errorMessage: 'Please enter a valid address'
             },
             zipCode: {
                 elementType: 'input',
@@ -47,7 +49,8 @@ class ContactData extends Component {
                     maxLength: 5
                 },
                 valid: false,
-                touched: false
+                touched: false,
+                errorMessage: 'Please enter a valid ZIP code'
             },
             country: {
                 elementType: 'input',
@@ -60,7 +63,8 @@ class ContactData extends Component {
                     required: true
                 },
                 valid: false,
-                touched: false
+                touched: false,
+                errorMessage: 'Please enter a valid country'
             },
             email: {
                 elementType: 'input',
@@ -73,7 +77,8 @@ class ContactData extends Component {
                     required: true
                 },
                 valid: false,
-                touched: false
+                touched: false,
+                errorMessage: 'Please enter a valid email address'
             },
             deliveryMethod: {
                 elementType: 'select',
@@ -85,7 +90,8 @@ class ContactData extends Component {
                 },
                 value: 'fastest',
                 validation: {},
-                valid: true
+                valid: true,
+                errorMessage: 'Please select a delivery method'
             }            
         },
         formIsValid: false,
