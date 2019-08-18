@@ -37,6 +37,7 @@ const reducer = (state = initialState, action) => {
             const updatedArray = state.results.filter((result, index) => result.id !== action.resultElId);
             return {
                 ...state,
+                results: updatedArray
             }
     }
     return state;
