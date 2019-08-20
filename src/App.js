@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component, Suspense } from 'react';
 import { BrowserRouter, Route, NavLink } from 'react-router-dom';
 
@@ -5,6 +6,12 @@ import User from './containers/User';
 import Welcome from './containers/Welcome';
 
 const Posts = React.lazy(() => import('./containers/Posts'));
+=======
+import React, { Component } from 'react';
+
+import Counter from './containers/Counter/Counter';
+import './App.css';
+>>>>>>> section-14-redux
 
 class App extends Component {
   state = { showPosts: false };
@@ -17,6 +24,7 @@ class App extends Component {
 
   render() {
     return (
+<<<<<<< HEAD
       <React.Fragment>
         <button onClick={this.modeHandler}>Toggle Mode</button>
         
@@ -47,6 +55,11 @@ class App extends Component {
       //     />
       //   </React.Fragment>
       // </BrowserRouter>
+=======
+      <div className="App">
+       <Counter />
+      </div>
+>>>>>>> section-14-redux
     );
   }
 }
