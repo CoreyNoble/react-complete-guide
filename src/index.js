@@ -5,12 +5,12 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-// import counterReducer from './store/reducers/counter';
-// import resultReducer from './store/reducers/result';
+import addPersonReducer from './store/reducers/addPerson';
+import removePersonReducer from './store/reducers/removePerson';
 
 const rootReducer = combineReducers({
-    // ctr: counterReducer,
-    // res: resultReducer
+    addPsn: addPersonReducer,
+    rmvPsn: removePersonReducer
 });
 
 const store = createStore(rootReducer);
