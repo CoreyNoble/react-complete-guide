@@ -97,8 +97,7 @@ class ContactData extends Component {
                 errorMessage: 'Please select a delivery method'
             }            
         },
-        formIsValid: false,
-        loading: false
+        formIsValid: false
     }
 
     orderHandler = (event) => {
@@ -184,7 +183,7 @@ class ContactData extends Component {
             </form>
         );
 
-        if (this.state.loading) {
+        if (this.props.loading) {
             form = <Spinner />
         }
 
@@ -200,12 +199,15 @@ class ContactData extends Component {
 const mapStateToProps = state => {
     return {
         ings: state.ingredients,
-        price: state.totalPrice
+        price: state.totalPrice,
+        loading: state.loading
     };
 }
 
 const mapDispatchToProps = dispatch => {
-    onOrgerBurger: (orderData) => dispatch(actions.purchaseBurgerStart(orderData));
+    return {
+        onOrgerBurger: (orderData) => dispatch(actions.purchaseBurger(orderData))
+    };
 };
 
-export default connect(mapStateToProps)(withErrorHandler(ContactData, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));
