@@ -51,7 +51,7 @@ export const fetchOrdersSuccess = (orders) => {
 
 export const fetchOrdersFail = (error) => {
     return {
-        type: actionTypes.FETCH_ORDERES_FAIL,
+        type: actionTypes.FETCH_ORDERS_FAIL,
         error: error
     };
 };
