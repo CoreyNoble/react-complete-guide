@@ -1,13 +1,5 @@
-* {
-  box-sizing: border-box;
-}
-
 body {
-<<<<<<< HEAD
-  font-family: sans-serif;
-=======
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
->>>>>>> section-14-redux
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
 }

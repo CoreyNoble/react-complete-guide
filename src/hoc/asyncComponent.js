@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 const asyncComponent = (importComponent) => {
-    return class extends Component{
+    return class extends Component {
         state = {
             component: null
         }
@@ -12,7 +12,7 @@ const asyncComponent = (importComponent) => {
                     this.setState({component: cmp.default});
                 });
         }
-    
+        
         render () {
             const C = this.state.component;
 

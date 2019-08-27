@@ -1,67 +1,27 @@
-<<<<<<< HEAD
-import React, { Component, Suspense } from 'react';
-import { BrowserRouter, Route, NavLink } from 'react-router-dom';
-
-import User from './containers/User';
-import Welcome from './containers/Welcome';
-
-const Posts = React.lazy(() => import('./containers/Posts'));
-=======
 import React, { Component } from 'react';
+import { Link, Route } from 'react-router-dom';
 
-import Counter from './containers/Counter/Counter';
-import './App.css';
->>>>>>> section-14-redux
+import Users from './containers/Users';
+import asyncComponent from './hoc/asyncComponent';
+
+const AsyncPizza = asyncComponent(() => {
+    return import('./containers/Pizza.js');
+});
 
 class App extends Component {
-  state = { showPosts: false };
-  
-  modeHandler = () => {
-    this.setState(prevState => {
-      return { showPosts: !prevState.show };
-    });
-  }
-
-  render() {
-    return (
-<<<<<<< HEAD
-      <React.Fragment>
-        <button onClick={this.modeHandler}>Toggle Mode</button>
-        
-        {this.state.showPosts ? (
-          <Suspense fallback={<div>Loading...</div>}>
-            <Posts />
-          </Suspense>
-        ) : (
-          <User />
-        )}
-      </React.Fragment>
-
-      // 'basename="/"' is the ROOT URL forthe application.
-      // <BrowserRouter basename="/">
-      //   <React.Fragment>
-      //     <nav>
-      //       <NavLink to="/user">User Page</NavLink> |&nbsp;
-      //       <NavLink to="/posts">Posts Page</NavLink>
-      //     </nav>
-      //     <Route path="/" component={Welcome} exact />
-      //     <Route path="/user" component={User} />
-      //     <Route path="/posts" 
-      //       render={() => (
-      //         <Suspense fallback={<div>Loading...</div>}>
-      //           <Posts />
-      //         </Suspense>
-      //       )} 
-      //     />
-      //   </React.Fragment>
-      // </BrowserRouter>
-=======
-      <div className="App">
-       <Counter />
-      </div>
->>>>>>> section-14-redux
-    );
-  }
+    render () {
+        return (
+            <div>
+                <div>
+                    <Link to="/">Users</Link> | <Link to="/pizza">Pizza</Link>
+                </div>
+                <div>
+                    <Route path="/" exact component={Users} />
+                    <Route path="/pizza" component={AsyncPizza} />
+                </div>
+            </div>
+        );
+    }
 }
 
 export default App;

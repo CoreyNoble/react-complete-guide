@@ -1,45 +1,35 @@
 {
-  "name": "react-16.6",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-<<<<<<< HEAD
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "2.0.5"
-=======
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-redux": "^7.1.0",
-    "react-scripts": "1.0.13",
-<<<<<<< HEAD
-    "redux": "^4.0.4"
->>>>>>> section-14-redux
-=======
-    "redux": "^4.0.4",
-    "redux-thunk": "^2.3.0"
->>>>>>> section-16-redux-advanced
-  },
+  "name": "react-complete-guide",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-<<<<<<< HEAD
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server",
+    "build": "rimraf dist && webpack --config webpack.prod.config.js --progress --profile --color"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^7.1.5",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.5",
+    "html-webpack-plugin": "^2.30.1",
+    "postcss-loader": "^2.0.7",
+    "style-loader": "^0.19.0",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.9.1"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
-=======
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+  "dependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-router-dom": "^4.2.2"
   }
->>>>>>> section-14-redux
 }
