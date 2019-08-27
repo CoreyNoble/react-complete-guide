@@ -34,21 +34,21 @@ module.exports = {
                             modules: true,
                             localIdentName: '[name]__[local]__[hash:base64:5]'
                         }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            ident: 'postcss',
-                            plugins: () => [
-                                autoprefixer({
-                                    browsers: [
+                     },
+                     { 
+                         loader: 'postcss-loader',
+                         options: {
+                             ident: 'postcss',
+                             plugins: () => [
+                                 autoprefixer({
+                                     browsers: [
                                         "> 1%",
                                         "last 2 versions"
-                                    ]
-                                })
-                            ]
-                        }
-                    }
+                                     ]
+                                 })
+                             ]
+                         }
+                      }
                 ]
             },
             {
