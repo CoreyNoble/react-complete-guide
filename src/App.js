@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from "react";
 import Transition from 'react-transition-group/Transition';
 
@@ -62,7 +63,23 @@ class App extends Component {
         <List />
       </div>
     );
+=======
+import React, { useContext } from 'react';
+
+import Ingredients from './components/Ingredients/Ingredients';
+import Auth from './components/Auth';
+import { AuthContext } from './context/auth-context';
+
+const App = props => {
+  const authContext = useContext(AuthContext);
+
+  let content = <Auth />;
+  if (authContext.isAuth) {
+    content = <Ingredients />;
+>>>>>>> section-26-react-hooks
   }
-}
+
+  return content;
+};
 
 export default App;
