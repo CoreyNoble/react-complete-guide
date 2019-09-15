@@ -44,12 +44,12 @@ const Ingredients = () => {
       setUserIngredients(prevIngredients => prevIngredients.filter((ingredient) => ingredient.id !== ingredientId));
     }).catch(error => {
       setError('Something went wrong!');
+      setIsLoading(false);
     });
   };
 
   const clearError = () => {
     setError(null);
-    setIsLoading(false);
   }
 
   return (
