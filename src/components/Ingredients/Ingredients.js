@@ -19,7 +19,6 @@ const Ingredients = () => {
             amount: responseData[key].amount
           });
         }
-
         setUserIngredients(loadedIngredients);
       });
   }, []);
@@ -27,6 +26,10 @@ const Ingredients = () => {
   useEffect(() => {
     console.log('RENDERING INGREDIENTS', userIngredients);
   }, [userIngredients]);
+
+  const filteredIngredientsHandler = filteredIngredients => {
+    setUserIngredients(filteredIngredients);
+  }
 
   const addIngredientHandler = ingredient => {
     fetch('https://react-hooks-update-3da8b.firebaseio.com/ingredients.json', {
@@ -52,8 +55,11 @@ const Ingredients = () => {
       <IngredientForm onAddIngredient={addIngredientHandler} />
 
       <section>
-        <Search />
-        <IngredientList ingredients={userIngredients} onRemoveItem={removeIngredientHandler} />
+        <Search onLoadIngredients={filteredIngredientsHandler} />
+        <IngredientList 
+          ingredients={userIngredients} 
+          onRemoveItem={removeIngredientHandler} 
+        />
       </section>
     </div>
   );
