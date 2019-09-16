@@ -6,7 +6,6 @@ import './Products.css';
 
 const Products = props => {
   const state = useStore()[0];
-
   return (
     <ul className="products-list">
       {state.products.map(prod => (
