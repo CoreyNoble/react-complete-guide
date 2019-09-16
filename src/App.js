@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, { Component } from "react";
 import Transition from 'react-transition-group/Transition';
 
@@ -80,6 +81,27 @@ const App = props => {
   }
 
   return content;
+=======
+import React from 'react';
+import { Route } from 'react-router-dom';
+
+import Navigation from './components/Nav/Navigation';
+import ProductsPage from './containers/Products';
+import FavoritesPage from './containers/Favorites';
+import Counter from './containers/Counter';
+
+const App = props => {
+  return (
+    <React.Fragment>
+      <Navigation />
+      <main>
+        <Route path="/" component={ProductsPage} exact />
+        <Route path="/favorites" component={FavoritesPage} />
+        <Counter />
+      </main>
+    </React.Fragment>
+  );
+>>>>>>> section-28-replacing-redux-with-react-hooks
 };
 
 export default App;

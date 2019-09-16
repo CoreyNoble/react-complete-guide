@@ -7,6 +7,7 @@
 html,
 body {
 <<<<<<< HEAD
+<<<<<<< HEAD
   margin: 0;
   padding: 0;
   font-family: sans-serif;
@@ -28,6 +29,10 @@ body {
 =======
   font-family: 'Open Sans', sans-serif;
   margin: 0;
+=======
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+>>>>>>> section-28-replacing-redux-with-react-hooks
 }
 
 button {
@@ -43,10 +48,30 @@ button {
 
 button:hover,
 button:active {
+<<<<<<< HEAD
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.26);
+=======
+  background: white;
+  color: #ff2058;
+>>>>>>> section-28-replacing-redux-with-react-hooks
 }
 
 button:focus {
   outline: none;
+<<<<<<< HEAD
+=======
+}
+
+button.button-outline {
+  background: white;
+  color: #ff2058;
+}
+
+button.button-outline:hover,
+button.button-outline:active {
+  background: #ff2058;
+  color: white;
+  box-shadow: none;
+>>>>>>> section-28-replacing-redux-with-react-hooks
 }
 >>>>>>> section-26-react-hooks
