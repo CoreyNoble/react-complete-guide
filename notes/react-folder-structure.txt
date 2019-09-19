@@ -1,0 +1,127 @@
+=================================
+OUT OF THE BOX (create-react-app)
+=================================
+
+/public/index.html
+------------------
+- The single page we have for this project (SPA).
+- This is where the script files get injected into ia the build workflow.
+- This is where we can import additional libraries and add meta tags.
+- <div id="root"> <- where the application gets mounted to.
+------------------
+
+
+/src/
+-----
+- The working files for the React application. 
+-----
+
+
+/src/index.js
+-------------
+- Where we implement the primary building blocks of the application. Including: App, ReactDOM, BrowserRouter, Provider, ServiceWorker, Redux, Middleware.
+- Where we declare the 'ReactDOM.render()' method. Rendering the '<App />' and mount it to the '#root' element inside of the '/public/index.html' file.
+-------------
+
+
+/src/App.js
+-----------
+- The primary (root) file for the React application. This is where we typically manage our page routes/redirects and import components.
+-----------
+
+
+/build/
+--------
+- This folder gets created when you 'npm run build'. This is the compiled React application. It is the production build, ready to host.
+--------
+
+
+/public/manifest.json
+/src/registerServiceWorker.js
+-----------------------------
+- Included with create-react-app. This is here because create-react-app gives us a very basic progressive web app (PWA) out of the box. 
+- (Manifest) Where we can define some metadata inside of our application.
+-----------------------------
+
+
+/config
+-------
+- Project configuration. Including: Webpack, build paths, the environment, testing, pollyfills.
+-------
+
+
+/scripts
+--------
+- The script for each npm process.
+--------
+
+
+/node_modules
+-------------
+- The npm packages installed in the project.
+-------------
+
+
+package.json
+package-lock.json
+-----------------
+- The package dependencies npm installs for the project.
+-----------------
+
+
+README.md
+---------
+Instructions/Information regarding the project.
+
+===================================
+/ OUT OF THE BOX (create-react-app)
+===================================
+
+
+
+=====================================
+CUSTOM IMPLEMENTATION (best practice)
+=====================================
+
+/src/assets/
+--------
+- Where we keep hosted assets. Including: images, videos, documents, fonts, files.
+--------
+
+
+/src/components/
+--------
+- Where we keep custom React components.
+- Each component is a small re-usable piece of the application. Think of things like a list item, or a user control.
+--------
+
+
+/src/containers/
+--------
+- Where we keep custom React containers.
+- Containers import and assemble all of the React components required to complete a larger piece of the application. Like assembling user authentication, or the checkout page.
+--------
+
+
+/src/hoc/
+--------
+- Where we keep custom higher-order components.
+--------
+
+
+/src/hooks/
+--------
+- Where we keep custom React hooks.
+--------
+
+
+/src/shared/
+--------
+- Where we keep globally shared utility functions.
+--------
+
+
+/src/store/
+--------
+- Where we keep files related to the global store. Including: actions, reducers, sagas.
+--------
