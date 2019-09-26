@@ -98,7 +98,7 @@ const burgerBuilder = props => {
             purchaseCancelled={purchaseCancelHandler}
             purchaseContinued={purchaseContinueHandler} />;
     }
-    // {salad: true, meat: false, ...}
+    // {lettuce: true, meat: false, ...}
     return (
         <Auxillary>
             <Modal 
