@@ -14,7 +14,7 @@
 }
 
 .OrderButton {
-    background-color: rgb(191, 12, 12);
+    background-color: #bf0c0c;
     outline: none;
     cursor: pointer;
     border: none;
@@ -28,7 +28,7 @@
 }
 
 .OrderButton:hover, .OrderButton:active {
-    background-color: rgb(213, 60, 66);
+    background-color: #d53c42;
 }
 
 .OrderButton:disabled {

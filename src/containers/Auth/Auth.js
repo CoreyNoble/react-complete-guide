@@ -112,11 +112,11 @@ const auth = props => {
             {errorMessage}
             <form onSubmit={submitHandler}>
                 {form}
-                <Button btnType="Success">SUBMIT</Button>
+                <Button>SUBMIT</Button>
             </form>
             <Button 
                 clicked={switchAuthModeHandler}
-                btnType="Danger">SWITCH TO {isSignup ? 'SIGNIN' : 'SIGNUP'}</Button>
+                btnType="SignInUp">{isSignup ? 'SIGN IN' : 'SIGN UP'}</Button>
         </div>
     );
 }

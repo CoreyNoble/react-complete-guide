@@ -1,29 +1,49 @@
 .Button {
-    background-color: transparent;
-    border: none;
-    color: white;
+    background-color: #bf0c0c;
     outline: none;
     cursor: pointer;
-    font: inherit;
-    padding: 1em;
-    margin: 1em;
-    font-weight: bold;
+    border: none;
+    border-radius: 1em;
+    color: #fff;
+    font-family: inherit;
+    text-align: center;
+    font-size: 1em;
+    padding: 0.5em 1em;
+    margin-top: 0.5em;
+    transition: background-color 0.15s ease-in-out;
 }
 
-.Button:first-of-type {
-    margin-left: 0;
-    padding-left: 0;
+.Button:hover, .Button:active, .Button:focus {
+    background-color: #d53c42;
 }
 
 .Button:disabled {
-    color: #ccc;
+    background-color: #C7C6C6;
     cursor: not-allowed;
+    color: #888888;
 }
 
-.Success {
-    color: #5C9210;
+.Button:not(:disabled) {
+    animation: enable 0.3s linear;
 }
 
-.Danger {
-    color: #944317;
+.SignInUp {
+    background-color: #ffbc00;
+    color: #000;
+}
+
+.SignInUp:hover, .SignInUp:active, .SignInUp:focus{
+    background-color: #fccb42;
+}
+
+@keyframes enable {
+    0% {
+        transform: scale(1);
+    }
+    60% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
