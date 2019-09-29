@@ -4,10 +4,10 @@
   border-radius: 50%;
 }
 .Loader {
-  color: #521751;
+  color: rgb(191, 12, 12);;
   font-size: 11px;
   text-indent: -99999em;
-  margin: 55px auto;
+  margin: 3em auto;
   position: relative;
   width: 10em;
   height: 10em;
