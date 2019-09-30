@@ -81,7 +81,6 @@ const burgerBuilder = props => {
     if ( ings ) {
         burger = (
             <Auxillary>
-                <Burger ingredients={ings} />
                 <BuildControls
                     ingredientAdded={onIngredientAdded}
                     ingredientRemoved={onIngredientRemoved}
@@ -90,6 +89,7 @@ const burgerBuilder = props => {
                     ordered={purchaseHandler}
                     isAuth={isAuthenticated}
                     price={price} />
+                <Burger ingredients={ings} />
             </Auxillary>
         );
         orderSummary = <OrderSummary
@@ -98,7 +98,7 @@ const burgerBuilder = props => {
             purchaseCancelled={purchaseCancelHandler}
             purchaseContinued={purchaseContinueHandler} />;
     }
-    // {lettuce: true, meat: false, ...}
+    // {lettuce: true, patty: false, ...}
     return (
         <Auxillary>
             <Modal 

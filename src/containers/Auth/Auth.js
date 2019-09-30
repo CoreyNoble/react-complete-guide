@@ -96,9 +96,39 @@ const auth = props => {
 
     let errorMessage = null;
     if (props.error) {
-        errorMessage = (
-            <p>{props.error.message}</p>
-        );
+        if (props.error.message === 'INVALID_EMAIL'){
+            errorMessage = (
+                <p>Please enter a valid email address.</p>
+            );
+        } else if (props.error.message === 'MISSING_EMAIL'){
+            errorMessage = (
+                <p>Please enter your email address.</p>
+            );
+        } else if (props.error.message === 'EMAIL_EXISTS'){
+            errorMessage = (
+                <p>The email address you provided already exists.</p>
+            );
+        } else if (props.error.message === 'EMAIL_NOT_FOUND'){
+            errorMessage = (
+                <p>This email address is not on file, please try again.</p>
+            );
+        } else if (props.error.message === 'MISSING_PASSWORD'){
+            errorMessage = (
+                <p>Please enter your password.</p>
+            );
+        } else if (props.error.message === 'INVALID_PASSWORD'){
+            errorMessage = (
+                <p>Your password is invalid, please try again.</p>
+            );
+        } else if (props.error.message === 'WEAK_PASSWORD : Password should be at least 6 characters'){
+            errorMessage = (
+                <p>Your password must be at least 6 characters in length.</p>
+            );
+        } else {
+            errorMessage = (
+                <p>{props.error.message}</p>
+            );
+        }
     }
 
     let authRedirect = null;
@@ -108,15 +138,16 @@ const auth = props => {
 
     return (
         <div className={classes.Auth}>
+            <h3>{isSignup ? 'Create an Account' : 'Sign In'}</h3>
             {authRedirect}
             {errorMessage}
             <form onSubmit={submitHandler}>
                 {form}
-                <Button btnType="Success">SUBMIT</Button>
+                <Button>Submit</Button>
             </form>
             <Button 
                 clicked={switchAuthModeHandler}
-                btnType="Danger">SWITCH TO {isSignup ? 'SIGNIN' : 'SIGNUP'}</Button>
+                btnType={isSignup ? 'YellowCTA' : 'BlackCTA'}>{isSignup ? 'Sign in' : 'Sign up'}</Button>
         </div>
     );
 }
