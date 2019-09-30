@@ -1,15 +1,10 @@
 .ContactData {
     margin: 1.5em auto;
-    width: 80%;
+    width: 90%;
+    max-width: 30em;
     text-align: center;
     box-shadow: 0 2px 3px #ccc;
     border: 1px solid #eee;
     padding: 1em;
     box-sizing: border-box;
-}
-
-@media (min-width: 600px) {
-    .ContactData {
-        width: 500px;
-    }
 }

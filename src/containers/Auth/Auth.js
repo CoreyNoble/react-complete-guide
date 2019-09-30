@@ -147,7 +147,7 @@ const auth = props => {
             </form>
             <Button 
                 clicked={switchAuthModeHandler}
-                btnType="SignInUp">{isSignup ? 'Sign In' : 'Sign Up'}</Button>
+                btnType={isSignup ? 'YellowCTA' : 'BlackCTA'}>{isSignup ? 'Sign in' : 'Sign up'}</Button>
         </div>
     );
 }

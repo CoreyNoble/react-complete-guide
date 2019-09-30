@@ -10,6 +10,7 @@
     font-size: 1em;
     padding: 0.5em 1em;
     margin-top: 0.5em;
+    margin-right: 0.5em;
     transition: background-color 0.15s ease-in-out;
 }
 
@@ -27,12 +28,22 @@
     animation: enable 0.3s linear;
 }
 
-.SignInUp {
+.BlackCTA {
+    background-color: #000;
+    color: #fff;
+}
+
+.BlackCTA:hover, .BlackCTA:active, .BlackCTA:focus{
+    background-color: #1F1F1F;
+}
+
+
+.YellowCTA {
     background-color: #ffbc00;
     color: #000;
 }
 
-.SignInUp:hover, .SignInUp:active, .SignInUp:focus{
+.YellowCTA:hover, .YellowCTA:active, .YellowCTA:focus{
     background-color: #fccb42;
 }
 
