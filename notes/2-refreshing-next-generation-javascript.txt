@@ -1,20 +1,53 @@
-================================================
-Section 2: Refreshing Next Generation JavaScript
-================================================
+======================================================
+Section 2: Refreshing Next Generation JavaScript (ES6)
+======================================================
 
 ------------------------------------
 12. Understanding "let" and "const"
 ------------------------------------
+
+'let' and 'const' are new ways of assigning variables.
+
+let - A variable that truly is variable, Its value will change.
+(let counter;)
+
+const - A variable that is constant. Its value will never change.
+(const apiKey;)
+
 
 
 ------------------------------------
 13. Arrow Functions
 ------------------------------------
 
+Arrow functions are shoter ways of writing functions, with the added benefit of ensuring the 'this' keyword always keeps its context.
+
+// Arrow function with no arguments ( () required )
+const functionName = () => {
+    // code execution
+};
+
+// Arrow function with multiple arguments ( () required )
+const printPerson = (name, age) => {
+    console.log(name, age);
+};
+
+// Shorthand: Arrow function with 1 argument ( () NOT required )
+const printMyName = name => {
+    console.log(name);
+};
+
+// Shorthand: Arrow function with 1 paramater that only returns. ( neither () or {} are required. Can omit 'return' )
+const multiply = number => number * 2;
+
+
 
 ------------------------------------
 14. Exports and Imports
 ------------------------------------
+
+
+
 
 
 ------------------------------------
