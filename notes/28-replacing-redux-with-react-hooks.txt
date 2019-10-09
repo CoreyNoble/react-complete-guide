@@ -7,9 +7,15 @@ Section 28: Bonus: Replacing Redux with React Hooks
 ------------------------------------
 
 
+
+
+
 ------------------------------------
 523. Starting Project & Why You Would Replace Redux
 ------------------------------------
+
+
+
 
 
 ------------------------------------
@@ -17,9 +23,15 @@ Section 28: Bonus: Replacing Redux with React Hooks
 ------------------------------------
 
 
+
+
+
 ------------------------------------
 525. Toggling Favorites with the Context API
 ------------------------------------
+
+
+
 
 
 ------------------------------------
@@ -27,9 +39,15 @@ Section 28: Bonus: Replacing Redux with React Hooks
 ------------------------------------
 
 
+
+
+
 ------------------------------------
 527. Getting Started with a Custom Hook as a Store
 ------------------------------------
+
+
+
 
 
 ------------------------------------
@@ -37,9 +55,15 @@ Section 28: Bonus: Replacing Redux with React Hooks
 ------------------------------------
 
 
+
+
+
 ------------------------------------
 529. Creating a Concrete Store
 ------------------------------------
+
+
+
 
 
 ------------------------------------
@@ -47,9 +71,15 @@ Section 28: Bonus: Replacing Redux with React Hooks
 ------------------------------------
 
 
+
+
+
 ------------------------------------
 531. Custom Hook Store Summary
 ------------------------------------
+
+
+
 
 
 ------------------------------------
@@ -57,9 +87,15 @@ Section 28: Bonus: Replacing Redux with React Hooks
 ------------------------------------
 
 
+
+
+
 ------------------------------------
 533. Bonus: Managing Multiple State Slices with the Custom Store Hook
 ------------------------------------
+
+
+
 
 
 ------------------------------------
@@ -67,6 +103,10 @@ Section 28: Bonus: Replacing Redux with React Hooks
 ------------------------------------
 
 
+
+
+
 ------------------------------------
 535. Useful Resources & Links
 ------------------------------------
+
