@@ -3,6 +3,57 @@ Section 3: Understanding the Base Features & Syntax
 ===================================================
 
 ------------------------------------
+25. The Build Workflow
+------------------------------------
+
+To set up our local project we use the npm package 'create-react-app'. This comes with a build workflow that helps with: 
+
+- CSS auto-prefixing - 'Normalizes' our CSS for wide browser support.
+- Code linting - Warns you if you are writing sub-optimal code.
+- Dependency management tool (Node -> npm) - Manages our third-party development libraries and packages.
+- Bundler (Webpack) - Allows us to write modular code in separate files, then bundles these files together for release.
+- Compiler (Babel) - Compiles our ES6/ES7 code into ES5 code.
+- Local Development Server
+
+
+
+------------------------------------
+26. Using 'create-react-app'
+------------------------------------
+
+Following these steps will create a new React application on your machine.
+
+1. First, if you do not have npm, first you need to install Node.JS (LTS): 
+
+https://nodejs.org/en/download/ 
+
+2. Next, install the 'create-react-app' package globally on your machine through the terminal using npm:
+
+npm install -g create-react-app
+
+3. Next, using the terminal, navigate to the folder on your machine where you want your React application to reside, then run the following command, setting 'application-name' as the name for your application:
+
+create-react-app application-name
+
+4. Once this finished installing, you can run the following command to start up the project. When running, a new tab will open in your browser, which will be the working application using your local development server:
+
+npm start
+
+You can now begin working on your application.
+
+To cancel running the project, use ctrl+C in the terminal and enter Y to confirm.
+
+
+
+------------------------------------
+27. Understanding the Folder Structure
+------------------------------------
+
+See my notes in '/notes/3-react-folder-structure.txt'.
+
+
+
+------------------------------------
 28. Understanding Component Basics
 ------------------------------------
 

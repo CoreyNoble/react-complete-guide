@@ -9,10 +9,10 @@ Section 2: Refreshing Next Generation JavaScript (ES6)
 'let' and 'const' are new ways of assigning variables.
 
 let - A variable that truly is variable, Its value will change.
-(let counter;)
+(let counter = 0;)
 
 const - A variable that is constant. Its value will never change.
-(const apiKey;)
+(const baseData = 10;)
 
 
 
@@ -46,23 +46,104 @@ const multiply = number => number * 2;
 14. Exports and Imports
 ------------------------------------
 
+The way we split up JavaScript over multiple files. We can import external JavaScript files into our working JavaScript file so our file knows about its dependencies. 
 
+In-order to import a JavaScript file, first we need to export it:
+
+-- person.js --
+
+const person = {
+    name: 'Corey'
+}
+
+export default person
+
+---------------
+
+In the example above, we export 'person' as the default named export for the person.js file. If we import the file, by default, 'person' will be pulled in.
+
+We can also export multiple functions from one file, these are called named exports:
+
+-- utility.js --
+
+export const clean = () => {...};
+export const baseData = 10;
+
+----------------
+
+Import examples:
+
+-- app.js --
+
+import person from './person.js'
+import prs from './person.js
+
+------------
+
+As shown above, when importing person.js, we can name it whatever we want (eg. 'person', 'prs'). Either way, the default export from the file is bieng passed.
+
+-- app.js --
+
+import { clean, baseData } from './utility.js'
+
+------------
+
+As shown above, we can import each individual export from a file by calling their exported name inside of {}.
+
+If you want to create a new name for the named import, you can do the following:
+
+-- app.js --
+
+import { baseData as baseValue } from './utility.js'
+
+------------
+
+If you want to import all of the named exports from a file, you can do the following:
+
+-- app.js --
+
+import * as bundled from './utility.js'
+
+------------
+
+The example above will import all of the named exports from 'utility.js' as a JavaScript object which exposes all of the exports from the file as properties of the object. In-order to use each export, you would write code like: 'bundled.baseData'.
 
 
 
 ------------------------------------
-15. Understanding Classes
+15-16. Understanding Classes
 ------------------------------------
 
+Classes are like blueprints for JavaScript objects. Classes can have both Properties and Methods. Properties are variables attached to classes, Methods are functions attached to classes.
 
+--
 
+class Person {
+    name = 'Corey'; // Property
+    call = () => {...}; // Method
+}
 
+--
 
-------------------------------------
-16. Classes, Properties and Methods
-------------------------------------
+Classes are instanciated with the 'new' keyword. The idea with using classes is that you create JavaScript objects with classes as blueprints.
 
+--
 
+const myPerson = new Person();
+myPerson.call();
+console.log(myPerson.name);
+
+-- 
+
+Classes also support inheritance. If your class inherits from another class, it inherits all of its' properties and methods, and then you can add new properties and methods.
+
+-- 
+
+class Person extends Master
+
+--
+
+With ES7, Classes no longer require the use of constructor() or super() functions. Because of this, we do not use that syntax in this course.
 
 
 
@@ -70,7 +151,39 @@ const multiply = number => number * 2;
 17. The Spread & Rest Operator
 ------------------------------------
 
+... - The syntax used for both the Spread and Rest operators. Where the functionality differs is when the code is used.
 
+
+Spread - Used to split up array elements or object properties.
+
+--
+
+const newArray = [...oldArray, 1, 2];
+const newObject = {...oldObject, newProp: 5};
+
+-- 
+
+In the above examples:
+
+- In 'newArray', we create a new array first by copying all of the items from the 'oldArray' into 'newArray', then we add '1, 2' to the end of 'newArray'.
+- In 'newObject', we create a new object first by copying all of the properties from 'oldObject' into 'newObject', then we add a new key/value pair 'newProp: 5' to the end of 'newObject'. If 'newProp' already exists in the copied object, then the value '5' from 'newProp' would overwrite the value that was copied over from 'oldObject'.
+
+Note: When using the Spread operator, the copied array is not added as one entry into the new array (eg. [[1,2,3],4,5]), instead, each item in the original array is spread into the new array (eg. [1,2,3,4,5]).
+
+
+Rest - Used to merge a list of function arguments into an array
+
+-- 
+
+function sortArgs(...args) {
+    return args.sort();
+}
+
+-- 
+
+In the above example:
+
+'sortArgs()' recieves an unlimited amount of arguments. With ... we only write 1 argument, but we may actually recieve more than one. All of the arguments will be merged together into an array. We can then apply array methods to our argument list (eg. args.sort()), or do whatever we want to do with our conveniently stored arguments.
 
 
 
@@ -78,7 +191,34 @@ const multiply = number => number * 2;
 18. Destructuring
 ------------------------------------
 
+Easily extract array elements or object properties and store them in variables. This might sound similar to the Spread operator, but where descturcturing differs is that Spread pulls everything, whereas Destructuring allows you to pick and choose what you pull out.
 
+Array Destructuring:
+
+--
+
+[a, b] = ['Hello', 'Corey'];
+console.log(a); // Hello
+console.log(b); // Corey
+
+--
+
+For array destructuring, the order defines which property we take.
+
+If you want to skip over an element in the array, you can do so by adding an empty ' ,' (eg. [a, , c]).
+
+
+Object Destructuring:
+
+--
+
+{name} = {name: 'Corey', age 28};
+console.log(name); // Corey
+console.log(age); // undefined
+
+--
+
+For object destructiring we match the property name to take that value.
 
 
 
@@ -86,7 +226,68 @@ const multiply = number => number * 2;
 19. Reference and Primitive Types Refresher
 ------------------------------------
 
+Primitive Types (numbers, strings, booleans):
 
+Primitive types create copies when referenced in JavaScript.
+
+--
+
+const number = 1;
+const num2 = number;
+console.log(num2); // 1
+
+num2 = 2;
+console.log(num2); // 2
+console.log(number); // 1
+
+--
+
+In the above example, 'num2' copies the value from 'number'. So when the value for 'num2' is manipulated, the value for 'number' remains unchanged.
+
+
+Reference Types (objects, arrays):
+
+When referencing objects/arrays in JavaScript, the reference is not a copy, instead, it is a pointer to the object/array. This means manipulating a reference to an object/array will directly mutate the original object/array.
+
+--
+
+const person = {
+    name: 'Corey'
+};
+
+const secondPerson = person;
+
+console.log(secondPerson.name); // Corey
+
+person.name = 'Kaitlin'
+
+console.log(secondPerson.name); // Kaitlin
+
+--
+
+In the above example, you can see that 'secondPerson' is directly affected when we change 'person', because 'secondPerson' is not a copy, instead, 'secondPerson' is referencing 'person'. 
+
+Because of this, when we create new arrays/objects based off of another array/object, instead of creating a reference to the original array/object, we instead should use the Spread operator to create a copy. This will ensure we never mutate the data we are referencing when we manipulate our new array/object.
+
+--
+
+const person = {
+    name: 'Corey'
+};
+
+const secondPerson = {
+    ...person // creates a true copy
+}
+
+console.log(person.name); // Corey
+console.log(secondPerson.name); // Corey
+
+person.name = 'Kaitlin'
+
+console.log(person.name); // Kaitlin
+console.log(secondPerson.name); // Corey
+
+---
 
 
 
@@ -94,27 +295,115 @@ const multiply = number => number * 2;
 20. Refreshing Array Functions
 ------------------------------------
 
+Array functions are functions you can use on an array which is executed on each element in the array.
+
+For example:
+.map() - Manipulate each item in the array, returns a new array.
+
+--
+
+const numbers - [1, 2, 3];
+
+const doubleNumArray = numbers.map((num) => {
+    return num * 2;
+});
+
+console.log(numbers); // [1, 2, 3]
+console.log(doubleNumArray); // [2, 4, 6]
+
+--
+
+In the above example, we .map() over each item in the array. 'num' represents the current item (index/iteration) of the array that the code is executed on. We multiply each item by 2, and return a new array (doubleNumArray) with the manipulated data.
 
 
+All of the available array methods:
 
+concat()
+- Merge two or more arrays, and returns a new array.
 
-------------------------------------
-21. Wrap Up
-------------------------------------
+copyWithin()
+- Copies part of an array to another location in the same array and returns it.
 
+entries()
+- Returns a key/value pair Array Iteration Object.
 
+every()
+- Checks if every element in an array pass a test in a testing function.
 
+fill()
+- Fill the elements in an array with a static value.
 
+filter()
+- Creates a new array with all elements that pass the test in a testing function.
 
-------------------------------------
-22. Next-Gen JavaScript - Summary
-------------------------------------
+find()
+- Returns the value of the first element in an array that pass the test in a testing function.
 
+findIndex()
+- Returns the index of the first element in an array that pass the test in a testing function.
 
+forEach()
+- Calls a function once for each array element.
 
+from()
+- Creates an array from an object.
 
+includes()
+- Determines whether an array includes a certain element.
 
-------------------------------------
-23. JS Array Functions
-------------------------------------
+indexOf()
+- Search the array for an element and returns its first index.
 
+isArray()
+- Determines whether the passed value is an array.
+
+join()
+- Joins all elements of an array into a string.
+
+keys()
+- Returns a Array Iteration Object, containing the keys of the original array.
+
+lastIndexOf()
+- Search the array for an element, starting at the end, and returns its last index.
+
+map()
+- Creates a new array with the results of calling a function for each array element.
+
+pop()
+- Removes the last element from an array, and returns that element.
+
+push()
+- Adds one or more elements to the end of an array, and returns the array's new length.
+
+reduce()
+- Reduce the values of an array to a single value (from left-to-right).
+
+reduceRight()
+- Reduce the values of an array to a single value (from right-to-left).
+
+reverse()
+- Reverses the order of the elements in an array.
+
+shift()
+- Removes the first element from an array, and returns that element.
+
+slice()
+- Selects a part of an array, and returns the new array.
+
+some()
+- Checks if any of the elements in an array passes the test in a testing function.
+
+sort()
+- Sorts the elements of an array.
+
+splice()
+- Adds/Removes elements from an array.
+
+toString()
+- Converts an array to a string, and returns the result.
+
+unshift()
+- Adds new elements to the beginning of an array, and returns the array's new length.
+
+values()
+- Returns a Array Iteration Object, containing the values of the original array.
