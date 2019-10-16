@@ -57,7 +57,36 @@ See my notes in '/notes/3-react-folder-structure.txt'.
 28. Understanding Component Basics
 ------------------------------------
 
+Typically in React we render only 1 root component. This is <App /> which is loaded from app.js into the ReactDOM.render() method inside of index.js.
 
+Inside of <App /> is where we nest all of the other components our application might need. Each component can be comprised of other nested components, but in the end, all we're rendering is <App /> to create our single-page application.
+
+React components can either be:
+1. Stateful (Class-Based).
+2. Stateless (Functional).
+
+Stateful components start with the 'class' keyword. We import { Component } from 'react'. They then extend 'Component' to the 'class'. This provides a render() method to the class. The class based component needs to use render(). React calls this method to render something to the screen. render() is also what React uses to refresh the page when data/state changes.
+
+As the name suggests, Stateful components are the only components that allow you to manage state out-of-the-box. Functional components can only use state through the use of React Hooks.
+
+In both Stateful and Stateless components, you need to return(); JSX to the DOM. You also need to export the component in-order to import it elsewhere in your application.
+
+Stateful Component Example (Class-Based):
+--
+import React, { Component } from 'react';
+
+class App extends Component {
+    render() {
+        return(
+            <div className="App">
+                ...
+            </div>
+        );
+    }
+}
+
+export default App;
+--
 
 
 
