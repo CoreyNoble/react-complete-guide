@@ -94,7 +94,32 @@ export default App;
 29. Understanding JSX
 ------------------------------------
 
+When you import 'React' it imports a method that React uses to compile your JSX code. When you return() JSX, the compiler takes each element your rendering and outputs it into the 'React.createElement();' method.
 
+'React.createElement()' takes in 3 arguments:
+- First it needs to know what element it is creating (eg. <div>)
+- Next it takes in the configuration for that element or 'null' (eg. attributes).
+- Finally it takes in any amount of nested children to that element (eg. nested <h1>), each child being its own argument.
+
+Basic Example: 
+React.createElement('div', null, 'h1', 'Hi, I\'m a React App!');
+
+The example above will nest two text nodes inside of the <div>, This includes the 'h1' string, and the 'Hi, I\'m a React App!' string. This is because the third and fourth arguments are interpereted as text.
+
+
+In-order to properly nest elements inside of the <div> you need to use a nested 'React.createElement()' method for each child argument.
+
+Nested Elements Example: 
+React.createElement('div', null, React.createElement('h1', null, 'Hi, I\'m a React App!'));
+
+
+When adding attributes to the method, the attributes are passed in as one JavaScript object {}.
+
+Attribute Example:
+React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Hi, I\'m a React App!'));
+
+
+In summary, JSX is JavaScript code that resembles HTML. The 'React.createElement()' method is the underlying method that React uses to build up the markup we write using JSX. When React compiles our JSX, it gets compiled into 'React.createElement(element, {attributes: ''}, children)' methods.
 
 
 
