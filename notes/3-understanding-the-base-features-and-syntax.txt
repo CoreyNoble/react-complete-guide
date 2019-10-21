@@ -127,7 +127,28 @@ In summary, JSX is JavaScript code that resembles HTML. The 'React.createElement
 30. JSX Restrictions
 ------------------------------------
 
+JSX is JavaScript code that looks like HTML. Because of this, we can't write HTML exactly the way we're used to, JSX comes with a few restrictions. 
 
+Some attributes like the 'class' attribute have been altered if they are reserved words in JavaScript. For example, instead of using the 'class' attribute, we use 'className'. JSX will convert 'className' into the 'class' attribute when the code is compiled.
+
+When writing JSX, you need to pre-fix it with the 'return' statement.
+
+The JSX you return should only have 1 root element, as in the end, it all gets compiled into one 'React.createElement()' method.
+
+With React 16, this rule has been loosened, but it is still best practice to create JSX in a manner in-which it only returns one root element. Doing so ensures JSX is always returning only one root component, and styling can be scoped to the root element.
+
+When returning multiple lines of JSX code, the returned JSX must be wrapped with ();
+
+Example (One line of JSX):
+return <div className"container"></div>
+
+Example (Multiple lines of JSX):
+return (
+    <div className="App">
+        <h1>Hi, I'm a React App</h1>
+        <p>This is really working!</p>+
+    </div>
+);
 
 
 
