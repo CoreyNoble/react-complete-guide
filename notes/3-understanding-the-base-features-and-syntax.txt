@@ -270,7 +270,30 @@ In-order to perform complicated actions, you need to make a call to a function, 
 35. Working with Props
 ------------------------------------
 
+We can use 'props' to make our component configurable, flexible, and dynamic. 'props' are passed into a component as attributes.
 
+Passing-In 'props' Attributes Examples:
+--
+<Person name="Corey" age="26" />
+<Person name="Kaitlin" age="26" />
+--
+
+In the above example, we are passing in a 'name' and 'age' property for each <Person> component.
+
+Just adding these attributes alone won't change anything in the output of our component, because the component is not yet using that information. In-order for the component to output these 'props' first we need to handle them inside of the <Person> component.
+
+By default, React provides one argument by default to each component, which we typically accept with the name 'props'. 'props' is an object which contains all of the attributes that have been defined on the component.
+
+Handing Props In A Component Example:
+--
+const person = (props) => {
+    return <p>I'm {props.name} and I am {props.age} years old.</p>
+}
+--
+
+In the example above we name the argument we receive 'props' (development standard). And we call the value for each attribute using one line JavaScript expressions (eg. {props.name}, {props.age}). This is how we use 'props' in Functional Components.
+
+In Class-Based Components, you have to append the 'this' keyword when using 'props' (eg. {this.props.name}, {this.props.age}).
 
 
 
