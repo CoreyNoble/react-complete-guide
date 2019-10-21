@@ -249,7 +249,20 @@ In the example above, I am re-using the same '<Person />' component 3 times.
 34. Outputting Dynamic Content
 ------------------------------------
 
-We can also configure the component to output dynamic content.
+We can also configure components to output dynamic content.
+
+If we have some dynamic content in our JSX that we want to execute, like regular JavaScript, instead of compiling as HTML/strings, then we need to wrap that code in {}.
+
+Dynamic JavaScript Example:
+--
+<p>I am {Math.floor(Math.random()*30)} years old</p>
+--
+
+In the example above, we are outputting a random an age in our component using a one-line JavaScript expression. 
+
+Using {}, we cannot do things like output a class, {} only allows us to output one-line expressions or make function calls.
+
+In-order to perform complicated actions, you need to make a call to a function, which will contain the complex logic you require, which will return the end result of that logic.
 
 
 
