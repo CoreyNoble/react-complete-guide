@@ -94,7 +94,32 @@ export default App;
 29. Understanding JSX
 ------------------------------------
 
+When you import 'React' it imports a method that React uses to compile your JSX code. When you return() JSX, the compiler takes each element your rendering and outputs it into the 'React.createElement();' method.
 
+'React.createElement()' takes in 3 arguments:
+- First it needs to know what element it is creating (eg. <div>)
+- Next it takes in the configuration for that element or 'null' (eg. attributes).
+- Finally it takes in any amount of nested children to that element (eg. nested <h1>), each child being its own argument.
+
+Basic Example: 
+React.createElement('div', null, 'h1', 'Hi, I\'m a React App!');
+
+The example above will nest two text nodes inside of the <div>, This includes the 'h1' string, and the 'Hi, I\'m a React App!' string. This is because the third and fourth arguments are interpereted as text.
+
+
+In-order to properly nest elements inside of the <div> you need to use a nested 'React.createElement()' method for each child argument.
+
+Nested Elements Example: 
+React.createElement('div', null, React.createElement('h1', null, 'Hi, I\'m a React App!'));
+
+
+When adding attributes to the method, the attributes are passed in as one JavaScript object {}.
+
+Attribute Example:
+React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Hi, I\'m a React App!'));
+
+
+In summary, JSX is JavaScript code that resembles HTML. The 'React.createElement()' method is the underlying method that React uses to build up the markup we write using JSX. When React compiles our JSX, it gets compiled into 'React.createElement(element, {attributes: ''}, children)' methods.
 
 
 
@@ -102,23 +127,97 @@ export default App;
 30. JSX Restrictions
 ------------------------------------
 
+JSX is JavaScript code that looks like HTML. Because of this, we can't write HTML exactly the way we're used to, JSX comes with a few restrictions. 
 
+Some attributes like the 'class' attribute have been altered if they are reserved words in JavaScript. For example, instead of using the 'class' attribute, we use 'className'. JSX will convert 'className' into the 'class' attribute when the code is compiled.
+
+When writing JSX, you need to pre-fix it with the 'return' statement.
+
+The JSX you return should only have 1 root element, as in the end, it all gets compiled into one 'React.createElement()' method.
+
+With React 16, this rule has been loosened, but it is still best practice to create JSX in a manner in-which it only returns one root element. Doing so ensures JSX is always returning only one root component, and styling can be scoped to the root element.
+
+When returning multiple lines of JSX code, the returned JSX must be wrapped with ();
+
+Example (One line of JSX):
+return <div className"container"></div>
+
+Example (Multiple lines of JSX):
+return (
+    <div className="App">
+        <h1>Hi, I'm a React App</h1>
+        <p>This is really working!</p>+
+    </div>
+);
 
 
 
 ------------------------------------
-31. Creating a Functional Component
+31. Creating a Functional Component, Exporting and Importing Components
 ------------------------------------
 
+Convention when creating components is to nest each component inside of its own folder with a name that describes what the component is about. Each Component should begin with a capital character. 
 
+Component File Example:
+/Person/Person.js
 
+In its simplest form, A component is just a JavaScript function that returns JSX. The function name is usually the same as the component/file name, but with a lower case character (Camel case). 
 
+When creating a component, you also need to import 'React' to compile the JSX, and export the function as the default export for that file.
 
-------------------------------------
-32. Components & JSX Cheat Sheet
-------------------------------------
+Functional Component Example (es6):
+--
+import React from 'react';
 
+const person = () => {
+    return <p>I'm a Person!</p>
+}
 
+export default person;
+--
+
+There are two types of components we can develop: Functional, or Class-Based components.
+
+The example above is a Functional Component because we are not importing { Component } from 'react'. And we are not creating a class that extends the 'Component' method. Because of this, the component cannot manage state, and behaves as a pure function. Ideally, as many components as possible should be Functional Components. The less components that manage state, the better. Doing so will help developers manage the data flow of the application.
+
+To import a component into another file, you need to write the following (typically near the top of the page).
+
+Import Component Example:
+--
+import Person from './Person';
+--
+
+When importing the default export from a component, the import can be named whatever you want, No matter what you name it, the default export will be pulled in. In the example above we are naming the import 'Person', but that name could be whatever you want it to be, although it's best practice to keep the names consistent. The function that gets pulled in will be person{} as it is the default export for that file.
+
+We do not need to add the '.js' extension to the import because '.js' files are taken into consideration during compilation. All other file types we import require their extension.
+
+To use our imported component, we write it inside of our JSX. since HTML uses lower-case characters for each element (eg. <div>, <h1>, ...), React requires our imported components to start with a capital character. (eg. <Person />);
+
+Component Usage Example (Self-Closing):
+--
+    return(
+        <div className="App">
+            <h1>Hi, I'm a React App</h1>
+            <Person />
+        </div>
+    );
+--
+
+In the example above, We write '<Person />' where the Person component will be rendered in our application. We are writing '<Person />' as a self-closing element.
+
+If you need to nest content inside of the component, you can also write them as open/closing tags, However, the content won't be displayed unless if it is accounted for inside of the component logic (explained later):
+
+Component Usage Example (Wrapping):
+--
+    return(
+        <div className="App">
+            <h1>Hi, I'm a React App</h1>
+            <Person>
+                <p>Child Content</p>
+            </Person>
+        </div>
+    );
+--
 
 
 
@@ -126,7 +225,23 @@ export default App;
 33. Working with Components & Re-Using Them
 ------------------------------------
 
+Components are awesome because we can focus our code and make it much more maintainable. Components are also re-usable and configurable.
 
+Re-using a component is simple, all you have to do is make sure the component is imported into the file in-which you want to use the component. Then you can add as many of the same component as you need.
+
+Re-Using Components Example:
+--
+    return(
+        <div className="App">
+            <h1>Hi, I'm a React App</h1>
+            <Person />
+            <Person />
+            <Person />
+        </div>
+    );
+--
+
+In the example above, I am re-using the same '<Person />' component 3 times.
 
 
 
@@ -134,7 +249,20 @@ export default App;
 34. Outputting Dynamic Content
 ------------------------------------
 
+We can also configure components to output dynamic content.
 
+If we have some dynamic content in our JSX that we want to execute, like regular JavaScript, instead of compiling as HTML/strings, then we need to wrap that code in {}.
+
+Dynamic JavaScript Example:
+--
+<p>I am {Math.floor(Math.random()*30)} years old</p>
+--
+
+In the example above, we are outputting a random an age in our component using a one-line JavaScript expression. 
+
+Using {}, we cannot do things like output a class, {} only allows us to output one-line expressions or make function calls.
+
+In-order to perform complicated actions, you need to make a call to a function, which will contain the complex logic you require, which will return the end result of that logic.
 
 
 
@@ -142,7 +270,30 @@ export default App;
 35. Working with Props
 ------------------------------------
 
+We can use 'props' to make our component configurable, flexible, and dynamic. 'props' are passed into a component as attributes.
 
+Passing-In 'props' Attributes Examples:
+--
+<Person name="Corey" age="26" />
+<Person name="Kaitlin" age="26" />
+--
+
+In the above example, we are passing in a 'name' and 'age' property for each <Person> component.
+
+Just adding these attributes alone won't change anything in the output of our component, because the component is not yet using that information. In-order for the component to output these 'props' first we need to handle them inside of the <Person> component.
+
+By default, React provides one argument by default to each component, which we typically accept with the name 'props'. 'props' is an object which contains all of the attributes that have been defined on the component.
+
+Handing Props In A Component Example:
+--
+const person = (props) => {
+    return <p>I'm {props.name} and I am {props.age} years old.</p>
+}
+--
+
+In the example above we name the argument we receive 'props' (development standard). And we call the value for each attribute using one line JavaScript expressions (eg. {props.name}, {props.age}). This is how we use 'props' in Functional Components.
+
+In Class-Based Components, you have to append the 'this' keyword when using 'props' (eg. {this.props.name}, {this.props.age}).
 
 
 
