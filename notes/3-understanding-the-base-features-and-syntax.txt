@@ -225,7 +225,23 @@ Component Usage Example (Wrapping):
 33. Working with Components & Re-Using Them
 ------------------------------------
 
+Components are awesome because we can focus our code and make it much more maintainable. Components are also re-usable and configurable.
 
+Re-using a component is simple, all you have to do is make sure the component is imported into the file in-which you want to use the component. Then you can add as many of the same component as you need.
+
+Re-Using Components Example:
+--
+    return(
+        <div className="App">
+            <h1>Hi, I'm a React App</h1>
+            <Person />
+            <Person />
+            <Person />
+        </div>
+    );
+--
+
+In the example above, I am re-using the same '<Person />' component 3 times.
 
 
 
@@ -233,7 +249,7 @@ Component Usage Example (Wrapping):
 34. Outputting Dynamic Content
 ------------------------------------
 
-
+We can also configure the component to output dynamic content.
 
 
 
