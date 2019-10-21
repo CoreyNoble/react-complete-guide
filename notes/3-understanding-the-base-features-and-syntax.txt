@@ -153,10 +153,71 @@ return (
 
 
 ------------------------------------
-31. Creating a Functional Component
+31. Creating a Functional Component, Exporting and Importing Components
 ------------------------------------
 
+Convention when creating components is to nest each component inside of its own folder with a name that describes what the component is about. Each Component should begin with a capital character. 
 
+Component File Example:
+/Person/Person.js
+
+In its simplest form, A component is just a JavaScript function that returns JSX. The function name is usually the same as the component/file name, but with a lower case character (Camel case). 
+
+When creating a component, you also need to import 'React' to compile the JSX, and export the function as the default export for that file.
+
+Functional Component Example (es6):
+--
+import React from 'react';
+
+const person = () => {
+    return <p>I'm a Person!</p>
+}
+
+export default person;
+--
+
+There are two types of components we can develop: Functional, or Class-Based components.
+
+The example above is a Functional Component because we are not importing { Component } from 'react'. And we are not creating a class that extends the 'Component' method. Because of this, the component cannot manage state, and behaves as a pure function. Ideally, as many components as possible should be Functional Components. The less components that manage state, the better. Doing so will help developers manage the data flow of the application.
+
+To import a component into another file, you need to write the following (typically near the top of the page).
+
+Import Component Example:
+--
+import Person from './Person';
+--
+
+When importing the default export from a component, the import can be named whatever you want, No matter what you name it, the default export will be pulled in. In the example above we are naming the import 'Person', but that name could be whatever you want it to be, although it's best practice to keep the names consistent. The function that gets pulled in will be person{} as it is the default export for that file.
+
+We do not need to add the '.js' extension to the import because '.js' files are taken into consideration during compilation. All other file types we import require their extension.
+
+To use our imported component, we write it inside of our JSX. since HTML uses lower-case characters for each element (eg. <div>, <h1>, ...), React requires our imported components to start with a capital character. (eg. <Person />);
+
+Component Usage Example (Self-Closing):
+--
+    return(
+        <div className="App">
+            <h1>Hi, I'm a React App</h1>
+            <Person />
+        </div>
+    );
+--
+
+In the example above, We write '<Person />' where the Person component will be rendered in our application. We are writing '<Person />' as a self-closing element.
+
+If you need to nest content inside of the component, you can also write them as open/closing tags, However, the content won't be displayed unless if it is accounted for inside of the component logic (explained later):
+
+Component Usage Example (Wrapping):
+--
+    return(
+        <div className="App">
+            <h1>Hi, I'm a React App</h1>
+            <Person>
+                <p>Child Content</p>
+            </Person>
+        </div>
+    );
+--
 
 
 
