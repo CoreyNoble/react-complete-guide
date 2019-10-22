@@ -301,7 +301,23 @@ In Class-Based Components, you have to append the 'this' keyword when using 'pro
 36. Understanding the Children Property
 ------------------------------------
 
+There is a special prop that React gives us access to in-order to access children of the component. That prop is called 'children', it is a reserved keyword in React. 'children' refers to any elements between the opening and closing tag of our component. This could be any markup, from a simple string of text, to complex HTML structure.
 
+In-order to access children, you simply have to call it when accessing your 'props'.
+
+Accessing Children Prop Example:
+--
+const person = (props) => {
+    return (
+        <p>I'm {props.name} and I am {props.age} years old.</p>
+        <p>{props.children}</p>
+    );
+}
+--
+
+In the example above, I am adding a new paragraph element to my component's return statement, which will display the children of that component. 
+
+If no children are present, you would see that an empty <p></p> would be rendered to the screen, because 'children' is null. If we're reling on the inner HTML to handle all of the structure, we would not want to wrap{props.children}.
 
 
 
