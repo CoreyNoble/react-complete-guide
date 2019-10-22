@@ -354,9 +354,11 @@ You can set up any type of data in the 'state' object, whether it's arrays, obje
 
 Using 'state' Example:
 --
-<Person name={this.state.persons[0].name} age={this.state.persons[0].age} />
-<Person name={this.state.persons[1].name} age={this.state.persons[1].age} />
-<Person name={this.state.persons[2].name} age={this.state.persons[2].age} />
+return(
+    <Person name={this.state.persons[0].name} age={this.state.persons[0].age} />
+    <Person name={this.state.persons[1].name} age={this.state.persons[1].age} />
+    <Person name={this.state.persons[2].name} age={this.state.persons[2].age} />
+);
 --
 
 In the example above we access the 'state' property using the 'this' keyword, which is required to access properties in Class-based components. Then we drill down to the data points we need inside of the 'state' (eg. {this.state.persons[0]...}).
@@ -372,7 +374,71 @@ Historically 'state' could only be managed through Class-based components, howev
 38. Props & State
 ------------------------------------
 
+Only changes in props and/or state trigger React to re-render your components and potentially update the DOM in the browser.
 
+Props:
+props  allow you to pass data from a parent (wrapping) component to a child (embedded) component.
+
+
+Example:
+
+AllPosts Component:
+--
+const posts = () => {
+    return (
+        <div>
+            <Post title="My first Post" />
+        </div>
+    );
+}
+--
+
+'title' is the custom property set up on the Post component.
+
+
+Post Component:
+--
+const post = (props) => {
+    return (
+        <div>
+            <h1>{props.title}</h1>
+        </div>
+    );
+}
+--
+
+The Post component receives the 'props' argument. You can of course name this argument whatever you want - it's your function definition, React doesn't care! But React will pass one argument to your component function => An object, which contains all properties you set up on <Post ... />.
+
+{props.title}  then dynamically outputs the 'title' property of the 'props'  object - which is available since we set the 'title' property inside AllPosts  component.
+
+------
+
+State:
+While props allow you to pass data down the component tree (and hence trigger a UI update), state is used to change the component from within. Changes to state also trigger a UI update.
+
+
+Example:
+
+NewPost Component:
+--
+class NewPost extends Component {
+    state = {
+        counter: 1
+    };  
+ 
+    render () {
+        return (
+            <div>{this.state.counter}</div>
+        );
+    }
+}
+--
+
+Above, the NewPost component contains 'state'. Only class-based components can define and use state. You can of course pass the state down to functional components, but they can't directly edit it.
+
+'state' is a property of the 'Component' Class, you have to call it 'state', the name is not optional. You can then access it via 'this.state' in your JSX code (which you return in the required 'render()' method).
+
+Whenever 'state' changes, the component will re-render and reflect the new 'state'. The difference to 'props' is, that this happens within one and the same component, you don't receive new data (props) from outside.
 
 
 
