@@ -301,7 +301,23 @@ In Class-Based Components, you have to append the 'this' keyword when using 'pro
 36. Understanding the Children Property
 ------------------------------------
 
+There is a special prop that React gives us access to in-order to access children of the component. That prop is called 'children', it is a reserved keyword in React. 'children' refers to any elements between the opening and closing tag of our component. This could be any markup, from a simple string of text, to complex HTML structure.
 
+In-order to access children, you simply have to call it when accessing your 'props'.
+
+Accessing Children Prop Example:
+--
+const person = (props) => {
+    return (
+        <p>I'm {props.name} and I am {props.age} years old.</p>
+        <p>{props.children}</p>
+    );
+}
+--
+
+In the example above, I am adding a new paragraph element to my component's return statement, which will display the children of that component. 
+
+If no children are present, you would see that an empty <p></p> would be rendered to the screen, because 'children' is null. If we're reling on the inner HTML to handle all of the structure, we would not want to wrap{props.children}.
 
 
 
@@ -309,7 +325,48 @@ In Class-Based Components, you have to append the 'this' keyword when using 'pro
 37. Understanding & Using State
 ------------------------------------
 
+State allows you to manipulate data in your component from outside of the component, instead of from the inside of the component; for example, changing text through the click on an external button.
 
+State can only be managed through Class-based components as they have properties available to them that we can manipulate. Think of properties as variables of a Class.
+
+There's one special property that you can define in any component that extends { Component } from 'react', This property is called 'state'.
+
+Where 'props' are set and passed from outside of a component:
+<Person name="Corey" age="27">
+
+'state' is managed from inside of a Class-based component. We initialize it by creating a new object inside of the class with the reserved 'state' keyword.
+
+Initializing State Example:
+--
+class App extends Component {
+    state = {
+        persons: [
+            { name: 'Corey', age: 26 },
+            { name: 'Kaitlin', age: 26 },
+            { name: 'Kyle', age: 21 },
+        ]
+    }
+}
+--
+
+You can set up any type of data in the 'state' object, whether it's arrays, objects, strings, integers, booleans, etc... Every set of data in 'state' is separated by a comma. In the example above we create a 'persons' array, containing an object of data for each person in the array.
+
+
+Using 'state' Example:
+--
+return(
+    <Person name={this.state.persons[0].name} age={this.state.persons[0].age} />
+    <Person name={this.state.persons[1].name} age={this.state.persons[1].age} />
+    <Person name={this.state.persons[2].name} age={this.state.persons[2].age} />
+);
+--
+
+In the example above we access the 'state' property using the 'this' keyword, which is required to access properties in Class-based components. Then we drill down to the data points we need inside of the 'state' (eg. {this.state.persons[0]...}).
+
+'state' is a special keyword in React. The reason it is special is because if we update the 'state' property, it will trigger React to update the DOM for the component with the updated 'state'.
+
+* Note *
+Historically 'state' could only be managed through Class-based components, however, with React 16 we can now manage state using React 'Hooks' in functional components. However, Functional components should be used without state as often as possible because state should be used with careful consideration to ensure the codebase is more maintainable and easy to understand. Because of this, the majority of this course only manipulates state through Class-based components. We look at introducing state with React 'Hooks' towards the end of the course.
 
 
 
@@ -317,7 +374,71 @@ In Class-Based Components, you have to append the 'this' keyword when using 'pro
 38. Props & State
 ------------------------------------
 
+Only changes in props and/or state trigger React to re-render your components and potentially update the DOM in the browser.
 
+Props:
+props  allow you to pass data from a parent (wrapping) component to a child (embedded) component.
+
+
+Example:
+
+AllPosts Component:
+--
+const posts = () => {
+    return (
+        <div>
+            <Post title="My first Post" />
+        </div>
+    );
+}
+--
+
+'title' is the custom property set up on the Post component.
+
+
+Post Component:
+--
+const post = (props) => {
+    return (
+        <div>
+            <h1>{props.title}</h1>
+        </div>
+    );
+}
+--
+
+The Post component receives the 'props' argument. You can of course name this argument whatever you want - it's your function definition, React doesn't care! But React will pass one argument to your component function => An object, which contains all properties you set up on <Post ... />.
+
+{props.title}  then dynamically outputs the 'title' property of the 'props'  object - which is available since we set the 'title' property inside AllPosts  component.
+
+------
+
+State:
+While props allow you to pass data down the component tree (and hence trigger a UI update), state is used to change the component from within. Changes to state also trigger a UI update.
+
+
+Example:
+
+NewPost Component:
+--
+class NewPost extends Component {
+    state = {
+        counter: 1
+    };  
+ 
+    render () {
+        return (
+            <div>{this.state.counter}</div>
+        );
+    }
+}
+--
+
+Above, the NewPost component contains 'state'. Only class-based components can define and use state. You can of course pass the state down to functional components, but they can't directly edit it.
+
+'state' is a property of the 'Component' Class, you have to call it 'state', the name is not optional. You can then access it via 'this.state' in your JSX code (which you return in the required 'render()' method).
+
+Whenever 'state' changes, the component will re-render and reflect the new 'state'. The difference to 'props' is, that this happens within one and the same component, you don't receive new data (props) from outside.
 
 
 
