@@ -483,7 +483,155 @@ With the method set up, and with the button calling the method during the 'onCli
 40. To Which Events Can You Listen?
 ------------------------------------
 
+In the last lecture, we saw that you can react to the onClick event - but to which other events can you listen? You can find a list of supported events here: 
+https://reactjs.org/docs/events.html#supported-events
 
+--
+
+Clipboard Event Names:
+onCopy, onCut, onPaste
+
+Clipboard Event Properties:
+DOMDataTransfer, clipboardData
+
+--
+
+Composition Event Names:
+onCompositionEnd, onCompositionStart, onCompositionUpdate
+
+Composition Event Properties:
+string: data
+
+--
+
+Keyboard Event Names:
+onKeyDown, onKeyPress, onKeyUp
+
+Keyboard Event Properties:
+boolean: altKey
+number: charCode
+boolean: ctrlKey
+boolean: getModifierState(key)
+string: key
+number: keyCode
+string: locale
+number: location
+boolean: metaKey
+boolean: repeat
+boolean: shiftKey
+number: which
+
+--
+
+Focus Event Names:
+onFocus, onBlur
+
+These focus events work on all elements in the React DOM, not just form elements.
+
+Focus Event Properties:
+DOMEventTarget, relatedTarget
+
+--
+
+Form Event Names:
+onChange, onInput, onInvalid, onSubmit
+
+--
+
+Mouse Event Names:
+onClick, onContextMenu, onDoubleClick, onDrag, onDragEnd, onDragEnter, onDragExit, onDragLeave, onDragOver, onDragStart, onDrop, onMouseDown, onMouseEnter, onMouseLeave, onMouseMove, onMouseOut, onMouseOver, onMouseUp, 
+
+The onMouseEnter and onMouseLeave events propagate from the element being left to the one being entered instead of ordinary bubbling and do not have a capture phase.
+
+Mouse Event Properties:
+boolean: altKey
+number: button
+number: buttons
+number: clientX
+number: clientY
+boolean: ctrlKey
+boolean: getModifierState(key)
+boolean: metaKey
+number: pageX
+number: pageY
+DOMEventTarget: relatedTarget
+number: screenX
+number: screenY
+boolean: shiftKey
+
+--
+
+Selection Event:
+onSelect
+
+--
+
+Touch Event Names:
+onTouchCancel onTouchEnd onTouchMove onTouchStart
+
+Touch Event Properties:
+boolean: altKey
+DOMTouchList: changedTouches
+boolean: ctrlKey
+boolean: getModifierState(key)
+boolean: metaKey
+boolean: shiftKey
+DOMTouchList: targetTouches
+DOMTouchList: touches
+
+--
+
+UI Event:
+onScroll
+
+UI Event Properties:
+
+number: detail
+DOMAbstractView: view
+
+--
+
+Wheel Event:
+onWheel
+
+Wheel Event Properties:
+number: deltaMode
+number: deltaX
+number: deltaY
+number: deltaZ
+
+--
+
+Media Event Names:
+onAbort, onCanPlay, onCanPlayThrough, onDurationChange, onEmptied, onEncrypted, onEnded, onError, onLoadedData, onLoadedMetadata, onLoadStart, onPause, onPlay, onPlaying, onProgress, onRateChange, onSeeked, onSeeking, onStalled, onSuspend, onTimeUpdate, onVolumeChange, onWaiting,
+
+--
+
+Image Event Names:
+onLoad, onError
+
+--
+
+Animation Event Names:
+onAnimationStart, onAnimationEnd, onAnimationIteration
+
+Animation Event Properties:
+string: animationName
+string: pseudoElement
+float: elapsedTime
+
+--
+
+Transition Event:
+onTransitionEnd
+
+Transition Event Properties:
+string: propertyName
+string: pseudoElement
+float: elapsedTime
+
+Other Events:
+onToggle
 
 
 
