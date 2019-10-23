@@ -446,7 +446,36 @@ Whenever 'state' changes, the component will re-render and reflect the new 'stat
 39. Handling Events with Methods
 ------------------------------------
 
+We can handle a click event on a button by first adding the 'onClick' attribute to the <button> element. In normal HTML, the attribute would be named 'onclick'; however, since this is JSX, that attribute is now defined as 'onClick'.
 
+Next, we assign a value to the attribute, which determines the code we want to run when the click event takes place. To do this we use {} to execute dynamic code. Typically we want to execute a method (function) in our Class.
+
+When creating an event handler method, best practice is to append the name of the function with 'Handler' to signal that its a method you aren't actively calling, but are assigning it as an event handler. For example, if my method is going to switch a name, I would name it 'switchNameHandler'.
+
+
+Example of Calling an Event Through 'onClick':
+--
+return(
+<button onClick={this.switchNameHandler}>Switch Name</button>
+);
+--
+
+In the above example, we call the 'this.switchNameHandler' method inside of the 'onClick' event. We DO NOT immediately execute it with '()', if we did, the method would execute as soon as it is rendered to the page. Instead, we just make a reference to the method by pointing to it. When the event is fired, React will execute the handler method.
+
+
+Example of Creating a Handler Method:
+--
+switchNameHandler = () => {
+    console.log('Was clicked!');
+}
+--
+
+In the above example, we use the same syntax as the 'state' property, and similarly we place it before the 'render()' method in our Class.
+
+We equate it to a function, which turns it into a method. In doing so, 'switchNameHandler' is now a property that we can access within our Class. We use an es6 arrow function '= () => {}' to ensure the 'this' keyword is always bound to the Class at runtime.
+
+
+With the method set up, and with the button calling the method during the 'onClick' event; if you view the console, every time the button is clicked, you would see the console log 'Was clicked!'.
 
 
 
@@ -454,7 +483,155 @@ Whenever 'state' changes, the component will re-render and reflect the new 'stat
 40. To Which Events Can You Listen?
 ------------------------------------
 
+In the last lecture, we saw that you can react to the onClick event - but to which other events can you listen? You can find a list of supported events here: 
+https://reactjs.org/docs/events.html#supported-events
 
+--
+
+Clipboard Event Names:
+onCopy, onCut, onPaste
+
+Clipboard Event Properties:
+DOMDataTransfer, clipboardData
+
+--
+
+Composition Event Names:
+onCompositionEnd, onCompositionStart, onCompositionUpdate
+
+Composition Event Properties:
+string: data
+
+--
+
+Keyboard Event Names:
+onKeyDown, onKeyPress, onKeyUp
+
+Keyboard Event Properties:
+boolean: altKey
+number: charCode
+boolean: ctrlKey
+boolean: getModifierState(key)
+string: key
+number: keyCode
+string: locale
+number: location
+boolean: metaKey
+boolean: repeat
+boolean: shiftKey
+number: which
+
+--
+
+Focus Event Names:
+onFocus, onBlur
+
+These focus events work on all elements in the React DOM, not just form elements.
+
+Focus Event Properties:
+DOMEventTarget, relatedTarget
+
+--
+
+Form Event Names:
+onChange, onInput, onInvalid, onSubmit
+
+--
+
+Mouse Event Names:
+onClick, onContextMenu, onDoubleClick, onDrag, onDragEnd, onDragEnter, onDragExit, onDragLeave, onDragOver, onDragStart, onDrop, onMouseDown, onMouseEnter, onMouseLeave, onMouseMove, onMouseOut, onMouseOver, onMouseUp, 
+
+The onMouseEnter and onMouseLeave events propagate from the element being left to the one being entered instead of ordinary bubbling and do not have a capture phase.
+
+Mouse Event Properties:
+boolean: altKey
+number: button
+number: buttons
+number: clientX
+number: clientY
+boolean: ctrlKey
+boolean: getModifierState(key)
+boolean: metaKey
+number: pageX
+number: pageY
+DOMEventTarget: relatedTarget
+number: screenX
+number: screenY
+boolean: shiftKey
+
+--
+
+Selection Event:
+onSelect
+
+--
+
+Touch Event Names:
+onTouchCancel onTouchEnd onTouchMove onTouchStart
+
+Touch Event Properties:
+boolean: altKey
+DOMTouchList: changedTouches
+boolean: ctrlKey
+boolean: getModifierState(key)
+boolean: metaKey
+boolean: shiftKey
+DOMTouchList: targetTouches
+DOMTouchList: touches
+
+--
+
+UI Event:
+onScroll
+
+UI Event Properties:
+
+number: detail
+DOMAbstractView: view
+
+--
+
+Wheel Event:
+onWheel
+
+Wheel Event Properties:
+number: deltaMode
+number: deltaX
+number: deltaY
+number: deltaZ
+
+--
+
+Media Event Names:
+onAbort, onCanPlay, onCanPlayThrough, onDurationChange, onEmptied, onEncrypted, onEnded, onError, onLoadedData, onLoadedMetadata, onLoadStart, onPause, onPlay, onPlaying, onProgress, onRateChange, onSeeked, onSeeking, onStalled, onSuspend, onTimeUpdate, onVolumeChange, onWaiting,
+
+--
+
+Image Event Names:
+onLoad, onError
+
+--
+
+Animation Event Names:
+onAnimationStart, onAnimationEnd, onAnimationIteration
+
+Animation Event Properties:
+string: animationName
+string: pseudoElement
+float: elapsedTime
+
+--
+
+Transition Event:
+onTransitionEnd
+
+Transition Event Properties:
+string: propertyName
+string: pseudoElement
+float: elapsedTime
+
+Other Events:
+onToggle
 
 
 
@@ -462,15 +639,45 @@ Whenever 'state' changes, the component will re-render and reflect the new 'stat
 41. Manipulating the State
 ------------------------------------
 
+In-order to manipulate the state during an event, let's go back to our 'switchNameHandler' method. If we want to change our 'persons' data inside of the 'state' when the event is executed, we:
+
+DON'T DO THIS
+--
+switchNameHandler = () => {
+    this.state.persons[0].name = 'Cory'
+}
+--
+
+The above example is an attempt to directly mutate the state, which will not work, as React does not recognize this. Instead, we need to use the special 'setState()' method which is made available to us when we extend '{ Component }' from React into our Class.
+
+The 'setState()' method allows us to update the 'state' property from React. When we use 'setState()', React knows that the 'state' is changed, and then updates the DOM with the new 'state'.
+
+'setState()' takes an object as an argument, and will merge whatever we define inside of 'setState()' with the existing data inside of the 'state'. This means React will only update the part of the state that changes, and will not modify any unrelated data in the state.
 
 
+Example of How To Manipulate State using the 'this.setState()' method:
+--
+state = {
+    persons: [
+        { name: 'Corey', age: 26 },
+        { name: 'Kaitlin', age: 26 },
+        { name: 'Kyle', age: 21 }
+    ],
+    otherState: 'some other value'
+}
 
+switchNameHandler = () => {
+    this.setState({
+        persons: [
+            { name: 'Cory', age: 26 },
+            { name: 'Kaitlyn', age: 26 },
+            { name: 'Kyle', age: 22 }
+        ]
+    });
+}
+--
 
-------------------------------------
-42. Function Components Naming
-------------------------------------
-
-
+In the example above, when 'switchNameHandler' is executed, only the 'persons[]' object in the 'state' would be manipulated, 'otherState:' would not be affected by the event and would remain the same.
 
 
 
