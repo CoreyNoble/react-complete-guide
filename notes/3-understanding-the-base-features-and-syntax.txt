@@ -639,15 +639,45 @@ onToggle
 41. Manipulating the State
 ------------------------------------
 
+In-order to manipulate the state during an event, let's go back to our 'switchNameHandler' method. If we want to change our 'persons' data inside of the 'state' when the event is executed, we:
+
+DON'T DO THIS
+--
+switchNameHandler = () => {
+    this.state.persons[0].name = 'Cory'
+}
+--
+
+The above example is an attempt to directly mutate the state, which will not work, as React does not recognize this. Instead, we need to use the special 'setState()' method which is made available to us when we extend '{ Component }' from React into our Class.
+
+The 'setState()' method allows us to update the 'state' property from React. When we use 'setState()', React knows that the 'state' is changed, and then updates the DOM with the new 'state'.
+
+'setState()' takes an object as an argument, and will merge whatever we define inside of 'setState()' with the existing data inside of the 'state'. This means React will only update the part of the state that changes, and will not modify any unrelated data in the state.
 
 
+Example of How To Manipulate State using the 'this.setState()' method:
+--
+state = {
+    persons: [
+        { name: 'Corey', age: 26 },
+        { name: 'Kaitlin', age: 26 },
+        { name: 'Kyle', age: 21 }
+    ],
+    otherState: 'some other value'
+}
 
+switchNameHandler = () => {
+    this.setState({
+        persons: [
+            { name: 'Cory', age: 26 },
+            { name: 'Kaitlyn', age: 26 },
+            { name: 'Kyle', age: 22 }
+        ]
+    });
+}
+--
 
-------------------------------------
-42. Function Components Naming
-------------------------------------
-
-
+In the example above, when 'switchNameHandler' is executed, only the 'persons[]' object in the 'state' would be manipulated, 'otherState:' would not be affected by the event and would remain the same.
 
 
 
