@@ -446,7 +446,36 @@ Whenever 'state' changes, the component will re-render and reflect the new 'stat
 39. Handling Events with Methods
 ------------------------------------
 
+We can handle a click event on a button by first adding the 'onClick' attribute to the <button> element. In normal HTML, the attribute would be named 'onclick'; however, since this is JSX, that attribute is now defined as 'onClick'.
 
+Next, we assign a value to the attribute, which determines the code we want to run when the click event takes place. To do this we use {} to execute dynamic code. Typically we want to execute a method (function) in our Class.
+
+When creating an event handler method, best practice is to append the name of the function with 'Handler' to signal that its a method you aren't actively calling, but are assigning it as an event handler. For example, if my method is going to switch a name, I would name it 'switchNameHandler'.
+
+
+Example of Calling an Event Through 'onClick':
+--
+return(
+<button onClick={this.switchNameHandler}>Switch Name</button>
+);
+--
+
+In the above example, we call the 'this.switchNameHandler' method inside of the 'onClick' event. We DO NOT immediately execute it with '()', if we did, the method would execute as soon as it is rendered to the page. Instead, we just make a reference to the method by pointing to it. When the event is fired, React will execute the handler method.
+
+
+Example of Creating a Handler Method:
+--
+switchNameHandler = () => {
+    console.log('Was clicked!');
+}
+--
+
+In the above example, we use the same syntax as the 'state' property, and similarly we place it before the 'render()' method in our Class.
+
+We equate it to a function, which turns it into a method. In doing so, 'switchNameHandler' is now a property that we can access within our Class. We use an es6 arrow function '= () => {}' to ensure the 'this' keyword is always bound to the Class at runtime.
+
+
+With the method set up, and with the button calling the method during the 'onClick' event; if you view the console, every time the button is clicked, you would see the console log 'Was clicked!'.
 
 
 
