@@ -802,7 +802,11 @@ In the above example we create two sets of de-structured constant variables. One
 44. Stateless vs Stateful Components
 ------------------------------------
 
+If you are managing state within a component, whether it's through the traditional Class-based approach, or by using the 'useState()' React Hook, that component is considered a Stateful component. Stateful components are also often refered to as 'Smart' or 'Container' components because they contain the state of the application.
 
+A component that does not manage state is considered a Stateless component. Stateless components are also often refered to as 'Dumb' or 'Presentational' components. This is beacuse Stateless components only get external data and present it (output) in a structured way.
+
+It is best practice to create as many Stateless components as possible. This makes the app easier to maintain and manage. You have a clear flow of data, it's very clear where your main logic sits, where your data changes and is distributed to the rest of the app. When developing components with this in-mind, If anyone ever needs to change something about the app, it's clear where the change needs to take place.
 
 
 
