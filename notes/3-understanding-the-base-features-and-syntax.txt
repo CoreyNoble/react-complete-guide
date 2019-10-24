@@ -366,7 +366,7 @@ In the example above we access the 'state' property using the 'this' keyword, wh
 'state' is a special keyword in React. The reason it is special is because if we update the 'state' property, it will trigger React to update the DOM for the component with the updated 'state'.
 
 * Note *
-Historically 'state' could only be managed through Class-based components, however, with React 16 we can now manage state using React 'Hooks' in functional components. However, Functional components should be used without state as often as possible because state should be used with careful consideration to ensure the codebase is more maintainable and easy to understand. Because of this, the majority of this course only manipulates state through Class-based components. We look at introducing state with React 'Hooks' towards the end of the course.
+Historically 'state' could only be managed through Class-based components, however, with React 16.8 we can now manage state using React Hooks in functional components. However, Functional components should be used without state as often as possible because state should be used with careful consideration to ensure the codebase is more maintainable and easy to understand. Because of this, the majority of this course only manipulates state through Class-based components. We look at introducing state with React Hooks towards the end of the course.
 
 
 
@@ -684,6 +684,30 @@ In the example above, when 'switchNameHandler' is executed, only the 'persons[]'
 ------------------------------------
 43. Using the useState() Hook for State Manipulation
 ------------------------------------
+
+Since React 16.8 we are now able to manage state in Functional components using a feature called React Hooks. Hooks are what React calls functions that are exposed to us by React that we can use in Functional Components.
+
+In-order to start using the 'useState()' React Hook (in React 16.8+), you import the function from React:
+--
+import React, { useState } from 'react';
+--
+
+'useState' is the Hook that allows us to manage state in a Functional component. 'useState' returns an array with exactly two elements. The first element we get back will always be our current state. The second element will always be a function that allows us to update the state, such that React is aware of it, and will re-render the component.
+
+Once imported, we then can call the 'useState()' function inside of our component:
+--
+const app = props => {
+    const stateArr = useState({
+        persons: [
+            { name: 'Corey', age: 26 },
+            { name: 'Kaitlin', age: 26 },
+            { name: 'Kyle', age: 21 }
+        ].
+        otherState: 'some other value'
+    });
+}
+--
+
 
 
 
