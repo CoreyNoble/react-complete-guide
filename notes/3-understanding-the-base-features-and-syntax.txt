@@ -814,9 +814,62 @@ It is best practice to create as many Stateless components as possible. This mak
 45. Passing Method References Between Components
 ------------------------------------
 
+What if you want to pass a reference to a method from a parent component into a child component? For example, call our 'switchNameHandler()' method in App.js inside of the <Person /> component (Person.js).
+
+We can pass a reference to the method as a property onto the component:
+--
+App.js
+--
+<Person
+    name={this.state.persons[0].name}
+    age={this.state.persons[0].age}
+    click={this.switchNameHandler} />
+--
+Person.js
+--
+<buton onClick={props.click}>Switch Name</button>
+--
+
+In the example above, We pass a 'click' property into the <Person /> component which has a refence to the 'this.switchNameHandler' method.
+
+(click={this.switchNameHandler})
+
+Then inside of Person.js we execute the method in the 'onClick' event of the <button> element by calling the 'click' property.
+
+(onClick={props.click})
 
 
+This means we can change the state in a Stateless component by referencing a method in a Stateful component.
 
+If we want to pass a value into a method, first we accept the paramater (arg) in our method, and set the value we're changing to reference the paramater:
+
+--
+switchNameHandler = (newName) => {
+    persons: [
+        { name: newName, age: 26 }
+        { name: 'Kaitlin', age: 26 }
+        { name: 'Kyle', age: 21 }
+    ]
+}
+--
+
+In the example above we accept the 'newName' paramater into our method, and set it as the value for the first 'persons' object.
+
+Then we can pass in the data in a couple of ways:
+--
+<button onClick={this.switchNameHandler.bind(this, "Cory")}>
+--
+
+In the example above we call 'bind()'. We use 'this' to ensure 'this' refers to the Class at runtime, then we set the value of the paramater we are passing into the method.
+
+A better approach is to execute an es6 arrow function:
+--
+<button onClick={() => this.switchNameHandler()}>
+--
+
+In the example above, eventhough it looks like we're executing the method immediately by using the 'this.switchNameHandler()' syntax, It will not be executed immediately because first we are passing an anonymous function, which is only executed once the event is fired. Then we use '()' on our method call to immediately execute the method inside of our anonymous arrow function.
+
+Note* - Even though the es6 arrow function takes in no arguments, it still recieves the event object.
 
 ------------------------------------
 46. Adding Two Way Binding
