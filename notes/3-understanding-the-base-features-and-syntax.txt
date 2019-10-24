@@ -685,31 +685,116 @@ In the example above, when 'switchNameHandler' is executed, only the 'persons[]'
 43. Using the useState() Hook for State Manipulation
 ------------------------------------
 
-Since React 16.8 we are now able to manage state in Functional components using a feature called React Hooks. Hooks are what React calls functions that are exposed to us by React that we can use in Functional Components.
+With React 16.8+ we are now able to manage state in Functional components using a feature called React Hooks. Hooks are what React calls functions that are exposed to us by React that we can use in Functional Components.
 
-In-order to start using the 'useState()' React Hook (in React 16.8+), you import the function from React:
+In-order to manipulate 'state' using React Hooks, we use the 'useState()' Hook. To use 'useState()' you first import the function from React:
 --
 import React, { useState } from 'react';
 --
 
-'useState' is the Hook that allows us to manage state in a Functional component. 'useState' returns an array with exactly two elements. The first element we get back will always be our current state. The second element will always be a function that allows us to update the state, such that React is aware of it, and will re-render the component.
+'useState' returns an array with exactly two elements. The first element we get back will always be our current state. The second element will always be a function that allows us to update the state, such that React is aware of it, and will re-render the component.
 
-Once imported, we then can call the 'useState()' function inside of our component:
+Once imported, we then can call the 'useState()' function inside of our component and pass in our initial state:
 --
 const app = props => {
-    const stateArr = useState({
+    const [ personsState, setPersonsState ] = useState({
         persons: [
             { name: 'Corey', age: 26 },
             { name: 'Kaitlin', age: 26 },
             { name: 'Kyle', age: 21 }
-        ].
+        ],
         otherState: 'some other value'
     });
+
+    return(...);
 }
 --
 
+In the example above we use array de-structuring to pull the first returned item from 'setState()' (eg. the current state) into a 'personsState' constant. We also pull the second returned item (eg. the update state function) from 'setState()' into a 'setPersonsState' constant.
 
+Now that we have defined our constants for the state, we can call pull the current state into our components like so:
+--
+return(
+    <div className="App">
+        <Person
+            name={personsState.persons[0].name}
+            age={personsState.person[0].age}
+        />
+        <Person
+            name={personsState.persons[1].name}
+            age={personsState.person[1].age}
+        />
+        <Person
+            name={personsState.persons[2].name}
+            age={personsState.person[2].age}
+        />
+    </div>
+);
+--
 
+In the above example, we use 'personsState.persons[i]...' to access the 'persons{}' object inside of the 'personsState' constant.
+
+In-order to update the state inside of our Functional component, we can add a function inside of our Functional component and store it in a constant. We then point to that function and inside of it, we 'setPersonsState()':
+--
+const app = props => {
+    const [ personsState, setPersonsState ] = useState({
+        persons: [
+            { name: 'Corey', age: 26 },
+            { name: 'Kaitlin', age: 26 },
+            { name: 'Kyle', age: 21 }
+        ],
+        otherState: 'some other value'
+    });
+
+    const switchNameHandler = () => {
+        setPersonsState({
+            persons: [
+                { name: 'Cory', age: 26 },
+                { name: 'Kaitlyn', age: 26 },
+                { name: 'Kyle', age: 22 }
+            ]
+        })
+    }
+
+    return(
+        <div className="App">
+            <button onClick={switchNameHandler}>Switch Name</button>
+            <Person
+                name={personsState.persons[0].name}
+                age={personsState.person[0].age}
+            />
+            <Person
+                name={personsState.persons[1].name}
+                age={personsState.person[1].age}
+            />
+            <Person
+                name={personsState.persons[2].name}
+                age={personsState.person[2].age}
+            />
+        </div>
+    );
+}
+--
+
+In the above example, we create the 'switchNameHandler()' function, which we make a reference to in our <button>'s 'onClick' event. When the function is fired, it updates the current state with a new 'persons{}' object using the 'setPersonsState()' constant.
+
+!! IMPORTANT !!
+When we use the 'useState()' React Hook, when we update the state, it does not merge with the existing state, instead, it replaces the existing state. Because of this, when we use the 'useState()' Hook in Functional components, we typically would store each set of state data into its own 'useState()' constant:
+--
+const [ personsState, setPersonsState ] = useState({
+    persons: [
+        { name: 'Corey', age: 26 },
+        { name: 'Kaitlin', age: 26 },
+        { name: 'Kyle', age: 21 }
+    ]
+});
+
+const [ otherState, setOtherState ] = useState({
+    otherState: 'some other value'
+});
+--
+
+In the above example we create two sets of de-structured constant variables. One for each data-set we need in state. This way, when we need to update one set of data in our code, we only need to replace that one set of data, and the other set will remain untouched.
 
 
 
