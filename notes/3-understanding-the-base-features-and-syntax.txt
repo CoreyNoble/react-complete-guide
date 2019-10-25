@@ -880,7 +880,58 @@ Out of both options, the es6 arrow function is easier to use, but is less effici
 46. Adding Two Way Binding
 ------------------------------------
 
+We can set up two-way binding such that text entered into an input field is immediately bound to another element on the page, and that element is also bound to the value of the input field.
 
+To showcase this, first I create a new method called 'nameChangedHandler()' which takes in an 'event' object. The 'event' object is always passed by default. I set the state to equal the value of the event target (eg. <input value=...>):
+--
+App.js
+--
+nameChangedHandler = (event) => {
+    this.setState({
+        persons: [
+            { name: event.target.value, age: 26 },
+            { name: 'Kaitlin', age: 26 },
+            { name: 'Kyle', age: 21 }
+        ]
+    });
+}
+--
+
+In the above example, I make the name of the first 'persons' object equal to the 'event.target.value'. This will ensure the name is always the same as the value of the input field.
+
+Next, I pass a new 'changed' prop into the <Person /> component, which references the 'nameChangedHandler()' method:
+--
+App.js
+--
+<Person 
+    name={this.state.persons[0].name}
+    age={this.state.persons[0].age}
+    changed={this.nameChangedHandler} />
+--
+
+Now, inside of the <Person /> component file, we can access the 'changed' property. We listen to the 'onChange' event on the <input> element and set it to 'props.changed':
+--
+Person.js
+--
+<input type="text" onChange={props.changed} />
+--
+
+With all of this logic in-place, you will see that each <Person /> has an <input> element associated with it, however, only the <input> for the first <Person /> is bound. When you type in that field, the name of the first <Person /> is updated to match the value inside of the <input>.
+
+This shows two things:
+1. How we can dynamically update something, by calling an event and passing down method references.
+2. How we can handle inputs.
+
+So far we have bound the data one-way. The <input> updates the 'name' in the 'onChange' event. In-order for us to bind this both ways, we need to set the 'value' of the <input> equal to the value in the 'state':
+-- 
+Person.js
+--
+<input type="text" onChange={props.changed} value={props.name} />
+--
+
+In the example above, we set the 'value' of the <input> equal to 'props.name'. With this set up, we have now created two-way binding.
+
+The <input> 'value' starts off as the initial value of the 'name' in the 'state'. Then when the 'onChange' event fires, the 'state' is updated with the new value from the event, which is also bound to the <input> 'value', so it also gets updated.
 
 
 
