@@ -366,7 +366,7 @@ In the example above we access the 'state' property using the 'this' keyword, wh
 'state' is a special keyword in React. The reason it is special is because if we update the 'state' property, it will trigger React to update the DOM for the component with the updated 'state'.
 
 * Note *
-Historically 'state' could only be managed through Class-based components, however, with React 16 we can now manage state using React 'Hooks' in functional components. However, Functional components should be used without state as often as possible because state should be used with careful consideration to ensure the codebase is more maintainable and easy to understand. Because of this, the majority of this course only manipulates state through Class-based components. We look at introducing state with React 'Hooks' towards the end of the course.
+Historically 'state' could only be managed through Class-based components, however, with React 16.8 we can now manage state using React Hooks in functional components. However, Functional components should be used without state as often as possible because state should be used with careful consideration to ensure the codebase is more maintainable and easy to understand. Because of this, the majority of this course only manipulates state through Class-based components. We look at introducing state with React Hooks towards the end of the course.
 
 
 
@@ -685,7 +685,116 @@ In the example above, when 'switchNameHandler' is executed, only the 'persons[]'
 43. Using the useState() Hook for State Manipulation
 ------------------------------------
 
+With React 16.8+ we are now able to manage state in Functional components using a feature called React Hooks. Hooks are what React calls functions that are exposed to us by React that we can use in Functional Components.
 
+In-order to manipulate 'state' using React Hooks, we use the 'useState()' Hook. To use 'useState()' you first import the function from React:
+--
+import React, { useState } from 'react';
+--
+
+'useState' returns an array with exactly two elements. The first element we get back will always be our current state. The second element will always be a function that allows us to update the state, such that React is aware of it, and will re-render the component.
+
+Once imported, we then can call the 'useState()' function inside of our component and pass in our initial state:
+--
+const app = props => {
+    const [ personsState, setPersonsState ] = useState({
+        persons: [
+            { name: 'Corey', age: 26 },
+            { name: 'Kaitlin', age: 26 },
+            { name: 'Kyle', age: 21 }
+        ],
+        otherState: 'some other value'
+    });
+
+    return(...);
+}
+--
+
+In the example above we use array de-structuring to pull the first returned item from 'setState()' (eg. the current state) into a 'personsState' constant. We also pull the second returned item (eg. the update state function) from 'setState()' into a 'setPersonsState' constant.
+
+Now that we have defined our constants for the state, we can call pull the current state into our components like so:
+--
+return(
+    <div className="App">
+        <Person
+            name={personsState.persons[0].name}
+            age={personsState.person[0].age}
+        />
+        <Person
+            name={personsState.persons[1].name}
+            age={personsState.person[1].age}
+        />
+        <Person
+            name={personsState.persons[2].name}
+            age={personsState.person[2].age}
+        />
+    </div>
+);
+--
+
+In the above example, we use 'personsState.persons[i]...' to access the 'persons{}' object inside of the 'personsState' constant.
+
+In-order to update the state inside of our Functional component, we can add a function inside of our Functional component and store it in a constant. We then point to that function and inside of it, we 'setPersonsState()':
+--
+const app = props => {
+    const [ personsState, setPersonsState ] = useState({
+        persons: [
+            { name: 'Corey', age: 26 },
+            { name: 'Kaitlin', age: 26 },
+            { name: 'Kyle', age: 21 }
+        ],
+        otherState: 'some other value'
+    });
+
+    const switchNameHandler = () => {
+        setPersonsState({
+            persons: [
+                { name: 'Cory', age: 26 },
+                { name: 'Kaitlyn', age: 26 },
+                { name: 'Kyle', age: 22 }
+            ]
+        })
+    }
+
+    return(
+        <div className="App">
+            <button onClick={switchNameHandler}>Switch Name</button>
+            <Person
+                name={personsState.persons[0].name}
+                age={personsState.person[0].age}
+            />
+            <Person
+                name={personsState.persons[1].name}
+                age={personsState.person[1].age}
+            />
+            <Person
+                name={personsState.persons[2].name}
+                age={personsState.person[2].age}
+            />
+        </div>
+    );
+}
+--
+
+In the above example, we create the 'switchNameHandler()' function, which we make a reference to in our <button>'s 'onClick' event. When the function is fired, it updates the current state with a new 'persons{}' object using the 'setPersonsState()' constant.
+
+!! IMPORTANT !!
+When we use the 'useState()' React Hook, when we update the state, it does not merge with the existing state, instead, it replaces the existing state. Because of this, when we use the 'useState()' Hook in Functional components, we typically would store each set of state data into its own 'useState()' constant:
+--
+const [ personsState, setPersonsState ] = useState({
+    persons: [
+        { name: 'Corey', age: 26 },
+        { name: 'Kaitlin', age: 26 },
+        { name: 'Kyle', age: 21 }
+    ]
+});
+
+const [ otherState, setOtherState ] = useState({
+    otherState: 'some other value'
+});
+--
+
+In the above example we create two sets of de-structured constant variables. One for each data-set we need in state. This way, when we need to update one set of data in our code, we only need to replace that one set of data, and the other set will remain untouched.
 
 
 
@@ -693,7 +802,11 @@ In the example above, when 'switchNameHandler' is executed, only the 'persons[]'
 44. Stateless vs Stateful Components
 ------------------------------------
 
+If you are managing state within a component, whether it's through the traditional Class-based approach, or by using the 'useState()' React Hook, that component is considered a Stateful component. Stateful components are also often refered to as 'Smart' or 'Container' components because they contain the state of the application.
 
+A component that does not manage state is considered a Stateless component. Stateless components are also often refered to as 'Dumb' or 'Presentational' components. This is beacuse Stateless components only get external data and present it (output) in a structured way.
+
+It is best practice to create as many Stateless components as possible. This makes the app easier to maintain and manage. You have a clear flow of data, it's very clear where your main logic sits, where your data changes and is distributed to the rest of the app. When developing components with this in-mind, If anyone ever needs to change something about the app, it's clear where the change needs to take place.
 
 
 
@@ -701,7 +814,65 @@ In the example above, when 'switchNameHandler' is executed, only the 'persons[]'
 45. Passing Method References Between Components
 ------------------------------------
 
+What if you want to pass a reference to a method from a parent component into a child component? For example, call our 'switchNameHandler()' method in App.js inside of the <Person /> component (Person.js).
 
+We can pass a reference to the method as a property onto the component:
+--
+App.js
+--
+<Person
+    name={this.state.persons[0].name}
+    age={this.state.persons[0].age}
+    click={this.switchNameHandler} />
+--
+Person.js
+--
+<buton onClick={props.click}>Switch Name</button>
+--
+
+In the example above, We pass a 'click' property into the <Person /> component which has a refence to the 'this.switchNameHandler' method.
+
+(click={this.switchNameHandler})
+
+Then inside of Person.js we execute the method in the 'onClick' event of the <button> element by calling the 'click' property.
+
+(onClick={props.click})
+
+
+This means we can change the state in a Stateless component by referencing a method in a Stateful component.
+
+If we want to pass a value into a method, first we accept the paramater (arg) in our method, and set the value we're changing to reference the paramater:
+
+--
+switchNameHandler = (newName) => {
+    persons: [
+        { name: newName, age: 26 }
+        { name: 'Kaitlin', age: 26 }
+        { name: 'Kyle', age: 21 }
+    ]
+}
+--
+
+In the example above we accept the 'newName' paramater into our method, and set it as the value for the first 'persons' object.
+
+Then we can pass in the data in a couple of ways:
+--
+<button onClick={this.switchNameHandler.bind(this, "Cory")}>
+--
+
+In the example above we call 'bind()'. We use 'this' to ensure 'this' refers to the Class at runtime, then we set the value of the paramater we are passing into the method.
+
+Another approach is to execute an es6 arrow function:
+--
+<button onClick={() => this.switchNameHandler('Cory')}>
+--
+
+In the example above, eventhough it looks like we're executing the method immediately by using the 'this.switchNameHandler()' syntax, It will not be executed immediately because first we are passing an anonymous function, which is only executed once the event is fired. Then we use '()' on our method call to immediately execute the method inside of our anonymous arrow function.
+
+Note* - Even though the es6 arrow function takes in no arguments, it still recieves the event object.
+
+
+Out of both options, the es6 arrow function is easier to use, but is less efficient, so ideally we should use the '.bind()' approach when possible.
 
 
 
@@ -709,7 +880,58 @@ In the example above, when 'switchNameHandler' is executed, only the 'persons[]'
 46. Adding Two Way Binding
 ------------------------------------
 
+We can set up two-way binding such that text entered into an input field is immediately bound to another element on the page, and that element is also bound to the value of the input field.
 
+To showcase this, first I create a new method called 'nameChangedHandler()' which takes in an 'event' object. The 'event' object is always passed by default. I set the state to equal the value of the event target (eg. <input value=...>):
+--
+App.js
+--
+nameChangedHandler = (event) => {
+    this.setState({
+        persons: [
+            { name: event.target.value, age: 26 },
+            { name: 'Kaitlin', age: 26 },
+            { name: 'Kyle', age: 21 }
+        ]
+    });
+}
+--
+
+In the above example, I make the name of the first 'persons' object equal to the 'event.target.value'. This will ensure the name is always the same as the value of the input field.
+
+Next, I pass a new 'changed' prop into the <Person /> component, which references the 'nameChangedHandler()' method:
+--
+App.js
+--
+<Person 
+    name={this.state.persons[0].name}
+    age={this.state.persons[0].age}
+    changed={this.nameChangedHandler} />
+--
+
+Now, inside of the <Person /> component file, we can access the 'changed' property. We listen to the 'onChange' event on the <input> element and set it to 'props.changed':
+--
+Person.js
+--
+<input type="text" onChange={props.changed} />
+--
+
+With all of this logic in-place, you will see that each <Person /> has an <input> element associated with it, however, only the <input> for the first <Person /> is bound. When you type in that field, the name of the first <Person /> is updated to match the value inside of the <input>.
+
+This shows two things:
+1. How we can dynamically update something, by calling an event and passing down method references.
+2. How we can handle inputs.
+
+So far we have bound the data one-way. The <input> updates the 'name' in the 'onChange' event. In-order for us to bind this both ways, we need to set the 'value' of the <input> equal to the value in the 'state':
+-- 
+Person.js
+--
+<input type="text" onChange={props.changed} value={props.name} />
+--
+
+In the example above, we set the 'value' of the <input> equal to 'props.name'. With this set up, we have now created two-way binding.
+
+The <input> 'value' starts off as the initial value of the 'name' in the 'state'. Then when the 'onChange' event fires, the 'state' is updated with the new value from the event, which is also bound to the <input> 'value', so it also gets updated.
 
 
 
@@ -717,7 +939,37 @@ In the example above, when 'switchNameHandler' is executed, only the 'persons[]'
 47. Adding Styling with Stylesheets
 ------------------------------------
 
+We can style components in multiple ways. One way is to use external Stylesheets. 
 
+In-order to use external Stylesheets, first we create our external .css file. With React we typically keep styles scoped to a given component, so best practice here would be to create the .css file inside of component folder:
+--
+/Person/Person.css
+--
+.Person{
+    ...
+}
+--
+
+In-order to use the styles we created in our external Stylesheet, first we need to import it into our component using 'import ./FILENAME.css'. Once imported, the classes inside of the .css file become available for use in your JSX:
+--
+/Person/Person.js
+--
+import './Person.css';
+
+const person = (props) => {
+    return (
+        <div className="Person">
+            ...
+        </div>
+    );
+}
+--
+
+In the example above we import the 'Person.css' file to make those styles available in the component. Then on our parent <div> we implement the '.Person' class.
+
+Caveat*
+--
+This appoach creates global styling in your application, and is not scoped to the component itself. These styles are only brought in when the component is present on the page, but the styling set in external CSS will apply to the entire application when the CSS is present.
 
 
 
@@ -725,7 +977,31 @@ In the example above, when 'switchNameHandler' is executed, only the 'persons[]'
 48. Working with Inline Styles
 ------------------------------------
 
+Another way to use styles is by using inline styles.
 
+To do this, first you create a JavaScript object that defines your styles inside of your component:
+--
+const style = {
+    backgroundColor: '#fff',
+    font: 'inherit',
+    ...
+}
+--
+
+Then you can pass the object into the 'style' attribute of an element:
+--
+<div style={style}>
+    ...
+</div>
+--
+
+With this implemented, you can see that the element is now styled, with the properties set inside of the JavaScript object.
+
+An added benefit to using the inline style approach is that the styles are scoped to the component itself, and are not global.
+
+Caveat*
+--
+There are some restrictions to this approach, such as styling sudo elements and media queries, as there aren't object properties in JavaScript that map 1:1 with their CSS counterparts, however, there are tricks we can use to get around this, which are explained more in-detail later in this course.
 
 
 
