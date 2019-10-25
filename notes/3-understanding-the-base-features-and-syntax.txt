@@ -967,13 +967,41 @@ const person = (props) => {
 
 In the example above we import the 'Person.css' file to make those styles available in the component. Then on our parent <div> we implement the '.Person' class.
 
+Caveat*
+--
+This appoach creates global styling in your application, and is not scoped to the component itself. These styles are only brought in when the component is present on the page, but the styling set in external CSS will apply to the entire application when the CSS is present.
+
 
 
 ------------------------------------
 48. Working with Inline Styles
 ------------------------------------
 
+Another way to use styles is by using inline styles.
 
+To do this, first you create a JavaScript object that defines your styles inside of your component:
+--
+const style = {
+    backgroundColor: '#fff',
+    font: 'inherit',
+    ...
+}
+--
+
+Then you can pass the object into the 'style' attribute of an element:
+--
+<div style={style}>
+    ...
+</div>
+--
+
+With this implemented, you can see that the element is now styled, with the properties set inside of the JavaScript object.
+
+An added benefit to using the inline style approach is that the styles are scoped to the component itself, and are not global.
+
+Caveat*
+--
+There are some restrictions to this approach, such as styling sudo elements and media queries, as there aren't object properties in JavaScript that map 1:1 with their CSS counterparts, however, there are tricks we can use to get around this, which are explained more in-detail later in this course.
 
 
 
