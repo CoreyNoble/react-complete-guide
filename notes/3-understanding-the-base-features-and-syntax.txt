@@ -862,14 +862,19 @@ Then we can pass in the data in a couple of ways:
 
 In the example above we call 'bind()'. We use 'this' to ensure 'this' refers to the Class at runtime, then we set the value of the paramater we are passing into the method.
 
-A better approach is to execute an es6 arrow function:
+Another approach is to execute an es6 arrow function:
 --
-<button onClick={() => this.switchNameHandler()}>
+<button onClick={() => this.switchNameHandler('Cory')}>
 --
 
 In the example above, eventhough it looks like we're executing the method immediately by using the 'this.switchNameHandler()' syntax, It will not be executed immediately because first we are passing an anonymous function, which is only executed once the event is fired. Then we use '()' on our method call to immediately execute the method inside of our anonymous arrow function.
 
 Note* - Even though the es6 arrow function takes in no arguments, it still recieves the event object.
+
+
+Out of both options, the es6 arrow function is easier to use, but is less efficient, so ideally we should use the '.bind()' approach when possible.
+
+
 
 ------------------------------------
 46. Adding Two Way Binding
