@@ -939,7 +939,33 @@ The <input> 'value' starts off as the initial value of the 'name' in the 'state'
 47. Adding Styling with Stylesheets
 ------------------------------------
 
+We can style components in multiple ways. One way is to use external Stylesheets. 
 
+In-order to use external Stylesheets, first we create our external .css file. With React we typically keep styles scoped to a given component, so best practice here would be to create the .css file inside of component folder:
+--
+/Person/Person.css
+--
+.Person{
+    ...
+}
+--
+
+In-order to use the styles we created in our external Stylesheet, first we need to import it into our component using 'import ./FILENAME.css'. Once imported, the classes inside of the .css file become available for use in your JSX:
+--
+/Person/Person.js
+--
+import './Person.css';
+
+const person = (props) => {
+    return (
+        <div className="Person">
+            ...
+        </div>
+    );
+}
+--
+
+In the example above we import the 'Person.css' file to make those styles available in the component. Then on our parent <div> we implement the '.Person' class.
 
 
 
