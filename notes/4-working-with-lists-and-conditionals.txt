@@ -3,18 +3,50 @@ Section 4: Working with Lists and Conditionals
 ==============================================
 
 ------------------------------------
-51. Module Introduction
-------------------------------------
-
-
-
-
-
-------------------------------------
 52. Rendering Content Conditionally
 ------------------------------------
 
+Let's say when we click a button, We want to show/hide some content.
 
+Well, first we would set up a unique event handler method to toggle the visibility of the content and would point the <button>'s 'onClick' attribute to the method.
+
+Then we would set up a boolean property in the state, when false, the content will be hidden, and when true, the content will be shown. In our method, we would then swap the polarity of the state property:
+( eg. this.setState({propertyName = !propertyName}) ).
+
+Then in our JSX code, we would set up a turnary operator so that when the property in the state is true, we render the JSX, and when the property in the state is false, we render 'null':
+( eg. {this.state.propertyName ? <div>....</div> : null} ).
+
+A full example of the above explaination:
+--
+state = {
+    ....,
+    showPersons: false
+}
+
+togglePersonsHandler = () => {
+    const doesShow = this.state.showPersons;
+    this.setState({showPersons: !doesShow});
+}
+
+render() {
+    ...
+    return(
+        <button onClick={this.togglePersonsHandler}>Toggle People</button>
+
+        { this.state.showPersons ? 
+        <div>
+            <Person .... />
+            <Person .... />
+            <Person .... />
+        </div> 
+        : null
+        }
+    );
+}
+
+--
+
+With this approach, the HTML is not rendered onto the page until the condition is true.
 
 
 
