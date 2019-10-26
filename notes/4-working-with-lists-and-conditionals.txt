@@ -112,7 +112,35 @@ In the example above, I map over each 'persons' object in the state. For each it
 57. Lists & State
 ------------------------------------
 
+If we want to manipulate the state for the given item in a list, we do so by first passing in the index of the array item as we map over the array. 
 
+Then we pass that index into the method we call, and inside of the method, we use that index to manipulate the array item.
+
+--
+deletePersonHandler = (personIndex) => {
+    const persons = this.state.persons;
+    persons.splice(personIndex, 1);
+    this.setState({persons: persons});
+}
+
+{this.state.persons.map((person, index) => {
+    return <Person
+            click={() => this.deletePersonHandler(index)}
+            name={person.name}
+            age={person.age} />
+})}
+--
+
+In the example above, we '.map()' over 'this.state.persons'. Each item (person) in the array renders a new <Person /> component. We pass in the 'index' of the array item as we '.map()' over the array. 'index' is a property in the array that tracks the current item that is bieng mapped.
+
+Then we pass a 'click' property into the <Person /> component. The 'click' property references our 'deletePersonHandler()' method. We create an arrow function when pointing to our method to ensure the 'this' keyword keeps its context at runtime, and we pass the index into the method.
+( eg. click={() => this.deletePersonHandler(index)} )
+
+When the 'click' property is handled inside of the <Person /> component, the 'deletePersonHandler(index)' method is executed. Inside of the method, the 'index' we pass in is deleted from the array using 'splice(index, 1)'. 
+
+'splice(index, 1)' goes to the 'index' in the array, removes that '1' item, then returns the array.
+
+Once the array has been spliced, we then update the state ( this.setState({persons: persons}) ), which deletes the item in the 'state.
 
 
 
