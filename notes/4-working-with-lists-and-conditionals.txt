@@ -174,9 +174,24 @@ Using either of the approaches above will ensure that you never directly mutate 
 59. Lists & Keys
 ------------------------------------
 
+When you render a list of elements in React (eg. using .map() to output a list of JSX elements), you should pass a 'key' property with a unique value into each element. 
 
+'key' is a default property that React expects to find on elements in a rendered list, no matter if it's through custom components, or default HTML elements.
 
+React uses a 'Virtual DOM', which it compares to the real DOM when deciding what it needs to update when state/props change. React does not deeply inspect the DOM as that would be very inefficient, so when React is looking to update a list, it does not know how the list items differ, it just sees the top-level elements in that list.
 
+When React needs to update a list, if the 'key' property is not passed with a unique value for each element in the list, then by default React will re-render the entire list. This is very inefficient, especially for large lists.
+
+When the 'key' property is passed into a rendered list and state/props change on an item in that list, React will only update the item that changed, it will not re-render the entire list.
+
+So what should we use as values in our 'key' property? Anything that is unique to that item in the list, and will never change.
+
+A BAD example of 'key' would be to use the index of the item in the array, as if that array changes, the index for each item may shift, which would make React re-render the entire list.
+
+GOOD examples of 'key' would be:
+- Unique ID passed in through a table in a database.
+- Unique ID passed in through data in an API response.
+- Unique ID you create yourself (carefully, making sure you never duplicate yourself).
 
 ------------------------------------
 60. Flexible Lists
