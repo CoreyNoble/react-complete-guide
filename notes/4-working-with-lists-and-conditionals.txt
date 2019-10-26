@@ -92,7 +92,19 @@ Now when the component is rendered, initially 'persons' is 'null', so nothing wi
 55. Outputting Lists
 ------------------------------------
 
+To dynamically render all of the objects in your state, you can output each item by mapping over each array item in the state object (this.state.property.map()). 
 
+Then when you return inside of the map function, you can output JSX for each item in the array:
+--
+{this.state.persons.map(person => {
+    return <Person
+            name={person.name}
+            age={person.age} />
+})}
+--
+
+In the example above, I map over each 'persons' object in the state. For each item (person) I return a <Person /> component with the properties of that object in the state passed into it.
+(eg. <Person name={person.name} age={person.age} />).
 
 
 
