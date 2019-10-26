@@ -3,7 +3,7 @@ Section 4: Working with Lists and Conditionals
 ==============================================
 
 ------------------------------------
-52. Rendering Content Conditionally
+53. Rendering Content Conditionally
 ------------------------------------
 
 Let's say when we click a button, We want to show/hide some content.
@@ -51,7 +51,7 @@ With this approach, the HTML is not rendered onto the page until the condition i
 
 
 ------------------------------------
-53. Handling Dynamic Content "The JavaScript Way"
+54. Handling Dynamic Content "The JavaScript Way"
 ------------------------------------
 
 As our application grows, and as we add more nested conditions, it can be hard to keep track of which expressions are responsible for what. There is a cleaner way to approach this.
@@ -89,7 +89,7 @@ Now when the component is rendered, initially 'persons' is 'null', so nothing wi
 
 
 ------------------------------------
-55. Outputting Lists
+56. Outputting Lists
 ------------------------------------
 
 To dynamically render all of the objects in your state, you can output each item by mapping over each array item in the state object (this.state.property.map()). 
@@ -109,7 +109,7 @@ In the example above, I map over each 'persons' object in the state. For each it
 
 
 ------------------------------------
-56. Lists & State
+57. Lists & State
 ------------------------------------
 
 
@@ -117,7 +117,7 @@ In the example above, I map over each 'persons' object in the state. For each it
 
 
 ------------------------------------
-57. Updating State Immutably
+58. Updating State Immutably
 ------------------------------------
 
 
@@ -125,7 +125,7 @@ In the example above, I map over each 'persons' object in the state. For each it
 
 
 ------------------------------------
-58. Lists & Keys
+59. Lists & Keys
 ------------------------------------
 
 
@@ -133,7 +133,7 @@ In the example above, I map over each 'persons' object in the state. For each it
 
 
 ------------------------------------
-59. Flexible Lists
+60. Flexible Lists
 ------------------------------------
 
 
@@ -141,7 +141,7 @@ In the example above, I map over each 'persons' object in the state. For each it
 
 
 ------------------------------------
-60. Wrap Up
+61. Wrap Up
 ------------------------------------
 
 
@@ -149,7 +149,7 @@ In the example above, I map over each 'persons' object in the state. For each it
 
 
 ------------------------------------
-Assignment 2: Time to Practice - Lists & Conditionals
+62. Assignment 2 Solution - Lists & Conditionals
 ------------------------------------
 
 
@@ -157,14 +157,6 @@ Assignment 2: Time to Practice - Lists & Conditionals
 
 
 ------------------------------------
-61. [OPTIONAL] Assignment Solution
-------------------------------------
-
-
-
-
-
-------------------------------------
-62. Useful Resources & Links
+63. Useful Resources & Links
 ------------------------------------
 
