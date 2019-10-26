@@ -89,14 +89,6 @@ Now when the component is rendered, initially 'persons' is 'null', so nothing wi
 
 
 ------------------------------------
-54. Outputting Lists (Intro)
-------------------------------------
-
-
-
-
-
-------------------------------------
 55. Outputting Lists
 ------------------------------------
 
