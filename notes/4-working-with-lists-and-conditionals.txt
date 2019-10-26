@@ -3,18 +3,50 @@ Section 4: Working with Lists and Conditionals
 ==============================================
 
 ------------------------------------
-51. Module Introduction
-------------------------------------
-
-
-
-
-
-------------------------------------
 52. Rendering Content Conditionally
 ------------------------------------
 
+Let's say when we click a button, We want to show/hide some content.
 
+Well, first we would set up a unique event handler method to toggle the visibility of the content and would point the <button>'s 'onClick' attribute to the method.
+
+Then we would set up a boolean property in the state, when false, the content will be hidden, and when true, the content will be shown. In our method, we would then swap the polarity of the state property:
+( eg. this.setState({propertyName = !propertyName}) ).
+
+Then in our JSX code, we would set up a turnary operator so that when the property in the state is true, we render the JSX, and when the property in the state is false, we render 'null':
+( eg. {this.state.propertyName ? <div>....</div> : null} ).
+
+A full example of the above explaination:
+--
+state = {
+    ....,
+    showPersons: false
+}
+
+togglePersonsHandler = () => {
+    const doesShow = this.state.showPersons;
+    this.setState({showPersons: !doesShow});
+}
+
+render() {
+    ...
+    return(
+        <button onClick={this.togglePersonsHandler}>Toggle People</button>
+
+        { this.state.showPersons ? 
+        <div>
+            <Person .... />
+            <Person .... />
+            <Person .... />
+        </div> 
+        : null
+        }
+    );
+}
+
+--
+
+With this approach, the HTML is not rendered onto the page until the condition is true.
 
 
 
@@ -22,15 +54,37 @@ Section 4: Working with Lists and Conditionals
 53. Handling Dynamic Content "The JavaScript Way"
 ------------------------------------
 
+As our application grows, and as we add more nested conditions, it can be hard to keep track of which expressions are responsible for what. There is a cleaner way to approach this.
 
+Instead of nesting all of this logic inside of the 'return()' statement, we can move this logic above 'return()' instead, (still inside of 'render()'), which keeps the 'return()' statement clean:
+--
+render() {
+    let persons = null;
 
+    if (this.state.showPersons) {
+        persons = (
+            <div>
+                <Person .... />
+                <Person .... />
+                <Person .... />
+            </div>
+        );
+    }
 
+    return (
+        ....
+        {persons}
+    );
+}
+--
 
-------------------------------------
-54. Outputting Lists (Intro)
-------------------------------------
+In the example above, we create 'persons' variable outside of the 'return()' statement. We initially set 'persons' to 'null'. 
 
+We check for the 'showPersons' state in an 'if()' statement. If it is true, then we set 'persons' equal to the JSX we want to render.
 
+With this set up, inside of the 'return()' statement we then reference the 'persons' variable (eg. {persons}). 
+
+Now when the component is rendered, initially 'persons' is 'null', so nothing will be rendered where 'persons' is referenced. The component will be re-rendered as the 'state' changes, and whenever 'showPersons' changes to true, our 'persons' variable will no longer be 'null', and will render our JSX instead.
 
 
 
