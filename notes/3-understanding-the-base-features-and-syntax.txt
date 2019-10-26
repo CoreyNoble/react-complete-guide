@@ -1004,24 +1004,21 @@ Caveat*
 There are some restrictions to this approach, such as styling sudo elements and media queries, as there aren't object properties in JavaScript that map 1:1 with their CSS counterparts, however, there are tricks we can use to get around this, which are explained more in-detail later in this course.
 
 
-
-------------------------------------
-Assignment 1: Time to Practice - The Base Syntax
-------------------------------------
-
-
-
-
-
-------------------------------------
-49. Assignment Solution
-------------------------------------
-
-
-
-
-
 ------------------------------------
 50. Useful Resources & Links
 ------------------------------------
 
+create-react-app: 
+https://github.com/facebookincubator/create-react-app
+
+Introducing JSX: 
+https://reactjs.org/docs/introducing-jsx.html
+
+Rendering Elements: 
+https://reactjs.org/docs/rendering-elements.html
+
+Components & Props: 
+https://reactjs.org/docs/components-and-props.html
+
+Listenable Events: 
+https://reactjs.org/docs/events.html
