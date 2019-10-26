@@ -54,7 +54,37 @@ With this approach, the HTML is not rendered onto the page until the condition i
 53. Handling Dynamic Content "The JavaScript Way"
 ------------------------------------
 
+As our application grows, and as we add more nested conditions, it can be hard to keep track of which expressions are responsible for what. There is a cleaner way to approach this.
 
+Instead of nesting all of this logic inside of the 'return()' statement, we can move this logic above 'return()' instead, (still inside of 'render()'), which keeps the 'return()' statement clean:
+--
+render() {
+    let persons = null;
+
+    if (this.state.showPersons) {
+        persons = (
+            <div>
+                <Person .... />
+                <Person .... />
+                <Person .... />
+            </div>
+        );
+    }
+
+    return (
+        ....
+        {persons}
+    );
+}
+--
+
+In the example above, we create 'persons' variable outside of the 'return()' statement. We initially set 'persons' to 'null'. 
+
+We check for the 'showPersons' state in an 'if()' statement. If it is true, then we set 'persons' equal to the JSX we want to render.
+
+With this set up, inside of the 'return()' statement we then reference the 'persons' variable (eg. {persons}). 
+
+Now when the component is rendered, initially 'persons' is 'null', so nothing will be rendered where 'persons' is referenced. The component will be re-rendered as the 'state' changes, and whenever 'showPersons' changes to true, our 'persons' variable will no longer be 'null', and will render our JSX instead.
 
 
 
