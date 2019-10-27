@@ -193,11 +193,108 @@ GOOD examples of 'key' would be:
 - Unique ID passed in through data in an API response.
 - Unique ID you create yourself (carefully, making sure you never duplicate yourself).
 
+
+
 ------------------------------------
 60. Flexible Lists
 ------------------------------------
 
+The code below shows you how to create truly flexible lists by using the unique 'id' in the state for an item, to only manipulate the data for that item in the state:
 
+--
+Person.js
+--
+<div className="Person">
+    <p>I'm {props.name} and I am {props.age} years old.</p>
+
+    <input type="text" onChange={props.changed} value={props.name} />
+</div>
+--
+
+--
+App.js
+--
+state = {
+    persons: [
+        { id: 'aaa', name: 'Corey', age: 26 },
+        { id: 'bbb', name: 'Kaitlin', age: 26 },
+        { id: 'ccc', name: 'Kyle', age: 21 },
+    ],
+    showPersons: false
+}
+
+nameChangedHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => {
+        return p.id === id;
+    });
+
+    const person = {
+        ...this.state.persons[personIndex]
+    };
+
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+    
+    this.setState({persons: persons});
+}
+
+if (this.state.showPersons) {
+    persons = (<Person
+        name={person.name}
+        age={person.age}
+        key={person.id}
+        changed={(event) => this.nameChangedHandler(event, person.id)}
+    );
+}
+--
+
+In the example above, first we provide a 'changed' property to the <Person /> component which references the 'nameChangedHandler()' method, and passes in both the 'event', and the 'id' for that item.
+
+We can pass in 'person.id' because it is a property being made avaiable to us through the '.map()' method from our state. We make the reference to the method using an arrow function in-order to pass the event into the method:
+--
+( changed={(event) => this.nameChangedHandler(event, person.id)} ).
+--
+
+
+Next, in 'nameChangedHandler()', we want to update the state, but only for the person into which <input> field we typed. We find that 'personIndex' by creating a constant which reaches out to the state and uses the 'findIndex()' method to loop through the array, and find the item with '.id' property that matches the 'id' we passed into the 'nameChangedHandler(event, id)' method:
+--
+const personIndex = this.state.persons.findIndex(p => {
+    return p.id === id;
+})
+--
+
+
+Now that we have the 'personIndex', we then get the item at that index in the array by creating a new 'person' constant, and distributing (...) all of the properties into 'person' (does not mutate the original state):
+--
+const person = {
+    ...this.state.persons[personIndex]
+};
+--
+
+
+Now that we have our 'person', we update the 'name' property using the value passed in by the event:
+--
+person.name = event.target.value;
+--
+
+
+Then we update the array at the index we fetched by first creating a new copy of the state into a 'persons' constant and spreading (...) in the array from the state.
+
+Then we set the new value in 'persons[personIndex]' to be equal to 'person':
+--
+const persons = [...this.state.persons];
+persons[personIndex] = person;
+--
+
+
+Finally, we update the 'persons' array in the state by copying in our new 'persons' object:
+--
+this.setState({persons: persons});
+--
+
+The approach used in this lesson is the best way to ensure we're creating flexible lists in React. We're only updating the list item that changed, which makes React more efficient when it re-renders the DOM. We're also always using copies of objects/arrays and are ensuring we never directly mutate the original object/array.
 
 
 
