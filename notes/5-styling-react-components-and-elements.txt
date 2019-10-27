@@ -3,18 +3,27 @@ Section 5: Styling React Components & Elements
 ==============================================
 
 ------------------------------------
-63. Module Introduction
-------------------------------------
-
-
-
-
-
-------------------------------------
 64. Outlining the Problem Set
 ------------------------------------
 
+Inline Styles:
+--
+Advantage:
+- Styles are scoped to that component.
 
+Disadvantage:
+- Cannot utilize all CSS features.
+(eg. sudo selectors, media queries)
+
+
+External CSS Styles:
+--
+Advantage:
+- Able to utilize all CSS features.
+
+Disadvantage:
+- Styles are globally set.
+(eg. If you style a <button>, it styles all <button> elements)
 
 
 
