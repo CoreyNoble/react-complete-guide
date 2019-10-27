@@ -299,22 +299,11 @@ The approach used in this lesson is the best way to ensure we're creating flexib
 
 
 ------------------------------------
-61. Wrap Up
-------------------------------------
-
-
-
-
-
-------------------------------------
-62. Assignment 2 Solution - Lists & Conditionals
-------------------------------------
-
-
-
-
-
-------------------------------------
 63. Useful Resources & Links
 ------------------------------------
 
+Conditional Rendering:
+https://reactjs.org/docs/conditional-rendering.html
+
+Lists & Keys:
+https://reactjs.org/docs/lists-and-keys.html
