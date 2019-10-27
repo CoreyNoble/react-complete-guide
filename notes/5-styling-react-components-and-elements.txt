@@ -31,7 +31,39 @@ Disadvantage:
 65. Setting Styles Dynamically
 ------------------------------------
 
+We can manipulate inline 'style' properties dynamically with JavaScript:
+--
 
+
+render() {
+    const style = {
+        backgroundColor = 'green',
+        ....
+    }
+
+    if (this.state.showPersons) {
+        ....
+        
+        style.backgroundColor = 'red';
+    }
+
+    return (
+        <div className="App">
+            ....
+            <button
+                style={style}
+                onClick={this.togglePersonsHandler}
+            >Toggle Persons</button>
+        </div>
+    );
+}
+--
+
+In the example above, we initially set the 'backgroundColor' property of our 'style' object to 'green'. This way the button is green when the <Person /> components are hidden.
+
+Then when the 'showPersons' boolean flips to 'true' and we show the <Person /> components, we also change the 'backgroundColor' property of our 'style' object to 'red'. We do this to singal to the user that the next click will hide the <Person /> components.
+
+'style' can still stay a constant, as we are not manipulating the object itself, we are just manipulating the value of a property inside of the object.
 
 
 
