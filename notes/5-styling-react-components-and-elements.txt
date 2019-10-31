@@ -195,7 +195,50 @@ Similar to using sudo selectors, media queries using Radium are also objects {},
 70. Enabling & Using CSS Modules
 ------------------------------------
 
+CSS Modules is a feature that gets enabled through the 'css-loader' requirement in webpack. With CSS Modules, you can scope styles to a component using external .css files.
 
+In-order to enable CSS Modules, you may, or may not have to 'eject' your application with 'npm run eject'. This is required for older applications, however, newer applications come with this baked in:
+--
+webpack.config.(dev/prod).js
+--
+use: [
+    require.resolve('css-loader'),
+    options: {
+        ....
+        modules: true,
+        localIdentName: '[name]__[local]__[hash:base64:5]',
+        ....
+    },
+    ....
+]
+--
+
+In the example above we are adding the 'modules: true' flag to the 'css-loader' 'options'. This will enable CSS Modules. We also add 'localIdentName' which will compile class names into strings of characters which makes the class unique for the instance in-which we use them (scoped).
+
+We add these options to both the dev and prod webpack files to ensure both environments have these features enabled.
+
+With CSS Modules enabled, we need to change our import statement for CSS files:
+--
+import classes from './App.css';
+--
+
+As shown above, we now import a name of our choosing 'classes' from the CSS file. This brings in a JavaScript object containing all of the classes that are defined in our CSS file as properties of the 'classes' object.
+
+Now that we have 'classes', we can use this object where we apply class names:
+--
+<div className={classes.App}>
+    ....
+</div>
+--
+
+The 'css-loader' transforms the CSS class name we set up in the .css file  into a unique one using the 'localIdentName' pattern we set up in the webpack.config file. 
+
+It takes the class name we defined [name], the filename of the JavaScript file where we import the class [local], and a random hash [hash:base64:5], to generate a unique CSS class name. It stores these unique class names in the object you import, in the properties where the names (keys) are your original CSS class names.
+
+With your app running, if you inspect the class names, you'll see something like:
+--
+<div class="CLASSNAME__CLASSNAME__1o3Fp">
+--
 
 
 
@@ -203,7 +246,43 @@ Similar to using sudo selectors, media queries using Radium are also objects {},
 71. More on CSS Modules
 ------------------------------------
 
+CSS Modules are a relatively new concept. you can dive super-deep into them here: 
+https://github.com/css-modules/css-modules
 
+With CSS modules, you can write normal CSS code and make sure, that it only applies to a given component.
+
+It's not using magic for that, instead it'll simply automatically generate unique CSS class names for you. And by importing a JS object and assigning classes from there, you use these dynamically generated, unique names. So the imported JS object simply exposes some properties which hold the generated CSS class names as values.
+
+Example:
+
+--
+Post.css
+--
+.Post {
+    color: red;
+}
+--
+
+--
+Post.js
+--
+import classes from './Post.css';
+    
+const post = () => (
+    <div className={classes.Post}>...</div>
+);
+--
+
+Here, classes.Post  refers to an automatically generated Post  property on the imported classes  object. That property will in the end simply hold a value like Post__Post__ah5_1 .
+
+So your .Post  class was automatically transformed to a different class (Post__Post__ah5_1 ) which is unique across the application. You also can't use it accidentally in other components because you don't know the generated string! You can only access it through the classes  object. And if you import the CSS file (in the same way) in another component, the classes  object there will hold a Post  property which yields a different (!) CSS class name. Hence it's scoped to a given component.
+
+By the way, if you somehow also want to define a global (i.e. un-transformed) CSS class in such a .css  file, you can prefix the selector with :global:
+--
+:global .Post { ... } 
+--
+
+Now you can use className="Post"  anywhere in your app and receive that styling.
 
 
 
