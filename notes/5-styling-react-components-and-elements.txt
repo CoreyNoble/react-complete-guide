@@ -71,7 +71,29 @@ Then when the 'showPersons' boolean flips to 'true' and we show the <Person /> c
 66. Setting Class Names Dynamically
 ------------------------------------
 
+You can dynamically assign classes to an element as long as what's passed into the 'className' property results in a string:
+--
+const classes = [];
 
+if (this.state.persons.length <= 2) {
+    classes.push('red'); // ['red']
+}
+
+if (this.state.persons.length <= 1) {
+    classes.push('bold'); // ['red', 'bold']
+}
+
+return (
+    <p className={classes.join(' ')}>Test Text</p>
+);
+--
+
+In the example above we create a 'classes' variable which holds a list of relevent classes for our element. 
+
+By using JavaScript, we check for conditions in our application, and adjust the 'classes' list based on that logic.
+
+In-order to display the styles, we append the 'classes' array to the elements 'className' attribute and convert it to a string using the 'join()' method. We add a space when using 'join()' to ensure each item in the list is separated by a space in the string. 
+(eg. className={classes.join(' ')})
 
 
 
