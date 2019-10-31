@@ -101,8 +101,46 @@ In-order to display the styles, we append the 'classes' array to the elements 'c
 67. Adding and Using Radium
 ------------------------------------
 
+In-order to use sudo selectors and media queries in our inline styles, we can add an npm pakage called 'Radium':
+--
+npm install --save radium
+--
 
+Once the package is installed, you can begin using sudo selectors and media queries in our inline styles by first importing it into the file in-which you'd like to use Radium:
+--
+import Radium from 'radium';
+--
 
+Radium is a higher-order component, so where we export our function, we need to wrap Radium around the name of the exported function:
+--
+export default Radium(App);
+--
+
+The export example above will inject extra functionality into our export.
+
+With all of the above setup, we can now begin using the features Radium provides:
+--
+const style = {
+    backgroundColor: 'green'
+    color: 'white'
+    ':hover': {
+        backgroundColor: 'lightgreen',
+        color: 'black'
+    }
+}
+
+.....
+
+style.backgroundColor: 'red'
+style[':hover'] = {
+    backgroundColor: 'salmon',
+        color: 'black'
+}
+--
+
+In the above example, we use the ':hover' sudo selector both in our initial 'style' object, and later on when we manipulate those values. 
+
+Radium requires us to wrap the sudo selector in single quotation marks (''). This sudo selector is itself an object {} which we can nest css properties inside of to change our element when 'hover' is in effect.
 
 
 ------------------------------------
