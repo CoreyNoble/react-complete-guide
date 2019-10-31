@@ -3,18 +3,27 @@ Section 5: Styling React Components & Elements
 ==============================================
 
 ------------------------------------
-63. Module Introduction
-------------------------------------
-
-
-
-
-
-------------------------------------
 64. Outlining the Problem Set
 ------------------------------------
 
+Inline Styles:
+--
+Advantage:
+- Styles are scoped to that component.
 
+Disadvantage:
+- Cannot utilize all CSS features.
+(eg. sudo selectors, media queries)
+
+
+External CSS Styles:
+--
+Advantage:
+- Able to utilize all CSS features.
+
+Disadvantage:
+- Styles are globally set.
+(eg. If you style a <button>, it styles all <button> elements)
 
 
 
@@ -22,7 +31,39 @@ Section 5: Styling React Components & Elements
 65. Setting Styles Dynamically
 ------------------------------------
 
+We can manipulate inline 'style' properties dynamically with JavaScript:
+--
 
+
+render() {
+    const style = {
+        backgroundColor = 'green',
+        ....
+    }
+
+    if (this.state.showPersons) {
+        ....
+        
+        style.backgroundColor = 'red';
+    }
+
+    return (
+        <div className="App">
+            ....
+            <button
+                style={style}
+                onClick={this.togglePersonsHandler}
+            >Toggle Persons</button>
+        </div>
+    );
+}
+--
+
+In the example above, we initially set the 'backgroundColor' property of our 'style' object to 'green'. This way the button is green when the <Person /> components are hidden.
+
+Then when the 'showPersons' boolean flips to 'true' and we show the <Person /> components, we also change the 'backgroundColor' property of our 'style' object to 'red'. We do this to singal to the user that the next click will hide the <Person /> components.
+
+'style' can still stay a constant, as we are not manipulating the object itself, we are just manipulating the value of a property inside of the object.
 
 
 
@@ -30,7 +71,29 @@ Section 5: Styling React Components & Elements
 66. Setting Class Names Dynamically
 ------------------------------------
 
+You can dynamically assign classes to an element as long as what's passed into the 'className' property results in a string:
+--
+const classes = [];
 
+if (this.state.persons.length <= 2) {
+    classes.push('red'); // ['red']
+}
+
+if (this.state.persons.length <= 1) {
+    classes.push('bold'); // ['red', 'bold']
+}
+
+return (
+    <p className={classes.join(' ')}>Test Text</p>
+);
+--
+
+In the example above we create a 'classes' variable which holds a list of relevent classes for our element. 
+
+By using JavaScript, we check for conditions in our application, and adjust the 'classes' list based on that logic.
+
+In-order to display the styles, we append the 'classes' array to the elements 'className' attribute and convert it to a string using the 'join()' method. We add a space when using 'join()' to ensure each item in the list is separated by a space in the string. 
+(eg. className={classes.join(' ')})
 
 
 
@@ -38,23 +101,93 @@ Section 5: Styling React Components & Elements
 67. Adding and Using Radium
 ------------------------------------
 
+In-order to use sudo selectors and media queries in our inline styles, we can add an npm pakage called 'Radium':
+--
+npm install --save radium
+--
 
+Once the package is installed, you can begin using sudo selectors and media queries in our inline styles by first importing it into the file in-which you'd like to use Radium:
+--
+import Radium from 'radium';
+--
 
+Radium is a higher-order component, so where we export our function, we need to wrap Radium around the name of the exported function:
+--
+export default Radium(App);
+--
+
+The export example above will inject extra functionality into our export.
+
+With all of the above setup, we can now begin using the features Radium provides:
+--
+const style = {
+    backgroundColor: 'green'
+    color: 'white'
+    ':hover': {
+        backgroundColor: 'lightgreen',
+        color: 'black'
+    }
+}
+
+.....
+
+style.backgroundColor: 'red'
+style[':hover'] = {
+    backgroundColor: 'salmon',
+        color: 'black'
+}
+--
+
+In the above example, we use the ':hover' sudo selector both in our initial 'style' object, and later on when we manipulate those values. 
+
+Radium requires us to wrap the sudo selector in single quotation marks (''). This sudo selector is itself an object {} which we can nest css properties inside of to change our element when 'hover' is in effect.
 
 
 ------------------------------------
 68. Using Radium for Media Queries
 ------------------------------------
 
+If you want to use media queries with Radium, there is an extra step you need to do to make this work.
+
+You need to import the named 'StyleRoot' export from 'radium' into your 'App.js' file, and wrap your application inside of a <StyleRoot>....</StyleRoot> higher-order component:
+--
+App.Js
+--
+import Radium, { StyleRoot } from 'radium';
+
+return (
+    <StyleRoot>
+        <div className="App">
+            ....
+        </div>
+    </StyleRoot>
+);
+--
+
+-- 
+Person.Js
+--
+import Radium from 'radium';
+
+const style = {
+    '@media (min-width: 500px)': {
+        width: '450px'
+    }
+}
+
+<div className="Person" style={style}>
+    ....
+</div>
 
 
+export default Radium(person);
+--
 
+In the example above, in our 'App.js' file we import 'StyleRoot' from 'radium', Then we wrap our JSX in <StyleRoot>....</StyleRoot>. With that set up, we can then use media queries in our application where we use Radium.
 
-------------------------------------
-69. MUST READ: Enabling CSS Modules
-------------------------------------
+Next in 'Person.js' we use a media query in our 'style' constant, which is applied as an inline style to an element. 
 
-
+Similar to using sudo selectors, media queries using Radium are also objects {}, which we nest css properties inside of to change our element when the query is in effect.
 
 
 
@@ -62,7 +195,50 @@ Section 5: Styling React Components & Elements
 70. Enabling & Using CSS Modules
 ------------------------------------
 
+CSS Modules is a feature that gets enabled through the 'css-loader' requirement in webpack. With CSS Modules, you can scope styles to a component using external .css files.
 
+In-order to enable CSS Modules, you may, or may not have to 'eject' your application with 'npm run eject'. This is required for older applications, however, newer applications come with this baked in:
+--
+webpack.config.(dev/prod).js
+--
+use: [
+    require.resolve('css-loader'),
+    options: {
+        ....
+        modules: true,
+        localIdentName: '[name]__[local]__[hash:base64:5]',
+        ....
+    },
+    ....
+]
+--
+
+In the example above we are adding the 'modules: true' flag to the 'css-loader' 'options'. This will enable CSS Modules. We also add 'localIdentName' which will compile class names into strings of characters which makes the class unique for the instance in-which we use them (scoped).
+
+We add these options to both the dev and prod webpack files to ensure both environments have these features enabled.
+
+With CSS Modules enabled, we need to change our import statement for CSS files:
+--
+import classes from './App.css';
+--
+
+As shown above, we now import a name of our choosing 'classes' from the CSS file. This brings in a JavaScript object containing all of the classes that are defined in our CSS file as properties of the 'classes' object.
+
+Now that we have 'classes', we can use this object where we apply class names:
+--
+<div className={classes.App}>
+    ....
+</div>
+--
+
+The 'css-loader' transforms the CSS class name we set up in the .css file  into a unique one using the 'localIdentName' pattern we set up in the webpack.config file. 
+
+It takes the class name we defined [name], the filename of the JavaScript file where we import the class [local], and a random hash [hash:base64:5], to generate a unique CSS class name. It stores these unique class names in the object you import, in the properties where the names (keys) are your original CSS class names.
+
+With your app running, if you inspect the class names, you'll see something like:
+--
+<div class="CLASSNAME__CLASSNAME__1o3Fp">
+--
 
 
 
@@ -70,7 +246,43 @@ Section 5: Styling React Components & Elements
 71. More on CSS Modules
 ------------------------------------
 
+CSS Modules are a relatively new concept. you can dive super-deep into them here: 
+https://github.com/css-modules/css-modules
 
+With CSS modules, you can write normal CSS code and make sure, that it only applies to a given component.
+
+It's not using magic for that, instead it'll simply automatically generate unique CSS class names for you. And by importing a JS object and assigning classes from there, you use these dynamically generated, unique names. So the imported JS object simply exposes some properties which hold the generated CSS class names as values.
+
+Example:
+
+--
+Post.css
+--
+.Post {
+    color: red;
+}
+--
+
+--
+Post.js
+--
+import classes from './Post.css';
+    
+const post = () => (
+    <div className={classes.Post}>...</div>
+);
+--
+
+Here, classes.Post  refers to an automatically generated Post  property on the imported classes  object. That property will in the end simply hold a value like Post__Post__ah5_1 .
+
+So your .Post  class was automatically transformed to a different class (Post__Post__ah5_1 ) which is unique across the application. You also can't use it accidentally in other components because you don't know the generated string! You can only access it through the classes  object. And if you import the CSS file (in the same way) in another component, the classes  object there will hold a Post  property which yields a different (!) CSS class name. Hence it's scoped to a given component.
+
+By the way, if you somehow also want to define a global (i.e. un-transformed) CSS class in such a .css  file, you can prefix the selector with :global:
+--
+:global .Post { ... } 
+--
+
+Now you can use className="Post"  anywhere in your app and receive that styling.
 
 
 
@@ -78,15 +290,87 @@ Section 5: Styling React Components & Elements
 72. Adding Pseudo Selectors
 ------------------------------------
 
+With CSS Modules enabled, we can treat sudo selectors as we typically would in a CSS file:
+--
+app.css
+--
+.App button {
+    border: 1px solid blue;
+    padding: 16px;
+    background-color: green;
+    color: white;
+    cursor: pointer;
+}
+
+.App button:hover {
+    background-color: lightgreen;
+    color: black;
+}
+
+.App button.Red {
+    background-color: red;
+}
+
+.App button.Red:hover{
+    background-color: salmon;
+    color: black;
+}
+--
+
+--
+app.js
+--
+render () {
+    let btnClass = '';
+
+    if (this.state.showPersons) {
+        btnClass = classes.Red;
+    }
+}
+
+return (
+    <button
+        className={btnClass}
+        ....>Toggle persons</button>
+);
+--
+
+In the example above you see that we have two sets of styles for our <button>, one standard set of styles, and one when 'Red' is appended to the element.
+
+In our component, First we create a variable 'btnClass' which we inject into the <button> className attribute. We initially set it as an empty string ''.
+
+Then when the <button> is toggled and the state for 'showPersons' is true, we equate 'btnClass' to 'classes.Red', which changes the '' value of 'btnClass' to 'Red'. 
+
+'className' needs to be read as a string for the attribute to work, and in this example, that's what 'classes.Red' provides to us.
+
+With this in-place, we have initial styles set for the <button>, including ':hover'. And when 'Red' is applied as a class to the <button>, we also style for that case, also including ':hover'.
 
 
+If you were to look at the class in the browser inspector, you will see that CSS modules is also using these unique IDs we set up using 'localIdentName' for nested classes (eg. 'App__Red__2T8IA').
 
 
 ------------------------------------
 73. Working with Media Queries
 ------------------------------------
 
+Media queries also work with CSS modules using standard CSS syntax:
+--
+Person.css
+--
 
+.Person{
+    width: 60%;
+    ....
+}
+
+@media (min-width: 500px) {
+    .Person{
+        width: 450px;
+    }
+}
+--
+
+Any media queries you write will also be scoped to the component you import the styles into using the unique 'localIdentName'.
 
 
 
@@ -94,3 +378,8 @@ Section 5: Styling React Components & Elements
 74. Useful Resources & Links
 ------------------------------------
 
+Using CSS Modules in create-react-app Projects:
+https://medium.com/nulogy/how-to-use-css-modules-with-create-react-app-9e44bec2b5c2
+
+More information about CSS Modules:
+https://github.com/css-modules/css-modules

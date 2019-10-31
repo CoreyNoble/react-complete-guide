@@ -3,18 +3,42 @@ Section 6: Debugging React Apps
 ===============================
 
 ------------------------------------
-75. Module Introduction
-------------------------------------
-
-
-
-
-
-------------------------------------
 76. Understanding Error Messages
 ------------------------------------
 
+When you are writing your application and React flags an error message, this message will take over your browser and will tell you what the type of error it is, and what file/line it is coming from in your application. 
 
+As an example, if I incorrectly point to 'input' instead of 'target' when pulling information out of my 'event' object, we see the following: 
+--
+app.js
+--
+person.name = event.input.value
+--
+
+--
+BROWSER
+--
+TypeError: Cannot read property 'value' of undefined
+
+App._this.nameChangedHandler
+src/App.js:27
+
+> 27 | person.name = event.input.value;
+--
+
+In the example above, I incorrectly set the 'name' of my person object to 'event.input.value'. React does not recognize this and so it throws an error:
+(TypeError: Cannot read property 'value' of undefined)
+
+'input' is not a property of the 'event' object. So React flagged this error because 'input' is undefined, and 'undefined' does not have a 'value' property that we can pull from.
+
+React shows me where in my application this error occured, first it shows me the event the error occurs in:
+(App._this.nameChangedHandler)
+
+And it shows me in which file, and on which line the error occurs:
+(src/App.js:27)
+
+
+With this knowledge, we can immediately look at the line of the file that contains the error that React flagged to us. It also gives us an idea of the type of error React is experiencing, which helps us narrow down the cause of the error.
 
 
 

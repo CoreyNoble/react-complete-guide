@@ -3,7 +3,7 @@ Section 4: Working with Lists and Conditionals
 ==============================================
 
 ------------------------------------
-52. Rendering Content Conditionally
+53. Rendering Content Conditionally
 ------------------------------------
 
 Let's say when we click a button, We want to show/hide some content.
@@ -51,7 +51,7 @@ With this approach, the HTML is not rendered onto the page until the condition i
 
 
 ------------------------------------
-53. Handling Dynamic Content "The JavaScript Way"
+54. Handling Dynamic Content "The JavaScript Way"
 ------------------------------------
 
 As our application grows, and as we add more nested conditions, it can be hard to keep track of which expressions are responsible for what. There is a cleaner way to approach this.
@@ -89,70 +89,221 @@ Now when the component is rendered, initially 'persons' is 'null', so nothing wi
 
 
 ------------------------------------
-55. Outputting Lists
+56. Outputting Lists
 ------------------------------------
 
+To dynamically render all of the objects in your state, you can output each item by mapping over each array item in the state object (this.state.property.map()). 
 
+Then when you return inside of the map function, you can output JSX for each item in the array:
+--
+{this.state.persons.map(person => {
+    return <Person
+            name={person.name}
+            age={person.age} />
+})}
+--
 
-
-
-------------------------------------
-56. Lists & State
-------------------------------------
-
-
-
-
-
-------------------------------------
-57. Updating State Immutably
-------------------------------------
-
-
+In the example above, I map over each 'persons' object in the state. For each item (person) I return a <Person /> component with the properties of that object in the state passed into it.
+(eg. <Person name={person.name} age={person.age} />).
 
 
 
 ------------------------------------
-58. Lists & Keys
+57. Lists & State
 ------------------------------------
 
+If we want to manipulate the state for the given item in a list, we do so by first passing in the index of the array item as we map over the array. 
 
+Then we pass that index into the method we call, and inside of the method, we use that index to manipulate the array item.
 
+--
+deletePersonHandler = (personIndex) => {
+    const persons = this.state.persons;
+    persons.splice(personIndex, 1);
+    this.setState({persons: persons});
+}
 
+{this.state.persons.map((person, index) => {
+    return <Person
+            click={() => this.deletePersonHandler(index)}
+            name={person.name}
+            age={person.age} />
+})}
+--
 
-------------------------------------
-59. Flexible Lists
-------------------------------------
+In the example above, we '.map()' over 'this.state.persons'. Each item (person) in the array renders a new <Person /> component. We pass in the 'index' of the array item as we '.map()' over the array. 'index' is a property in the array that tracks the current item that is bieng mapped.
 
+Then we pass a 'click' property into the <Person /> component. The 'click' property references our 'deletePersonHandler()' method. We create an arrow function when pointing to our method to ensure the 'this' keyword keeps its context at runtime, and we pass the index into the method.
+( eg. click={() => this.deletePersonHandler(index)} )
 
+When the 'click' property is handled inside of the <Person /> component, the 'deletePersonHandler(index)' method is executed. Inside of the method, the 'index' we pass in is deleted from the array using 'splice(index, 1)'. 
 
+'splice(index, 1)' goes to the 'index' in the array, removes that '1' item, then returns the array.
 
-
-------------------------------------
-60. Wrap Up
-------------------------------------
-
-
-
-
-
-------------------------------------
-Assignment 2: Time to Practice - Lists & Conditionals
-------------------------------------
-
-
-
-
-
-------------------------------------
-61. [OPTIONAL] Assignment Solution
-------------------------------------
-
-
+Once the array has been spliced, we then update the state ( this.setState({persons: persons}) ), which deletes the item in the 'state.
 
 
 
 ------------------------------------
-62. Useful Resources & Links
+58. Updating State Immutably
 ------------------------------------
 
+The problem with the approach we used to update the state in the previous lesson is that we mutated the original state when we updated it.
+
+State is a JavaScript object, and JavaScript objects/arrays are reference types. So in the last lesson when we created a variable from the state and updated it, the variable was referencing the original state, it did not copy the state.
+
+When we updated the state in that variable, we updated the original 'state' object. This is a bad practice as it can cause adverse side effects when we're developing/using our application. The better approach to updating 'state' is to first copy the 'state' object, then update it.
+
+There are a couple of ways to do this, one way is by using the .slice() method when we reference the 'state' object. .slice() copies the original object/array and then creates a new object/array based on the copied array, then it slices out item(s) specified in the paramaters you pass into the .slice() method. 
+
+If we use .slice() without passing any paramaters, it effectively copies the original data without removing anything from it:
+--
+const persons = this.state.persons.slice();
+--
+
+The more standard approach is to use the es6 spread operator (...). The spread operator will copy all of the items from an object/array and will spread them into a new object/array:
+--
+const persons = [...this.state.persons];
+--
+
+Using either of the approaches above will ensure that you never directly mutate the original data in an object/array.
+
+
+
+------------------------------------
+59. Lists & Keys
+------------------------------------
+
+When you render a list of elements in React (eg. using .map() to output a list of JSX elements), you should pass a 'key' property with a unique value into each element. 
+
+'key' is a default property that React expects to find on elements in a rendered list, no matter if it's through custom components, or default HTML elements.
+
+React uses a 'Virtual DOM', which it compares to the real DOM when deciding what it needs to update when state/props change. React does not deeply inspect the DOM as that would be very inefficient, so when React is looking to update a list, it does not know how the list items differ, it just sees the top-level elements in that list.
+
+When React needs to update a list, if the 'key' property is not passed with a unique value for each element in the list, then by default React will re-render the entire list. This is very inefficient, especially for large lists.
+
+When the 'key' property is passed into a rendered list and state/props change on an item in that list, React will only update the item that changed, it will not re-render the entire list.
+
+So what should we use as values in our 'key' property? Anything that is unique to that item in the list, and will never change.
+
+A BAD example of 'key' would be to use the index of the item in the array, as if that array changes, the index for each item may shift, which would make React re-render the entire list.
+
+GOOD examples of 'key' would be:
+- Unique ID passed in through a table in a database.
+- Unique ID passed in through data in an API response.
+- Unique ID you create yourself (carefully, making sure you never duplicate yourself).
+
+
+
+------------------------------------
+60. Flexible Lists
+------------------------------------
+
+The code below shows you how to create truly flexible lists by using the unique 'id' in the state for an item, to only manipulate the data for that item in the state:
+
+--
+Person.js
+--
+<div className="Person">
+    <p>I'm {props.name} and I am {props.age} years old.</p>
+
+    <input type="text" onChange={props.changed} value={props.name} />
+</div>
+--
+
+--
+App.js
+--
+state = {
+    persons: [
+        { id: 'aaa', name: 'Corey', age: 26 },
+        { id: 'bbb', name: 'Kaitlin', age: 26 },
+        { id: 'ccc', name: 'Kyle', age: 21 },
+    ],
+    showPersons: false
+}
+
+nameChangedHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => {
+        return p.id === id;
+    });
+
+    const person = {
+        ...this.state.persons[personIndex]
+    };
+
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+    
+    this.setState({persons: persons});
+}
+
+if (this.state.showPersons) {
+    persons = (<Person
+        name={person.name}
+        age={person.age}
+        key={person.id}
+        changed={(event) => this.nameChangedHandler(event, person.id)}
+    );
+}
+--
+
+In the example above, first we provide a 'changed' property to the <Person /> component which references the 'nameChangedHandler()' method, and passes in both the 'event', and the 'id' for that item.
+
+We can pass in 'person.id' because it is a property being made avaiable to us through the '.map()' method from our state. We make the reference to the method using an arrow function in-order to pass the event into the method:
+--
+( changed={(event) => this.nameChangedHandler(event, person.id)} ).
+--
+
+
+Next, in 'nameChangedHandler()', we want to update the state, but only for the person into which <input> field we typed. We find that 'personIndex' by creating a constant which reaches out to the state and uses the 'findIndex()' method to loop through the array, and find the item with '.id' property that matches the 'id' we passed into the 'nameChangedHandler(event, id)' method:
+--
+const personIndex = this.state.persons.findIndex(p => {
+    return p.id === id;
+})
+--
+
+
+Now that we have the 'personIndex', we then get the item at that index in the array by creating a new 'person' constant, and distributing (...) all of the properties into 'person' (does not mutate the original state):
+--
+const person = {
+    ...this.state.persons[personIndex]
+};
+--
+
+
+Now that we have our 'person', we update the 'name' property using the value passed in by the event:
+--
+person.name = event.target.value;
+--
+
+
+Then we update the array at the index we fetched by first creating a new copy of the state into a 'persons' constant and spreading (...) in the array from the state.
+
+Then we set the new value in 'persons[personIndex]' to be equal to 'person':
+--
+const persons = [...this.state.persons];
+persons[personIndex] = person;
+--
+
+
+Finally, we update the 'persons' array in the state by copying in our new 'persons' object:
+--
+this.setState({persons: persons});
+--
+
+The approach used in this lesson is the best way to ensure we're creating flexible lists in React. We're only updating the list item that changed, which makes React more efficient when it re-renders the DOM. We're also always using copies of objects/arrays and are ensuring we never directly mutate the original object/array.
+
+
+
+------------------------------------
+63. Useful Resources & Links
+------------------------------------
+
+Conditional Rendering:
+https://reactjs.org/docs/conditional-rendering.html
+
+Lists & Keys:
+https://reactjs.org/docs/lists-and-keys.html
