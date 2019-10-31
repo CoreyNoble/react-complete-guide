@@ -147,7 +147,47 @@ Radium requires us to wrap the sudo selector in single quotation marks (''). Thi
 68. Using Radium for Media Queries
 ------------------------------------
 
+If you want to use media queries with Radium, there is an extra step you need to do to make this work.
 
+You need to import the named 'StyleRoot' export from 'radium' into your 'App.js' file, and wrap your application inside of a <StyleRoot>....</StyleRoot> higher-order component:
+--
+App.Js
+--
+import Radium, { StyleRoot } from 'radium';
+
+return (
+    <StyleRoot>
+        <div className="App">
+            ....
+        </div>
+    </StyleRoot>
+);
+--
+
+-- 
+Person.Js
+--
+import Radium from 'radium';
+
+const style = {
+    '@media (min-width: 500px)': {
+        width: '450px'
+    }
+}
+
+<div className="Person" style={style}>
+    ....
+</div>
+
+
+export default Radium(person);
+--
+
+In the example above, in our 'App.js' file we import 'StyleRoot' from 'radium', Then we wrap our JSX in <StyleRoot>....</StyleRoot>. With that set up, we can then use media queries in our application where we use Radium.
+
+Next in 'Person.js' we use a media query in our 'style' constant, which is applied as an inline style to an element. 
+
+Similar to using sudo selectors, media queries using Radium are also objects {}, which we nest css properties inside of to change our element when the query is in effect.
 
 
 
