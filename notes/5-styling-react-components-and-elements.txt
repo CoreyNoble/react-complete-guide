@@ -346,12 +346,31 @@ Then when the <button> is toggled and the state for 'showPersons' is true, we eq
 With this in-place, we have initial styles set for the <button>, including ':hover'. And when 'Red' is applied as a class to the <button>, we also style for that case, also including ':hover'.
 
 
+If you were to look at the class in the browser inspector, you will see that CSS modules is also using these unique IDs we set up using 'localIdentName' for nested classes (eg. 'App__Red__2T8IA').
+
 
 ------------------------------------
 73. Working with Media Queries
 ------------------------------------
 
+Media queries also work with CSS modules using standard CSS syntax:
+--
+Person.css
+--
 
+.Person{
+    width: 60%;
+    ....
+}
+
+@media (min-width: 500px) {
+    .Person{
+        width: 450px;
+    }
+}
+--
+
+Any media queries you write will also be scoped to the component you import the styles into using the unique 'localIdentName'.
 
 
 
