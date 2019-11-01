@@ -96,7 +96,16 @@ Now that I've figured out where the error exists in the code, and why it is an e
 80. Working with the React Developer Tools
 ------------------------------------
 
+Sometimes you want to know the current 'state' or 'props' of your react app. To see this in our browser, you can install an extension in Chrome called 'React Developer Tools':
+https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en
 
+With this extension added to and enabled in Chrome, using the Chrome Developer Tools you can now open the 'React' tab.
+
+With this tab open, we can see our React app as we created it. The markup shown is shown as components, rather than compiled HTML.
+
+We can select 'Highlight Updates' to have the browser highlight items as they change.
+
+When we select elements in the markup window, we can see the 'state' and 'props' that are tied to that element in a child window. As we change the 'state' or 'props' in our application (eg. remove an item), we will see the 'state' and 'props' update in the child window for the selected element.
 
 
 
