@@ -3,7 +3,7 @@ Section 6: Debugging React Apps
 ===============================
 
 ------------------------------------
-76. Understanding Error Messages
+77. Understanding Error Messages
 ------------------------------------
 
 When you are writing your application and React flags an error message, this message will take over your browser and will tell you what the type of error it is, and what file/line it is coming from in your application. 
@@ -43,7 +43,7 @@ With this knowledge, we can immediately look at the line of the file that contai
 
 
 ------------------------------------
-77. Finding Logical Errors by using Dev Tools & Sourcemaps
+78. Finding Logical Errors by using Dev Tools & Sourcemaps
 ------------------------------------
 
 Sometimes React will not flag errors to you in the brower if the error created is seen as legitimate syntax. 
@@ -93,7 +93,7 @@ Now that I've figured out where the error exists in the code, and why it is an e
 
 
 ------------------------------------
-78. The React Developer Tools
+80. Working with the React Developer Tools
 ------------------------------------
 
 
@@ -101,7 +101,7 @@ Now that I've figured out where the error exists in the code, and why it is an e
 
 
 ------------------------------------
-79. Working with the React Developer Tools
+81. Using Error Boundaries (React 16+)
 ------------------------------------
 
 
@@ -109,7 +109,7 @@ Now that I've figured out where the error exists in the code, and why it is an e
 
 
 ------------------------------------
-80. Using Error Boundaries (React 16+)
+82. Wrap Up
 ------------------------------------
 
 
@@ -117,14 +117,6 @@ Now that I've figured out where the error exists in the code, and why it is an e
 
 
 ------------------------------------
-81. Wrap Up
-------------------------------------
-
-
-
-
-
-------------------------------------
-82. Useful Resources & Links
+83. Useful Resources & Links
 ------------------------------------
 
