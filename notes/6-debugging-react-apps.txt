@@ -3,7 +3,7 @@ Section 6: Debugging React Apps
 ===============================
 
 ------------------------------------
-76. Understanding Error Messages
+77. Understanding Error Messages
 ------------------------------------
 
 When you are writing your application and React flags an error message, this message will take over your browser and will tell you what the type of error it is, and what file/line it is coming from in your application. 
@@ -43,46 +43,141 @@ With this knowledge, we can immediately look at the line of the file that contai
 
 
 ------------------------------------
-77. Finding Logical Errors by using Dev Tools & Sourcemaps
+78. Finding Logical Errors by using Dev Tools & Sourcemaps
 ------------------------------------
 
+Sometimes React will not flag errors to you in the brower if the error created is seen as legitimate syntax. 
 
+An example of this would be if you're checking if a property that you've incorrectly named is equal to something else. This would not flag an error in the browser because the incorrectly named property would be seen as 'undefined', which can be compared to other values:
+--
+p.userId === id;
+--
+
+In the example above, if there is no such thing 'userId' property in 'p', then the comparison we're making is 'underfined === id', which is valid syntax. This error would not be shown in the browser, as React does not know that this is incorrect.
+
+This will cause errors in our application however, and in-order to de-bug this error, we first can open the 'Sources' tab in our developer tools for Chrome or the 'Debugger' tab in Firefox.
+
+In this tab, you will see your entire applications file structure in its current state. This is made possible while developing your application with a feature called Source Maps.
+
+*Note* When you build your application for Production, Source Maps will not be included.
+
+Source Maps allow you to go into the code you write in your browser to help you de-bug errors. We can begin to de-bug our application by first creating a break-point in our code where we wish to start tracking the behaviour of the code. For example, I would create a break-point on the function that's not working the way I would expect it to.
+
+With a breakpoint created, you can re-fresh the page, and the code will pause its execution as soon as it hits the break-point you created.
+
+When you've hit the break-point, you then have options to:
+
+Play/Pause: 
+- Toggle the execution of the code.
+
+Step Over:
+- Proceeds to the next line in your current scope (goes to the next line), without descending into any method calls on the way. This is generally used for following the logic through a particular method without worrying about the details of its collaborators, and can be useful for finding at what point in a method the expected conditions are violated.
+
+Step Into:
+- Descend into any method calls on the current line. If there are multiple method calls, they'll be visited in order of execution; if there are no method calls, this is same as step over. This is broadly equivalent to following every individual line of execution as would be seen by the interpreter.
+
+Step Out:
+- proceeds until the next "return" or equivalent - i.e. until control has returned to the preceding stack frame. This is generally used when you've seen all you need to at this point/method, and want to bubble up the stack a few layers to where the value is actually used.
+
+
+To de-bug our function, I typically 'Step Into' the code step by step after hitting the break-point. 
+
+As I do this, if I reach a point in the code execution where I know a value should be read in a certain way (eg. 'p.userId' should be a string of characters), then I will hover over that part of the code to confirm whether or not the value is as I expect it should be.
+
+If I see a value that I am not expecting to see (eg 'userId' is 'undefined'), then I can begin to deduce why this is the case.
+
+In this case, 'userId' is not a property of 'p', so I am getting 'undefined' on 'userId' because 'userId' does not exist. I can confirm this by hovering over 'p', which shows me all of the properties available on 'p', none of which are 'userId'.
+
+Now that I've figured out where the error exists in the code, and why it is an error, I can go back into the codebase and resolve the issue.
 
 
 
 ------------------------------------
-78. The React Developer Tools
+80. Working with the React Developer Tools
 ------------------------------------
 
+Sometimes you want to know the current 'state' or 'props' of your react app. To see this in our browser, you can install an extension in Chrome called 'React Developer Tools':
+https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en
 
+With this extension added to and enabled in Chrome, using the Chrome Developer Tools you can now open the 'React' tab.
 
+With this tab open, we can see our React app as we created it. The markup shown is shown as components, rather than compiled HTML.
 
+We can select 'Highlight Updates' to have the browser highlight items as they change.
 
-------------------------------------
-79. Working with the React Developer Tools
-------------------------------------
-
-
-
-
-
-------------------------------------
-80. Using Error Boundaries (React 16+)
-------------------------------------
-
-
+When we select elements in the markup window, we can see the 'state' and 'props' that are tied to that element in a child window. As we change the 'state' or 'props' in our application (eg. remove an item), we will see the 'state' and 'props' update in the child window for the selected element.
 
 
 
 ------------------------------------
-81. Wrap Up
+81. Using Error Boundaries (React 16+)
 ------------------------------------
 
+Sometimes you have code which might fail at runtime, In these cases you want to show an error message. 
 
+We can log errors by throwing an 'Error' inside of our application where the error is expected to take place within the logic of our code:
+--
+Person.js
+--
+throw new Error('Something went wrong!');
+--
+
+The example above is good for showing us errors during development as this error would take over the browser when thrown.
+
+If we want to show an error message within our working application, we can do so by setting up an higher-order component, which will catch the 'Error' and its message, and output the error within our application:
+--
+ErrorBoundary.js
+--
+import React, { Component } from 'react';
+
+class ErrorBoundary extends Component{
+    state = {
+        hasError: false,
+        errorMessage: ''
+    }
+
+    componentDidCatch = (error, info) => {
+        this.setState({hasError: true, errorMessage: error});
+    }
+
+    render(){
+        if (this.state.hasError){
+            return <h1>{this.state.errorMessage}</h1>;
+        } else {
+            return this.props.children;
+        }
+    }
+}
+
+export default ErrorBoundary;
+--
+
+--
+App.js
+--
+....
+<ErrorBoundary>
+    <Person
+        ....>
+</ErrorBoundary>
+--
+
+In the example above, we create a higher-order <ErrorBoundary> component that will wrap the part of our application that might need to output an error. 
+
+Within the logic of <ErrorBoundary> it either does or does 'hasError' (managed through 'state'). If the error is not present, it displays the children that <ErrorBoundary> is wrapping. 
+
+If the error is present, this is caught by the 'ComponentDidCatch' lifecycle method, it sets the state accordingly (hasError: true, errorMessage: error), and it outputs the 'Error' message that it recieves. instead of outputting the children.
+
+*Note* - If <ErrorBoundary> (or any other higher-order component) is wrapping a list that is returned through a method on an object/array (eg. .map()). Then the 'key' property needs to be output on the outer-most wrapping element for each list item.
 
 
 
 ------------------------------------
-82. Useful Resources & Links
+83. Useful Resources & Links
 ------------------------------------
 
+Error Boundaries:
+https://reactjs.org/docs/error-boundaries.html
+
+Chrome Devtool Debugging:
+https://developers.google.com/web/tools/chrome-devtools/javascript/
