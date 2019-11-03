@@ -173,14 +173,6 @@ If the error is present, this is caught by the 'ComponentDidCatch' lifecycle met
 
 
 ------------------------------------
-82. Wrap Up
-------------------------------------
-
-
-
-
-
-------------------------------------
 83. Useful Resources & Links
 ------------------------------------
 
