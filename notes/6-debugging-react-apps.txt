@@ -113,7 +113,62 @@ When we select elements in the markup window, we can see the 'state' and 'props'
 81. Using Error Boundaries (React 16+)
 ------------------------------------
 
+Sometimes you have code which might fail at runtime, In these cases you want to show an error message. 
 
+We can log errors by throwing an 'Error' inside of our application where the error is expected to take place within the logic of our code:
+--
+Person.js
+--
+throw new Error('Something went wrong!');
+--
+
+The example above is good for showing us errors during development as this error would take over the browser when thrown.
+
+If we want to show an error message within our working application, we can do so by setting up an higher-order component, which will catch the 'Error' and its message, and output the error within our application:
+--
+ErrorBoundary.js
+--
+import React, { Component } from 'react';
+
+class ErrorBoundary extends Component{
+    state = {
+        hasError: false,
+        errorMessage: ''
+    }
+
+    componentDidCatch = (error, info) => {
+        this.setState({hasError: true, errorMessage: error});
+    }
+
+    render(){
+        if (this.state.hasError){
+            return <h1>{this.state.errorMessage}</h1>;
+        } else {
+            return this.props.children;
+        }
+    }
+}
+
+export default ErrorBoundary;
+--
+
+--
+App.js
+--
+....
+<ErrorBoundary>
+    <Person
+        ....>
+</ErrorBoundary>
+--
+
+In the example above, we create a higher-order <ErrorBoundary> component that will wrap the part of our application that might need to output an error. 
+
+Within the logic of <ErrorBoundary> it either does or does 'hasError' (managed through 'state'). If the error is not present, it displays the children that <ErrorBoundary> is wrapping. 
+
+If the error is present, this is caught by the 'ComponentDidCatch' lifecycle method, it sets the state accordingly (hasError: true, errorMessage: error), and it outputs the 'Error' message that it recieves. instead of outputting the children.
+
+*Note* - If <ErrorBoundary> (or any other higher-order component) is wrapping a list that is returned through a method on an object/array (eg. .map()). Then the 'key' property needs to be output on the outer-most wrapping element for each list item.
 
 
 
