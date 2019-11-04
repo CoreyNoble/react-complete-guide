@@ -3,7 +3,52 @@ Section 7: Diving Deeper into Components & React Internals
 ==========================================================
 
 ------------------------------------
-84. A Better Project Structure
+85. A Better Project Structure
+------------------------------------
+
+In previous examples we organized components in a sub-optimal way. Ideally we should re-organize our file structure to follow a convention, in-order make it easier to navigate through and find files in our application.
+
+The standard approach would look something like:
+--
+/src/index.js
+/src/App.js
+/src/assets/....
+/src/components/Persons/Persons.js
+/src/components/Persons/Person/Person.js
+/src/containers/....
+/src/hoc/....
+/src/hooks/....
+/src/shared/....
+/src/store/actions/....
+/src/store/reducers/....
+/src/store/sagas/....
+--
+
+The primary files in the application (App, index, ...) should be in the root of the /src/ folder.
+
+Assets (eg. Images, Documents, ...) Should be placed inside of an /assets/ folder.
+
+Components should be placed inside of a /components/ folder, and nested inside of eachother when it makes sense (eg. /Person/ inside of /Persons/).
+
+Containing components should be placed inside of a /containers/ folder.
+
+Higher-order components should be placed inside of an /hoc/ folder.
+
+Custom Hooks should be placed in a /hooks/ folder.
+
+Shared functionality (eg. utility.js) should be put in a /shared/ folder.
+
+Anything to do with a global store (eg. Redux) should be placed inside of a /store/ folder.
+
+We should be compartmentalizing our application where we can, to enure every file serves only one purpose, which helps keep our application modular, manageable, and extendable.
+
+
+When finished re-organizing the project structure, we need to ensure every file that imports a component has that path adjusted to match the new location of that file.
+
+
+
+------------------------------------
+86. Splitting an App Into Components
 ------------------------------------
 
 
@@ -11,7 +56,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-85. Splitting an App Into Components
+87. Comparing Stateless and Stateful Components
 ------------------------------------
 
 
@@ -19,7 +64,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-86. Comparing Stateless and Stateful Components
+88. Class-based vs Functional Components
 ------------------------------------
 
 
@@ -27,7 +72,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-87. Class-based vs Functional Components
+89. class Component Lifecycle Overview
 ------------------------------------
 
 
@@ -35,7 +80,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-88. class Component Lifecycle Overview
+90. Component Creation Lifecycle in Action
 ------------------------------------
 
 
@@ -43,7 +88,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-89. Component Creation Lifecycle in Action
+91. Component Update Lifecycle (for props Changes)
 ------------------------------------
 
 
@@ -51,7 +96,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-90. Component Update Lifecycle (for props Changes)
+92. Component Update Lifecycle (for state Changes)
 ------------------------------------
 
 
@@ -59,7 +104,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-91. Component Update Lifecycle (for state Changes)
+93. Using useEffect() in Functional Components
 ------------------------------------
 
 
@@ -67,7 +112,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-92. Using useEffect() in Functional Components
+94. Controlling the useEffect() Behavior
 ------------------------------------
 
 
@@ -75,7 +120,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-93. Controlling the useEffect() Behavior
+95. Cleaning up with Lifecycle Hooks & useEffect()
 ------------------------------------
 
 
@@ -83,7 +128,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-94. Cleaning up with Lifecycle Hooks & useEffect()
+96. Cleanup Work with useEffect() - Ex
 ------------------------------------
 
 
@@ -91,7 +136,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-95. Cleanup Work with useEffect() - Ex
+97. Using shouldComponentUpdate for Optimization
 ------------------------------------
 
 
@@ -99,7 +144,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-96. Using shouldComponentUpdate for Optimization
+98. Optimizing Functional Components with React.memo()
 ------------------------------------
 
 
@@ -107,7 +152,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-97. Optimizing Functional Components with React.memo()
+99. When should you optimize?
 ------------------------------------
 
 
@@ -115,7 +160,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-98. When should you optimize?
+100. PureComponents instead of shouldComponentUpdate
 ------------------------------------
 
 
@@ -123,7 +168,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-99. PureComponents instead of shouldComponentUpdate
+101. How React Updates the DOM
 ------------------------------------
 
 
@@ -131,7 +176,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-100. How React Updates the DOM
+102. Rendering Adjacent JSX Elements
 ------------------------------------
 
 
@@ -139,7 +184,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-101. Rendering Adjacent JSX Elements
+103. Windows Users Must Read
 ------------------------------------
 
 
@@ -147,7 +192,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-102. Windows Users Must Read
+104. Using React.Fragment
 ------------------------------------
 
 
@@ -155,7 +200,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-103. Using React.Fragment
+105. Higher Order Components (HOC) - Introduction
 ------------------------------------
 
 
@@ -163,7 +208,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-104. Higher Order Components (HOC) - Introduction
+106. Another Form of HOCs
 ------------------------------------
 
 
@@ -171,7 +216,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-105. Another Form of HOCs
+107. Passing Unknown Props
 ------------------------------------
 
 
@@ -179,7 +224,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-106. Passing Unknown Props
+108. Setting State Correctly
 ------------------------------------
 
 
@@ -187,7 +232,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-107. Setting State Correctly
+109. Using PropTypes
 ------------------------------------
 
 
@@ -195,7 +240,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-108. Using PropTypes
+110. Using Refs
 ------------------------------------
 
 
@@ -203,7 +248,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-109. Using Refs
+111. Refs with React Hooks
 ------------------------------------
 
 
@@ -211,7 +256,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-110. Refs with React Hooks
+112. Understanding Prop Chain Problems
 ------------------------------------
 
 
@@ -219,7 +264,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-111. Understanding Prop Chain Problems
+113. Using the Context API
 ------------------------------------
 
 
@@ -227,7 +272,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-112. Using the Context API
+114. contextType & useContext()
 ------------------------------------
 
 
@@ -235,7 +280,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-113. contextType & useContext()
+115. Wrap Up
 ------------------------------------
 
 
@@ -243,14 +288,6 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-114. Wrap Up
-------------------------------------
-
-
-
-
-
-------------------------------------
-115. Useful Resources & Links
+116. Useful Resources & Links
 ------------------------------------
 
