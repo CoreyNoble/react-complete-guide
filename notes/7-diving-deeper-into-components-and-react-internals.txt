@@ -40,8 +40,6 @@ Shared functionality (eg. utility.js) should be put in a /shared/ folder.
 
 Anything to do with a global store (eg. Redux) should be placed inside of a /store/ folder.
 
-We should be compartmentalizing our application where we can, to enure every file serves only one purpose, which helps keep our application modular, manageable, and extendable.
-
 
 When finished re-organizing the project structure, we need to ensure every file that imports a component has that path adjusted to match the new location of that file.
 
@@ -51,7 +49,41 @@ When finished re-organizing the project structure, we need to ensure every file 
 86. Splitting an App Into Components
 ------------------------------------
 
+We should be splitting up our application as often as we can, to enure every component serves only one purpose. Doing so will keep our application modular, manageable, flexible and scalable. We keep as many of these components stateless as possible to ensure we can control the data flow in as few locations as possible.
 
+An example of this would be if you're adding a list of 'Persons' inside of your app, you can create a 'Persons.js' component which would handle the list, 'props' for each item in the list, and passing data on each item back up to the file that controls the state and event handlers (App.js):
+--
+Persons.js
+--
+import React from 'react';
+import Person from './Person/Person';
+
+const persons = (props) => props.persons.map((person, index) => {
+    return <Person 
+        click={() => props.clicked(index)}
+        name={person.name}
+        age={person.age}
+        key={person.id}
+        changed={(event) => props.changed(event,person.id)}
+});
+
+export default persons;
+--
+
+--
+App.js
+--
+....
+
+<Persons 
+    persons={this.state.persons}
+    clicked={this.deletePersonHandler}
+    changed={this.nameChangedHandler} />
+--
+
+In the example above, 'Persons.js' now handles the mapping for each list item (<Person>), the 'props' for each item, and passing data back up to the stateful component (App.js). 
+
+In 'App.js', <Persons> outputs each <Person> and handles the 'state' and event handlers.
 
 
 
