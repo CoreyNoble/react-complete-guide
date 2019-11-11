@@ -3,63 +3,405 @@ Section 7: Diving Deeper into Components & React Internals
 ==========================================================
 
 ------------------------------------
-83. Module Introduction
+85. A Better Project Structure
 ------------------------------------
 
+In previous examples we organized components in a sub-optimal way. Ideally we should re-organize our file structure to follow a convention, in-order make it easier to navigate through and find files in our application.
 
+The standard approach would look something like:
+--
+/src/index.js
+/src/App.js
+/src/assets/....
+/src/components/Persons/Persons.js
+/src/components/Persons/Person/Person.js
+/src/containers/....
+/src/hoc/....
+/src/hooks/....
+/src/shared/....
+/src/store/actions/....
+/src/store/reducers/....
+/src/store/sagas/....
+--
 
+The primary files in the application (App, index, ...) should be in the root of the /src/ folder.
 
+Assets (eg. Images, Documents, ...) Should be placed inside of an /assets/ folder.
 
-------------------------------------
-84. A Better Project Structure
-------------------------------------
+Components should be placed inside of a /components/ folder, and nested inside of eachother when it makes sense (eg. /Person/ inside of /Persons/).
+
+Containing components should be placed inside of a /containers/ folder.
+
+Higher-order components should be placed inside of an /hoc/ folder.
+
+Custom Hooks should be placed in a /hooks/ folder.
+
+Shared functionality (eg. utility.js) should be put in a /shared/ folder.
 
+Anything to do with a global store (eg. Redux) should be placed inside of a /store/ folder.
 
 
+When finished re-organizing the project structure, we need to ensure every file that imports a component has that path adjusted to match the new location of that file.
 
 
+
 ------------------------------------
-85. Splitting an App Into Components
+86. Splitting an App Into Components
 ------------------------------------
+
+We should be splitting up our application as often as we can, to enure every component serves only one purpose. Doing so will keep our application modular, manageable, flexible and scalable. 
+
+We keep as many of these components stateless as possible to ensure we can control the data flow in as few locations as possible.
+
+An example of this would be if you're adding a list of 'Persons' inside of your app, you can create a 'Persons.js' component which would handle the list, 'props' for each item in the list, and passing data on each item back up to the file that controls the state and event handlers (App.js):
+--
+Persons.js
+--
+import React from 'react';
+import Person from './Person/Person';
+
+const persons = (props) => props.persons.map((person, index) => {
+    return <Person 
+        click={() => props.clicked(index)}
+        name={person.name}
+        age={person.age}
+        key={person.id}
+        changed={(event) => props.changed(event,person.id)}
+});
+
+export default persons;
+--
 
+--
+App.js
+--
+....
 
+<Persons 
+    persons={this.state.persons}
+    clicked={this.deletePersonHandler}
+    changed={this.nameChangedHandler} />
+--
 
+In the example above, 'Persons.js' now handles the mapping for each list item (<Person>), the 'props' for each item, and passing data back up to the stateful component (App.js). 
 
+In 'App.js', <Persons> outputs each <Person> and handles the 'state' and event handlers.
 
+
+
 ------------------------------------
-86. Comparing Stateless and Stateful Components
+87. Comparing Stateless and Stateful Components
 ------------------------------------
+
+When referring to Stateful components (Also called Smart or Container components) it means it's a componnt that manages state. 
+
+Historically, in-order to gain access to the 'state' object inside of a React component it needed to be inside of class based component that 'extends Component'. The 'Component' class gives us access to the 'state' object, and the 'setState()' method.
+
+With React 16+ we can now manage state with react Hooks (shown later in the course), but since all legacy applications will use class based components, below is an example of a Stateful component using the class based approach:
+--
+class App extends Component {
+    state = {
+        ....
+    }
+
+    ....
+        this.setState({ .... });
+    ....
+}
+--
 
+In the example above, the 'state' sets the data and its initial values inside of the application, then later on when we manipulate the state, we use the 'setState()' method.
 
 
+Stateless components (also called Presentational, Functional or Dumb components) are components that do not manage state.
 
 
+You should restrict the amount of components in the application that manage state, using as many Stateless components as possible. Doing so helps ensure there is a minimal amount of locations that manage the data of the application. This helps keep your application understandable, manageable, flexible, and scalable. 
+
+Typically an application consists of containers that pull in the components that are relevant to a given section of the application. The containers would be Stateful, and all of the components that are pulled into the container would be Stateless.
+
+
+
 ------------------------------------
-87. Class-based vs Functional Components
+88. Class-based vs Functional Components
 ------------------------------------
+
+Class-based components:
+- class XY extends 'Component
+--- Access to State
+--- Lifecycle Hooks
+--- this.state.XY
+--- this.props.XY
+
+Use if you need to manage State or access to Lifecycle Hooks and you don't want to use React Hooks.
 
 
+Functional components:
+- const XY = props => { .... }
+--- (React 16+) - Access to State ('useState()' Hook)
+--- props.XY
 
+Use in all other cases.
 
 
+With React 16+, there is now less of a difference between Class-based and Functional components. Both can manage state in their own way, however, Class-based components have access to Lifecycle Hooks, whereas Functional components do not.
+
+If you are working on a project that is below React 16, functional components would not have access to React Hooks, and therefore, could not manage state.
+
+Additionally, Class-based components require you to use the 'this' keyword when accessing 'state' or 'props', whereas Functional components do not.
+
+
+
 ------------------------------------
-88. class Component Lifecycle Overview
+89. class Component Lifecycle Overview
 ------------------------------------
+
+The 'Component Lifecycle' is only available in Class-based components.
+
+*There is a Functional component equivelant for Lifecycle methods using React Hooks, however, they consolidate most of these methods and are not the same. This will be discussed later on in the course.
+
+The Lifecycle methods available to us in Class-based components are:
+- constructor()
+- getDerivedStateFromProps()
+- getSnapshotBeforeUpdate()
+- componentDidCatch()
+- componentWillUnmount()
+- shouldComponentUpdate()
+- componentDidUpdate()
+- componentDidMount()
+- render()
+
+The methods listed above can be added to any Class-based component. React will execute these methods for us which run at different points of time within the Lifecycle of React.
+
+Examples of use cases for these methods would be to:
+- Fetch some data from the web during a certain point in the Lifecycle.
+- Clean-up some data before an item is removed from the DOM.
+
+So, how exactly can we use them and when in the Lifecycle are these methods executed?:
+
+
+Component Lifecycle - Creation:
+
+1. constructor(props)
+
+When a component is created, first of all, the 'constructor()' executes. This is not actually a React Lifecycle Hook, this is a default ES6 class feature. This 'constructor()' will recieve 'props'.
+
+The 'constructor()' is added by default in any Class-based component, but you can also add your own 'constructor()'. If you're creating your own 'constructor()', inside of it you have to call 'super(props)'.
+
+What is the 'constructor' used for? You can do basic initialization work (eg. setting an initial 'state').
+
+You shouldn't cause side-effects inside of 'constructor()'. Examples that cause side-effects are:
+- Send an HTTP request.
+- Store something in Local Storage.
+- Send Analytics to Google Analytics.
+- ....
+
+Doing so would severly affect performance as it would continually trigger re-render cycles in React.
+
+
+2. getDerivedStateFromProps(props, state)
+
+This is a Lifecycle Hook that has been added since React 16.3. The idea with this Lifecycle Hook is that whenever your props change for your Class-based component, you can sync your 'state' to them.
+
+This is used in very rare and niche cases, you will not use this a lot. But if you have some scenario where props in your component can change, and then you want to update some internal state of that component, this is the hook to use for that.
+
+You shouldn't cause side-effects inside of 'getDerivedStateFromProps()'. Examples that cause side-effects are:
+- Send an HTTP request.
+- Store something in Local Storage.
+- Send Analytics to Google Analytics.
+- ....
 
 
+3. render()
 
+This is the method that returns JSX. You should use this method only to prepare and structure your JSX code (hook up data, render HTML).
 
+When 'render()' executes on any parent component, it will also execute 'render()' on any child components. Only when all of the child 'render()' methods and their Lifecycle Hooks finish, will your parent 'render()' method finish.
 
+
+4. componentDidMount()
+
+In 'componentDidMount()' you CAN cause side-effects.
+
+This is the typical hook you use to make HTTP requests.
+
+You shouldn't update the 'state' synchronously in this method as that would trigger a re-render cycle in React. 
+
+The only acceptable time to update 'state' in 'componentDidMount()' would be inside of the '.then()' of a promise in an asynchronous HTTP request.
+
+
+
 ------------------------------------
-89. Component Creation Lifecycle in Action
+90. Component Creation Lifecycle in Action
 ------------------------------------
+
+1. constructor():
+--
+App.js
+--
+class App extends Component {
+    constructor(props) {
+        super(props);
+        console.log('[App.js] constructor');
+
+        this.state = {
+            ....
+        }
+    }
+}
+--
+
+The example above shows us how we can set up our own 'constructor()' method, which can accept 'props'. 
+
+As noted previously, when we set up our own 'constructor()' method, we need to add 'super()'.
+
+When setting up 'state' in our method, we need to prefix it with the 'this' keyword.
+
+You cannot use 'this.setState()' inside of 'constructor()' because 'state' has not yet been initialized until 'constructor()' is finished, so there is not 'state' to merge with.
+
+When logging the output, you'll see that the console will log '[App.js] constructor' before anything is rendered to the page.
+
+
+*The reason using 'state = {}' outside of 'constructor()' works inside of a Class-based component (as shown in previous examples), is because it is a modern way of initializing 'state'. When doing so, Behind the scenes React executes 'constructor(props){super(props); ....}' by default to initialize the 'state'.
+
+
+2. getDerivedStateFromProps()
+
+After 'constructor()' the first Lifecycle Hook that executes is 'getDerivedStateFromProps()':
+--
+App.js
+--
+constructor(props){
+    ....
+}
+
+state = {
+    ....
+}
+
+static getDerivedStateFromProps(props, state){
+    console.log('[App.js] getDerivedStateFromProps', props)
+    return state;
+}
+--
+
+In the example above, you see that we prefixed the method with 'static' this is required for React to execute this method correctly as it is concidered a 'static' method.
+
+'getDerivedStateFromProps()' takes in 'props' and 'state', and it outputs the updated 'state'.
+
+When logging the output, you'll see that the console will log '[App.js] getDerivedStateFromProps' after the 'constructor()' log.
+
+
+3. render():
+--
+App.js
+--
+constructor(props){
+    ....
+}
+
+state = {
+    ....
+}
+
+static getDerivedStateFromProps(props, state){
+    ....
+}
+
+render() {
+    console.log('[App.js] render');
+
+    <Persons .... />
+}
+--
+
+--
+Persons.js
+--
+const persons = props => {
+    console.log('[Persons.js] rendering..');
+    ....
+}
+--
+
+--
+Person.js
+--
+const person = props => {
+    console.log('[Person.js] rendering...');
+    ....
+}
+--
+
+In the example above, when 'render()' executes on 'App.js', first you will see a log for 'App.js', then it will proceed to 'render()' 'Persons.js', which will then proceed to 'render()' 'Person.js'.
+
+All of these items will be logged in-order, proceeding 'constructor()' and 'getDerivedStateFromProps()'.
+
+When 'render()' is executed, it doesn't nessecarily mean that the DOM will be updated. Instead, React will update the virtual DOM when 'render()' is executed, and will compare the new virtual DOM to the real DOM to determine if it needs to update the real DOM.
+
+
+4. componentDidMount()
+
+Once all of the child components are rendered, then React will proceed into 'componentDidMount()':
+--
+App.js
+--
+constructor(props){
+    ....
+}
+
+state = {
+    ....
+}
+
+static getDerivedStateFromProps(props, state){
+    ....
+}
+
+render(){
+    ....
+}
+
+componentDidMount(){
+    console.log('[App.js]' componentDidMount);
+}
+--
+
+The output above will show the log for 'componentDidMount()' proceeding 'constructor()' then 'getDerivedStateFromProps()', then 'render()'.
+
+
+With all of the above examples in mind, this is what you would see logged in the console when React goes through the Component Creation Lifecycle:
+--
+Browser Console (immediately)
+--
+- [App.js] constructor
+- [App.js] getDerivedStateFromProps {props object}
+- [App.js] render
+- [App.js] componentDidMount
+--
+
+Then, when we create our Persons, the console log will proceed with:
+--
+Browser Console (Adding Persons)
+--
+....
+- [App.js] getDerivedStateFromProps {props object}
+- [App.js] render
+- [Persons.js] rendering..
+- (3) [Person.js] rendering...
+--
+
+The example above shows that '1. constructor()' is only initially executed, followed by all of the other creation Lifecycle methods '2, 3, 4'. Then when React re-renders after the initial page load, '1. constructor()' is skipped and '2, 3, 4' are re-executed.
+
+When '3. render()' also needs to render child components, it will go down the node list of components and executes 'render()' on each child component that is updated on the page.
 
 
+It's also worth highlighting that historically there were other Lifecycle Hooks that are still supported. One of them was 'componentWillMount()'. While these hooks are still suppoted, they were very rarely used, and could be used incorrectly. Therefore, they will be removed in future versions of React.
 
 
 
 ------------------------------------
-90. Component Update Lifecycle (for props Changes)
+91. Component Update Lifecycle (for props Changes)
 ------------------------------------
 
 
@@ -67,7 +409,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-91. Component Update Lifecycle (for state Changes)
+92. Component Update Lifecycle (for state Changes)
 ------------------------------------
 
 
@@ -75,7 +417,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-92. Using useEffect() in Functional Components
+93. Using useEffect() in Functional Components
 ------------------------------------
 
 
@@ -83,7 +425,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-93. Controlling the useEffect() Behavior
+94. Controlling the useEffect() Behavior
 ------------------------------------
 
 
@@ -91,7 +433,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-94. Cleaning up with Lifecycle Hooks & useEffect()
+95. Cleaning up with Lifecycle Hooks & useEffect()
 ------------------------------------
 
 
@@ -99,7 +441,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-95. Cleanup Work with useEffect() - Ex
+96. Cleanup Work with useEffect() - Ex
 ------------------------------------
 
 
@@ -107,7 +449,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-96. Using shouldComponentUpdate for Optimization
+97. Using shouldComponentUpdate for Optimization
 ------------------------------------
 
 
@@ -115,7 +457,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-97. Optimizing Functional Components with React.memo()
+98. Optimizing Functional Components with React.memo()
 ------------------------------------
 
 
@@ -123,7 +465,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-98. When should you optimize?
+99. When should you optimize?
 ------------------------------------
 
 
@@ -131,7 +473,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-99. PureComponents instead of shouldComponentUpdate
+100. PureComponents instead of shouldComponentUpdate
 ------------------------------------
 
 
@@ -139,7 +481,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-100. How React Updates the DOM
+101. How React Updates the DOM
 ------------------------------------
 
 
@@ -147,7 +489,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-101. Rendering Adjacent JSX Elements
+102. Rendering Adjacent JSX Elements
 ------------------------------------
 
 
@@ -155,7 +497,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-102. Windows Users Must Read
+103. Windows Users Must Read
 ------------------------------------
 
 
@@ -163,7 +505,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-103. Using React.Fragment
+104. Using React.Fragment
 ------------------------------------
 
 
@@ -171,7 +513,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-104. Higher Order Components (HOC) - Introduction
+105. Higher Order Components (HOC) - Introduction
 ------------------------------------
 
 
@@ -179,7 +521,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-105. Another Form of HOCs
+106. Another Form of HOCs
 ------------------------------------
 
 
@@ -187,7 +529,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-106. Passing Unknown Props
+107. Passing Unknown Props
 ------------------------------------
 
 
@@ -195,7 +537,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-107. Setting State Correctly
+108. Setting State Correctly
 ------------------------------------
 
 
@@ -203,7 +545,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-108. Using PropTypes
+109. Using PropTypes
 ------------------------------------
 
 
@@ -211,7 +553,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-109. Using Refs
+110. Using Refs
 ------------------------------------
 
 
@@ -219,7 +561,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-110. Refs with React Hooks
+111. Refs with React Hooks
 ------------------------------------
 
 
@@ -227,7 +569,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-111. Understanding Prop Chain Problems
+112. Understanding Prop Chain Problems
 ------------------------------------
 
 
@@ -235,7 +577,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-112. Using the Context API
+113. Using the Context API
 ------------------------------------
 
 
@@ -243,7 +585,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-113. contextType & useContext()
+114. contextType & useContext()
 ------------------------------------
 
 
@@ -251,7 +593,7 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-114. Wrap Up
+115. Wrap Up
 ------------------------------------
 
 
@@ -259,6 +601,6 @@ Section 7: Diving Deeper into Components & React Internals
 
 
 ------------------------------------
-115. Useful Resources & Links
+116. Useful Resources & Links
 ------------------------------------
 
