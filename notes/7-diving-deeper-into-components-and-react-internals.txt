@@ -156,7 +156,78 @@ Additionally, Class-based components require you to use the 'this' keyword when 
 89. class Component Lifecycle Overview
 ------------------------------------
 
+The 'Component Lifecycle' is only available in Class-based components.
 
+*There is a Functional component equivelant for Lifecycle methods using React Hooks, however, they consolidate most of these methods and are not the same. This will be discussed later on in the course.
+
+The Lifecycle methods available to us in Class-based components are:
+- constructor()
+- getDerivedStateFromProps()
+- getSnapshotBeforeUpdate()
+- componentDidCatch()
+- componentWillUnmount()
+- shouldComponentUpdate()
+- componentDidUpdate()
+- componentDidMount()
+- render()
+
+The methods listed above can be added to any Class-based component. React will execute these methods for us which run at different points of time within the Lifecycle of React.
+
+Examples of use cases for these methods would be to:
+- Fetch some data from the web during a certain point in the Lifecycle.
+- Clean-up some data before an item is removed from the DOM.
+
+So, how exactly can we use them and when in the Lifecycle are these methods executed?:
+
+
+Component Lifecycle - Creation:
+
+1. constructor(props)
+
+When a component is created, first of all, the 'constructor()' executes. This is not actually a React Lifecycle Hook, this is a default ES6 class feature. This 'constructor()' will recieve 'props'.
+
+The 'constructor()' is added by default in any Class-based component, but you can also add your own 'constructor()'. If you're creating your own 'constructor()', inside of it you have to call 'super(props)'.
+
+What is the 'constructor' used for? You can do basic initialization work (eg. setting an initial 'state').
+
+You shouldn't cause side-effects inside of 'constructor()'. Examples that cause side-effects are:
+- Send an HTTP request.
+- Store something in Local Storage.
+- Send Analytics to Google Analytics.
+- ....
+
+Doing so would severly affect performance as it would continually trigger re-render cycles in React.
+
+
+2. getDerivedStateFromProps(props, state)
+
+This is a Lifecycle Hook that has been added since React 16.3. The idea with this Lifecycle Hook is that whenever your props change for your Class-based component, you can sync your 'state' to them.
+
+This is used in very rare and niche cases, you will not use this a lot. But if you have some scenario where props in your component can change, and then you want to update some internal state of that component, this is the hook to use for that.
+
+You shouldn't cause side-effects inside of 'getDerivedStateFromProps()'. Examples that cause side-effects are:
+- Send an HTTP request.
+- Store something in Local Storage.
+- Send Analytics to Google Analytics.
+- ....
+
+
+3. render()
+
+This is the method that returns JSX. You should use this method only to prepare and structure your JSX code (hook up data, render HTML).
+
+When 'render()' executes on any parent component, it will also execute 'render()' on any child components. Only when all of the child 'render()' methods and their Lifecycle Hooks finish, will your parent 'render()' method finish.
+
+
+4. componentDidMount()
+
+In 'componentDidMount()' you CAN cause side-effects.
+
+This is the typical hook you use to make HTTP requests.
+
+You shouldn't update the 'state' synchronously in this method as that would trigger a re-render cycle in React. 
+
+The only acceptable time to update 'state' in 'componentDidMount()' would be inside of the '.then()' of a promise in an asynchronous HTTP request.
 
 
 
