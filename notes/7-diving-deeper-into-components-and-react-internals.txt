@@ -126,7 +126,29 @@ Typically an application consists of containers that pull in the components that
 88. Class-based vs Functional Components
 ------------------------------------
 
+Class-based components:
+- class XY extends 'Component
+--- Access to State
+--- Lifecycle Hooks
+--- this.state.XY
+--- this.props.XY
 
+Use if you need to manage State or access to Lifecycle Hooks and you don't want to use React Hooks.
+
+
+Functional components:
+- const XY = props => { .... }
+--- (React 16+) - Access to State ('useState()' Hook)
+--- props.XY
+
+Use in all other cases.
+
+
+With React 16+, there is now less of a difference between Class-based and Functional components. Both can manage state in their own way, however, Class-based components have access to Lifecycle Hooks, whereas Functional components do not.
+
+If you are working on a project that is below React 16, functional components would not have access to React Hooks, and therefore, could not manage state.
+
+Additionally, Class-based components require you to use the 'this' keyword when accessing 'state' or 'props', whereas Functional components do not.
 
 
 
