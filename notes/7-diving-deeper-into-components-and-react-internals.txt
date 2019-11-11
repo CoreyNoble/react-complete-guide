@@ -235,7 +235,168 @@ The only acceptable time to update 'state' in 'componentDidMount()' would be ins
 90. Component Creation Lifecycle in Action
 ------------------------------------
 
+1. constructor():
+--
+App.js
+--
+class App extends Component {
+    constructor(props) {
+        super(props);
+        console.log('[App.js] constructor');
 
+        this.state = {
+            ....
+        }
+    }
+}
+--
+
+The example above shows us how we can set up our own 'constructor()' method, which can accept 'props'. 
+
+As noted previously, when we set up our own 'constructor()' method, we need to add 'super()'.
+
+When setting up 'state' in our method, we need to prefix it with the 'this' keyword.
+
+You cannot use 'this.setState()' inside of 'constructor()' because 'state' has not yet been initialized until 'constructor()' is finished, so there is not 'state' to merge with.
+
+When logging the output, you'll see that the console will log '[App.js] constructor' before anything is rendered to the page.
+
+
+*The reason using 'state = {}' outside of 'constructor()' works inside of a Class-based component (as shown in previous examples), is because it is a modern way of initializing 'state'. When doing so, Behind the scenes React executes 'constructor(props){super(props); ....}' by default to initialize the 'state'.
+
+
+2. getDerivedStateFromProps()
+
+After 'constructor()' the first Lifecycle Hook that executes is 'getDerivedStateFromProps()':
+--
+App.js
+--
+constructor(props){
+    ....
+}
+
+state = {
+    ....
+}
+
+static getDerivedStateFromProps(props, state){
+    console.log('[App.js] getDerivedStateFromProps', props)
+    return state;
+}
+--
+
+In the example above, you see that we prefixed the method with 'static' this is required for React to execute this method correctly as it is concidered a 'static' method.
+
+'getDerivedStateFromProps()' takes in 'props' and 'state', and it outputs the updated 'state'.
+
+When logging the output, you'll see that the console will log '[App.js] getDerivedStateFromProps' after the 'constructor()' log.
+
+
+3. render():
+--
+App.js
+--
+constructor(props){
+    ....
+}
+
+state = {
+    ....
+}
+
+static getDerivedStateFromProps(props, state){
+    ....
+}
+
+render() {
+    console.log('[App.js] render');
+
+    <Persons .... />
+}
+--
+
+--
+Persons.js
+--
+const persons = props => {
+    console.log('[Persons.js] rendering..');
+    ....
+}
+--
+
+--
+Person.js
+--
+const person = props => {
+    console.log('[Person.js] rendering...');
+    ....
+}
+--
+
+In the example above, when 'render()' executes on 'App.js', first you will see a log for 'App.js', then it will proceed to 'render()' 'Persons.js', which will then proceed to 'render()' 'Person.js'.
+
+All of these items will be logged in-order, proceeding 'constructor()' and 'getDerivedStateFromProps()'.
+
+When 'render()' is executed, it doesn't nessecarily mean that the DOM will be updated. Instead, React will update the virtual DOM when 'render()' is executed, and will compare the new virtual DOM to the real DOM to determine if it needs to update the real DOM.
+
+
+4. componentDidMount()
+
+Once all of the child components are rendered, then React will proceed into 'componentDidMount()':
+--
+App.js
+--
+constructor(props){
+    ....
+}
+
+state = {
+    ....
+}
+
+static getDerivedStateFromProps(props, state){
+    ....
+}
+
+render(){
+    ....
+}
+
+componentDidMount(){
+    console.log('[App.js]' componentDidMount);
+}
+--
+
+The output above will show the log for 'componentDidMount()' proceeding 'constructor()' then 'getDerivedStateFromProps()', then 'render()'.
+
+
+With all of the above examples in mind, this is what you would see logged in the console when React goes through the Component Creation Lifecycle:
+--
+Browser Console (immediately)
+--
+- [App.js] constructor
+- [App.js] getDerivedStateFromProps {props object}
+- [App.js] render
+- [App.js] componentDidMount
+--
+
+Then, when we create our Persons, the console log will proceed with:
+--
+Browser Console (Adding Persons)
+--
+....
+- [App.js] getDerivedStateFromProps {props object}
+- [App.js] render
+- [Persons.js] rendering..
+- (3) [Person.js] rendering...
+--
+
+The example above shows that '1. constructor()' is only initially executed, followed by all of the other creation Lifecycle methods '2, 3, 4'. Then when React re-renders after the initial page load, '1. constructor()' is skipped and '2, 3, 4' are re-executed.
+
+When '3. render()' also needs to render child components, it will go down the node list of components and executes 'render()' on each child component that is updated on the page.
+
+
+It's also worth highlighting that historically there were other Lifecycle Hooks that are still supported. One of them was 'componentWillMount()'. While these hooks are still suppoted, they were very rarely used, and could be used incorrectly. Therefore, they will be removed in future versions of React.
 
 
 
