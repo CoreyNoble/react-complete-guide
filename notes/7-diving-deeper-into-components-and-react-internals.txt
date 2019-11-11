@@ -49,7 +49,9 @@ When finished re-organizing the project structure, we need to ensure every file 
 86. Splitting an App Into Components
 ------------------------------------
 
-We should be splitting up our application as often as we can, to enure every component serves only one purpose. Doing so will keep our application modular, manageable, flexible and scalable. We keep as many of these components stateless as possible to ensure we can control the data flow in as few locations as possible.
+We should be splitting up our application as often as we can, to enure every component serves only one purpose. Doing so will keep our application modular, manageable, flexible and scalable. 
+
+We keep as many of these components stateless as possible to ensure we can control the data flow in as few locations as possible.
 
 An example of this would be if you're adding a list of 'Persons' inside of your app, you can create a 'Persons.js' component which would handle the list, 'props' for each item in the list, and passing data on each item back up to the file that controls the state and event handlers (App.js):
 --
@@ -91,7 +93,32 @@ In 'App.js', <Persons> outputs each <Person> and handles the 'state' and event h
 87. Comparing Stateless and Stateful Components
 ------------------------------------
 
+When referring to Stateful components (Also called Smart or Container components) it means it's a componnt that manages state. 
 
+Historically, in-order to gain access to the 'state' object inside of a React component it needed to be inside of class based component that 'extends Component'. The 'Component' class gives us access to the 'state' object, and the 'setState()' method.
+
+With React 16+ we can now manage state with react Hooks (shown later in the course), but since all legacy applications will use class based components, below is an example of a Stateful component using the class based approach:
+--
+class App extends Component {
+    state = {
+        ....
+    }
+
+    ....
+        this.setState({ .... });
+    ....
+}
+--
+
+In the example above, the 'state' sets the data and its initial values inside of the application, then later on when we manipulate the state, we use the 'setState()' method.
+
+
+Stateless components (also called Presentational, Functional or Dumb components) are components that do not manage state.
+
+
+You should restrict the amount of components in the application that manage state, using as many Stateless components as possible. Doing so helps ensure there is a minimal amount of locations that manage the data of the application. This helps keep your application understandable, manageable, flexible, and scalable. 
+
+Typically an application consists of containers that pull in the components that are relevant to a given section of the application. The containers would be Stateful, and all of the components that are pulled into the container would be Stateless.
 
 
 
